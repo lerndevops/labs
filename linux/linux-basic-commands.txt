@@ -2,20 +2,20 @@ linux basic commands
 
 direcotry operation 
 
-    pwd -- displays prsent working direcotry
+        pwd -- displays prsent working direcotry
 	mkdir testdir  --- create a directory 
 	cd testdir -- change direcotry
 	ls -- list contents of current directory
 	ls -l -- list contents of current dirctory with detailed output
 	ll -- list contents of current directory with detailed output
 	cd .. -- to come out of a directory 
-    rm -r testdir -- to remove a directory
+        rm -r testdir -- to remove a directory
 	
 
 file operations 
 
 	touch abc.txt -- creates a empty file 
-    ls -l -- lists the contents in current directory
+        ls -l -- lists the contents in current directory
 	cat abc.txt -- writes the content of file into terminal & exits 
 	more abc.txt -- writes the content of file on terminal page by page ( to move to next page need to hit space bar on keyboard )
 	less abc.txt -- open the file on terminal & can be read line by line (use arrows to scroll up & down) 		  

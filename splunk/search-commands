@@ -1,0 +1,31 @@
+sourcetype=access_* status=200 action=purchase
+
+sourcetype=access_* status!=200 action=purchase
+
+(error OR fail* OR severe) OR (status=404 OR status=500 OR status=503)
+
+sourcetype=access_* status=200 action=purchase categoryId=simulation
+
+sourcetype=access_* status=200 action=purchase | top categoryId
+
+sourcetype=access_* status=200 action=purchase categoryId=STRATEGY
+
+sourcetype=access_* status=200 action=purchase | top limit=1 clientip
+
+sourcetype=access_* status=200 action=purchase | top limit=1 clientip | table clientip
+
+sourcetype=access_* status=200 action=purchase clientip=87.194.216.51 | stats count, distinct_count(productId), values(productId) by clientip
+
+sourcetype=access_* status=200 action=purchase [search sourcetype=access_* status=200 action=purchase | top limit=1 clientip | table clientip] | stats count AS "Total Purchased", distinct_count(productId) AS "Total Products", values(productId) AS "Product IDs" by clientip | rename clientip AS "VIP Customer"
+
+sourcetype=”access*” status=503 | stats count
+
+sourcetype=”access*” | top uri
+
+sourcetype=”access*” | top user by host
+
+sourcetype=”access*” status=”2*”
+
+sourcetype=”access*”| stats count by eventtype
+
+sourcetype=”access*” status=”404” | stats count by category_id

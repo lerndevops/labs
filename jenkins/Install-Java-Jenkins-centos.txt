@@ -1,4 +1,4 @@
-these instruction can be used against 
+these instruction can be used against CentOS/RedHat/Fedora Systems. 
 
 Install JAVA
  
@@ -18,7 +18,7 @@ Install Maven  ( on Jenkins machine )
 
     sudo yum install wget
 	cd /tmp ; wget https://www-eu.apache.org/dist/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz
-	cd /tmp ; tar -xzf apache-maven-3.6.1-bin.tar.gz -C /opt
+	cd /tmp ; tar xzvf apache-maven-3.6.1-bin.tar.gz -C /opt
 
 Set JAVA_HOME & MAVEN_HOME as environment variables on Jenkins machine
 

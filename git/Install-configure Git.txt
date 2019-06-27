@@ -5,6 +5,14 @@ sudo add-apt-repository ppa:git-core/ppa -y
 sudo apt-get update
 sudo apt-get install git -y
 git --version ( if it writes the version then the installation is successful )
+
+=================================================================================
+
+Install Git on --- CentOS / Fedora / RedHat
+
+sudo yum update
+sudo yum install git
+
 =================================================================================
 
 config setup
@@ -15,5 +23,4 @@ git config --global help.autocorrect 1
 git config --global core.editor vim
 git config --list
 
-====================================================================================================================
-
+==================================================================================

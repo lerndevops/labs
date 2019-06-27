@@ -1,0 +1,52 @@
+---
+- hosts: prod
+#  become: yes
+  tasks:
+#### copy a file
+    - name: copy file
+      copy:
+        src: /tmp/demo.txt
+        dest: /tmp
+#### create a folder or file
+#    - name: Create a new file
+#      file:
+#        path: /tmp/newfolder
+#        state: directory
+#### execute shell script & print the output
+#    - name : execute a shell
+#      script: sh /tmp/test.sh
+#      register: abc
+#    - debug:
+#         msg: "{{ abc.stdout_lines }}"
+#### execute a normal shell command 
+#    - name : execute a command
+#      command: echo " executing a command"
+#### create multiple file using loop
+#    - name: Run a loop
+#      shell: touch "{{ item }}" 
+#      with_items:
+#        - one.txt
+#        - two.sh
+#        - three.java
+#        - Four.txt
+#### conditons
+#    - name: install a webserver redhat/centos
+#      yum:
+#        name: httpd
+#        state: latest
+#      when: ansible_distribution == 'RedHat'
+#    - name: start the service
+#      service:
+#         name: httpd
+#         state: started
+#      when: ansible_distribution == 'RedHat'
+#    - name: install a webserver on ubuntu
+#      apt:
+#        name: apache2
+#        state: latest
+#      when: ansible_distribution == 'Ubuntu'
+#    - name: start the service
+#      service:
+#         name: apache2
+#         state: started
+#      when: ansible_distribution == 'Ubuntu'

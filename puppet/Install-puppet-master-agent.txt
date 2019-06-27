@@ -1,0 +1,69 @@
+Take instances for Master and Agent
+
+configure hostsnames in /etc/hosts file on both instances
+
+on master node 
+vi /etc/hosts
+	<master ip> puppet
+	<node ip> puppetagent
+	
+on agent server
+vi /etc/hosts
+	<master ip> puppet
+	<node ip> puppetagent
+	
+put hostname of the master node as "puppet" because by default the agents try to contact this name.
+
+Install:
+--------
+Master:
+-------
+curl -O https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+dpkg -i puppetlabs-release-pc1-xenial.deb
+apt-get update
+apt-get install puppetserver
+
+By default, Puppet Server is configured to use 2 GB of RAM. You can customize this setting based on how much free memory the master server has and how many agent nodes it will manage.
+To customize it, open /etc/default/puppetserver.
+
+JAVA_ARGS="-Xms2g -Xmx3g -XX:MaxPermSize=256m"
+
+When we start Puppet Server, it will use port 8140 to communicate, so we'll ensure it's open:
+sudo ufw allow 8140
+
+systemctl start puppetserver
+systemctl status puppetserver
+systemctl enable puppetserver  # for enabling boot time start time
+
+
+Agent:
+------
+
+wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+dpkg -i puppetlabs-release-pc1-xenial.deb
+apt-get update
+apt-get install puppet-agent
+systemctl start puppet
+systemctl status puppet
+
+
+setting up master agent communictaion 
+
+Certificate Signing:
+-------------------
+
+/opt/puppetlabs/bin/puppet cert list   # on Master
+
+Now sign it
+
+/opt/puppetlabs/bin/puppet cert sign hostname  # u can find the hostname in certlist also
+
+
+The Puppet master can now communicate and control the node that the signed certificate belongs to. 
+You can also sign all current requests at once.
+
+We'll use the --all option to sign the remaining certificate:
+
+ /opt/puppetlabs/bin/puppet cert sign --all
+ 
+Version :   dpkg -l | grep puppet

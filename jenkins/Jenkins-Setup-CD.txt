@@ -1,0 +1,92 @@
+Contiuous Delivery/Deployment with Jenkins,docker & ansible 
+
+NOTE: 
+	dont just simply copy the steps below -- steps need to modifed according to your jenkins job, dockerfile & ansible setups.
+
+	this setup is just to understand continuous deloyment & our lab purpose only. try to understand the concepts & setup your own CD pipeline accordingly.
+
+
+pre-requistes: take two linux machines 
+
+Step1:
+first linux machine  
+
+    install jenkins  ( when we install Jenkins the jenkins server will be running with user "jenkins" by default )
+	install docker
+	install Ansible 
+
+second Linux machine ( this will be remote machine where we will deploy the application ) 
+	create a user jenkins on second linux machine
+	execute below
+		groupadd jenkins
+		useradd jenkins -m -d /home/jenkins -s /bin/bash -g jenkins 
+
+Step2:
+setup a password less authentication using jenkins user from machine one to machine two using ssh keys
+
+on first machine 
+	genereate ssh keys for user jenkins 
+	copy the keys to second machine
+
+Step3: create a jenkins job to deploy on to remote machine & use the steps as below
+
+in jenkins job use build ---- execute shell
+
+## build tomcat image with application warfile 
+sudo docker build -t addressbookapp:v2 -f /path/to/dockerfile /path/to/warfile
+
+	Dockerfile_addressbook content 
+	
+		FROM ubuntu
+		RUN apt-get -y update && apt-get -y upgrade
+		RUN apt-get -y install openjdk-8-jdk wget
+		RUN mkdir /usr/local/tomcat
+		RUN wget http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.37/bin/apache-tomcat-8.5.37.tar.gz -O /tmp/tomcat.tar.gz
+		RUN cd /tmp&& tar xvfz tomcat.tar.gz
+		RUN cp -Rv /tmp/apache-tomcat-8.5.37/* /usr/local/tomcat/
+		ADD addressbook.war /usr/local/tomcat/webapps
+		EXPOSE 8080
+		CMD /usr/local/tomcat/bin/catalina.sh run
+
+## login to docker hub
+sudo docker login -u <username> -p <password>
+## might take sometime to login sometime so sleep 15 sec
+sleep 15  
+## tag your image with docker hub acctname(username)/repo:tag 
+sudo docker tag addressbookapp:v2 leaddevops/addressbook:v2
+## push to docker hub 
+sudo docker push nareshmnvs/addressbook:v2
+## create ansible playbook & invenotry of remote machines where to deploy 
+cd /home/ansible 
+=======================================================================
+## this section in between these line is for your information you need to create a ansible playbook as below
+ansible-playbook -i hosts addressbook-deploy.yml
+
+	root@ubuntu:/home/ansible# ls -ltrh
+		hosts
+		addressbook-deploy.yml
+
+	root@ubuntu:/home/ansible# more addressbook-deploy.yml
+	---
+	- hosts: all
+	  become: yes
+      tasks:
+		- command: docker run -d -P leaddevops/addressbook:v2
+		  register: out
+		- debug: var=out
+
+	root@ubuntu:/home/ansible# more hosts
+	192.168.47.131
+==========================================================================
+
+
+===============================================================================================================================
+simply -- in your jenkins job we should see only below content. above all is for your information 
+
+sudo docker build -t addressbookapp:v2 -f /path/to/dockerfile /path/to/warfile
+sudo docker login -u <username> -p <password>
+sleep 15  
+sudo docker tag addressbookapp:v2 leaddevops/addressbook:v2
+sudo docker push leaddevops/addressbook:v2
+cd /home/ansible
+ansible-playbook -i hosts addressbook-deploy.yml

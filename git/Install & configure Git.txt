@@ -1,0 +1,19 @@
+Install Git on --- Ubuntu OS
+
+sudo apt-get install python-software-properties software-properties-common
+sudo add-apt-repository ppa:git-core/ppa -y
+sudo apt-get update
+sudo apt-get install git -y
+git --version ( if it writes the version then the installation is successful )
+=================================================================================
+
+config setup
+
+git config --global user.name naresh
+git config --global user.email naresh@gmail.com
+git config --global help.autocorrect 1
+git config --global core.editor vim
+git config --list
+
+====================================================================================================================
+

@@ -1,0 +1,41 @@
+Configure Forwarder where to forward the data ( before running below we need to configure the receiving on splu
+nk server )
+
+        cd /opt/splunkforwarder/bin
+        ./splunk add forward-server 172.31.7.70:5552
+        cd /opt/splunkforwarder/etc/system/local/
+        more outputs.conf
+
+=============================================================================================================
+push data to splunk
+
+        cd /opt/splunkforwarder/bin
+        ./splunk add monitor /var/log/messages
+
+        cd /opt/splunkforwarder/etc/apps/search/local/
+        more inputs.conf
+
+        [monitor:///var/log/messages]
+        disabled = false
+
+
+we can also edit input.conf file & add our monitors accordinlgy ( if we edit manaually the splunk forwarder nee
+d to be restarted )
+
+        cd /opt/splunkforwarder/etc/apps/search/local/
+
+        vi inputs.conf
+
+        [monitor:///var/log/httpd/*log]
+        disabled = false
+        index=apachelogs
+
+        [monitor:///var/log/nginx/*.log]
+        disabled = false
+        index=apachelogs
+        sourcetype=nginx
+
+to restart splunk forwarder
+
+        /opt/splunkforwarder/bin/splunk restart
+

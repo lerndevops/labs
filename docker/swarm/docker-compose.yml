@@ -1,0 +1,30 @@
+version: "3"
+services:
+  app:
+    # replace username/repo:tag with your name and image details
+    image: nareshmnvs/myapp:latest
+    deploy:
+      replicas: 5
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 150M
+    ports:
+      - "3000:3000"
+  web:
+    # replace username/repo:tag with your name and image details
+    image: nareshmnvs/nginx:v1
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+    ports:
+      - "8090:80"
+networks:
+   mynet:

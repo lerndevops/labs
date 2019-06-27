@@ -1,0 +1,56 @@
+Splunk Enterprise Server installation 
+
+Cent OS
+-------
+	cd /tmp ; wget -O splunk-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=splunk&filename=splunk-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm&wget=true'
+
+	rpm -i /tmp/splunk-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm
+	/opt/splunk/bin/splunk start --accept-license  ( enter username & password )
+
+Ubuntu
+-------
+	cd /tmp ; wget -O splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=splunk&filename=splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&wget=true'
+	
+	dpkg -i /tmp/splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb
+	/opt/splunk/bin/splunk start --accept-license  ( enter username & password )
+
+============================================================================================================
+Splunk Forwarder Installation    
+
+Cent OS
+-------
+	cd /tmp ; wget -O splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=universalforwarder&filename=splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm&wget=true'
+
+	rpm -i /tmp/splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm
+	/opt/splunkforwarder/bin/splunk start --accept-license ( enter username & password )
+
+Ubuntu
+--------
+	cd /tmp ; wget -O splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=universalforwarder&filename=splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&wget=true'
+
+	dpkg -i /tmp/splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb
+	/opt/splunkforwarder/bin/splunk start --accept-license ( enter username & password )
+============================================================================================================ 
+
+cofigure mail server
+
+	settings ==> Server settings ==> Email Setting 
+	Mail host: smtp.gmail.com
+	Email security: Enable SSL
+	Username: your gmail 
+	Password: your gmail passwd
+
+	Save
+
+============================================================================================================
+Create Alert
+
+serach for data 
+	index="apachelogs" sourcetype="nginx" 404 ==> Save As ==> Alert ( under setting )
+	Title: 404-Alert
+	Permission: Shared in App
+	Alert type: Scheduled/Real Time
+	Trigger Conditions: choose accordinlgy
+	Throttle: choose if required ( after an alert is triggered, subsequent alerts will not be triggered until after the throttle period )
+	Trigger Actions: send Email
+

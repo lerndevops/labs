@@ -1,0 +1,28 @@
+how to run ansible ad-hoc commands ( default inventory )
+
+	ansible all -m setup -u username -k 
+        ansible qa -m ping -u username -k
+        ansible dev -m shell -a "free -m" -u username -k
+        ansible iat -m copy -a "src=/tmp/naresh.txt dest=/tmp" -u username -k 
+        ansible prod -m file -a "path=/tmp/helousername.txt state=touch" -u username -k
+
+how to run a ansible playbook  ( default invenotry )
+
+	ansible-playbook myplaybook.yml -u username -k 
+
+
+how to run ansible ad-hoc or playbook with custom inventory
+
+	ansible all -i /path/to/inventory -u username -k
+        ansible dev -i /path/to/inventory -m copy -a "src=/tmp/new.txt dest=/tmp" -u username -k
+
+	ansible-playbook myplaybook.yml -i /path/to/inventory -u username -k 
+	
+
+how to run ansible ad-hoc or playbook with super user (root) 
+
+        ansible all -i /path/to/inventory -b -u username -k -K
+        ansible dev -i /path/to/inventory -m copy -a "src=/tmp/new.txt dest=/tmp" -b -u username -k -K
+
+        ansible-playbook myplaybook.yml -i /path/to/inventory -u username -k -K
+

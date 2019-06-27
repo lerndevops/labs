@@ -1,0 +1,64 @@
+login to aws account ===> goto IAM
+create a user account & allow the user EC2 full access
+    also get ==>  Access key
+				  secret access key
+
+on your ansible controller 
+
+	Install awscli
+		easy_install pip
+		pip install awscli
+		pip install boto
+		aws --version ( check the anisble installed version )
+
+configure the User Access key & secret Access key
+	root@ubuntu:~/# aws configure
+	AWS Access Key ID [None]: 
+	AWS Secret Access Key [None]: 
+	Default region name [None]: ap-south-1
+	Default output format [None]: 
+
+test:
+	aws ec2 describe-instances --output table
+
+============================================================================
+
+ansible playbook to procure an ec2 instance 
+
+- name: Create EC2 Instance
+  hosts: localhost
+  tasks:
+    - ec2:
+        key_name: test
+        instance_type: t2.micro
+        image: ami-0f65671a86f061fcd
+        wait: yes
+        group: mysecgroup
+        count: 1
+        vpc_subnet_id: subnet-c33c268e
+        assign_public_ip: yes
+        region: us-east-2
+      register: out
+
+    - debug:
+        msg: "{{out}}"
+    - add_host:
+        hostname: "{{item.public_ip}}"
+        groupname: myservers
+        ansible_user: ubuntu
+        ansible_ssh_private_key_file: /home/aws/ueokey.pem
+        ansible_python_interpreter: /usr/bin/python3
+      with_items: "{{out.instances}}"
+
+    - wait_for:
+        host: "{{ item.public_ip }}"
+        port: 22
+        delay: 30
+        timeout: 320
+        state: started
+      with_items: "{{ out.instances }}"
+    - name: get iplist
+      copy:
+        content: "{% for host in groups.myservers %}{{ hostvars[host].inventory_hostname }}\n{% endfor %}"
+        dest: /tmp/ec2-inventory
+      delegate_to: localhost

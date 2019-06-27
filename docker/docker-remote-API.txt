@@ -1,0 +1,19 @@
+docker setup
+
+Jenkins plugins ==> docker-build-step
+
+Enabling Docker Remote API on machine where we will use to build docker images 
+
+Ubuntu 16.04
+
+	sudo vi /lib/systemd/system/docker.service   
+	ExecStart=/usr/bin/docker daemon -H fd:// -H tcp://0.0.0.0:4243		
+	systemctl daemon-reload
+	sudo service docker restart
+	
+	test: curl http://localhost:4243/version
+OR
+	vi /etc/init/docker.conf
+	DOCKER_OPTS=’-H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock’
+	systemctl daemon-reload
+	sudo service docker restart

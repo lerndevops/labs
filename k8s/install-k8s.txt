@@ -1,0 +1,55 @@
+
+K8s Master Setup:  ubuntu 16 WITH 2 CPUS & 4GB RAM
+
+	sudo apt-get update
+	sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+	sudo apt-get update ; clear
+	apt-cache madison docker-ce | awk '{print $3}'
+	sudo apt-get install -y docker-ce=<version you want to install>
+	sudo service docker start ; clear
+
+	echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+	curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+	sudo apt-get update ; clear
+	sudo apt-get install -y kubelet kubeadm kubectl
+
+	sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+
+		Note: note down the kubeadm join command 
+
+   sudo mkdir -p $HOME/.kube
+   sudo rm $HOME/.kube/config
+   sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+   sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+	sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-fl
+annel.yml
+
+============================================================================================
+
+k8s Node Setup  - every node is recomended 2CPU & 4GB RAM
+
+	sudo apt-get update
+	sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+	sudo apt-get update ; clear
+	apt-cache madison docker-ce | awk '{print $3}'
+	sudo apt-get install -y docker-ce=<version you want to install>
+
+	sudo service docker start ; clear
+
+	echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+	curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+	sudo apt-get update ; clear
+	sudo apt-get install -y kubelet kubeadm kubectl
+
+========================================================================================================
+
+how to find kubeadm join token later
+
+token=`kubeadm token generate`
+kubeadm token create "$token" --print-join-command --ttl=0

@@ -1,0 +1,15 @@
+how to build docker image manual process 
+
+	take a base image ( ex: docker pull ubuntu )
+	run it as container in interactive more ( docker run -it ubuntu bash )
+	make neccessary changes inside the container 
+	come out of the container safely without exiting ( ctrl pq )
+        get the container id using docker ps ( ensure container up & running )
+	commit the changes as new image using below syntax
+
+     docker commit -m "any message" -c "CMD " -c "EXPOSE " containerid newimagename
+
+how to build docker images automated process
+
+	write all the instrution a dockerfile & run
+	docker build -t newimagename . (context)

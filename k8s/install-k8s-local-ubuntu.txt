@@ -1,0 +1,83 @@
+pre-requisites to be done on local ubuntu machine for k8s setup.
+
+disable swap ( on master & nodes )
+
+	swapoff -a 
+	vi /etc/fstab 
+		comment the swap line putting hash infront of the line
+		ex: #UUID=9fb8bc78-f247-4b69-8b4a-44171adeda7b none            swap    sw              0       0
+
+disblae default reslov conf services & install dnsmasq ( only on master )
+
+	sudo systemctl disable systemd-resolved.service
+	sudo systemctl disable resolvconf.service
+	sudo systemctl stop systemd-resolved
+	sudo systemct stop resolvconf.service
+	sudo apt-get install dnsmasq
+
+	reboot the machine 
+
+set the nameserver ( only on master )
+
+vi /etc/resolv.conf
+	nameserver 8.8.8.8
+=========================================================================================
+K8s Master Setup Local Ubuntu
+
+	Install docker
+		sudo apt-get update
+		sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+		sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+		sudo apt-get update
+		sudo apt-get install docker-ce docker-ce-cli containerd.io
+		
+	Insall kube
+		curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+		echo 'deb http://apt.kubernetes.io/ kubernetes-xenial main' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+		apt-get update
+		apt-get install -y kubelet kubeadm kubectl
+
+	vi /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+	Environment=”cgroup-driver=systemd/cgroup-driver=cgroupfs” ( add it above Execstart= )
+   
+	kubeadm init --apiserver-advertise-address=<master ip> --pod-network-cidr=10.244.0.0/16
+	
+	mkdir -p $HOME/.kube
+	sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+	sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+	make note of kubeadm join command to be run on Nodes
+	
+	for coredns pods to come up run below
+	
+		kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+
+========================================================================================
+		
+K8S Node Setup:
+
+	Install docker
+		sudo apt-get update
+		sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+		sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+		sudo apt-get update
+		sudo apt-get install docker-ce docker-ce-cli containerd.io
+	
+	Install Kube
+		apt-get update && apt-get install -y apt-transporthttps curl
+		curl -s https://packages.cloud.google.com/apt/doc/aptkey.gpg | apt-key add -
+		echo 'deb http://apt.kubernetes.io/ kubernetes-xenial main' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+		apt-get update
+		apt-get install -y kubelet kubeadm kubectl
+
+		run "kubeadm join" command noted on master to add it to master. 
+
+=========================================================================================
+
+for calico
+
+kubeadm init --apiserver-advertise-address=192.168.40.133 --pod-network-cidr=192.168.0.0/16
+kubectl apply -f https://docs.projectcalico.org/v2.6/getting-started/kubernetes/installation/hosted/kubeadm/1.6/calico.yaml

@@ -1,0 +1,75 @@
+work with Git remote repositories
+
+pre requisite: create an account on https://github.com/ & login
+
+Scenario 1: create a empty repository on remote ( github.com ) & configure it as remote for a local repository
+
+	on github -- login to your acct -- after login -- right top corner click on '+' symbol & New Repository
+	Enter the Reposiotry Name -- choose public -- create repository
+	
+	note down the Porject URL displyed on screen.  ex:- https://github.com/lerndevops/test1.git
+	
+	create a new repository on the command line & configure the remote
+		mkdir /projectA ; cd /projectA 
+		git init
+		touch readme.txt
+		git add .
+		git commit -m "first commit"
+		git remote add origin https://github.com/lerndevops/test1.git
+		
+	OR configure remote to an existing repository from the command line
+		on your machine -- get into the existing project 
+		cd /path/to/project
+		git remote add origin https://github.com/lerndevops/test1.git
+
+Scenario 2: check the remote reposiotry configured to a local repository, configure it if not configured & push the changes into remote reposiotry 
+
+	on your machine "cd /path/to/project"
+	git remote -v --> to see the configured remote reposiotry"
+	git status --> ensure working directory is clean
+	git remote add origin https://github.com/lerndevops/test1.git
+	git push origin master --> to push the changes to remote reposiotry.
+	
+
+Scenario 3: get any differences between your local reposiotry & remote repository, then merge the changes in remote to to local repository, then push all changes together into remote repository
+
+	on your machine "cd /path/to/project"
+	git remote -v  --> to see the configured remote reposiotry, if not configured, configure a remote reposiotry
+	git remote add origin https://github.com/lerndevops/test1.git
+	
+	git fetch --> will fetch the differences between your local & remote reposiotry, if no differences found no output will be written on the screen
+	
+	git pull --> if there are any changes in remote reposiotry which are not available in your local reposiotry then it will pull those changes into your local & merges with your local repository. 
+	
+	git push origin master --> to push the changes into remote repository
+
+		Note: if some changes in remote repo are not present in your local repository, git will reject your changes while your pushing them. so we need to do a "git fetch" to see the changes then "git pull" to pull those changes into local and then "git push" to update your remote repository.
+		
+	so it is suggested that before your push to a remote repository it is always recomended to do git fetch & git pull then do git push. 
+	
+Scenario 4: copy a remote repository into your local, make changes & push it back to remote. 
+
+	git clone <remote project URL>   -- to copy/download the remote repository into your local
+		ex:- git clone https://github.com/lerndevops/test1.git
+	cd /path/to/project
+	make changes 
+	git add .
+	git commit -m "any message"
+	git fetch 
+	git pull
+	git push origin master
+
+Scenario 5: copy a public repository on github into your account on github ( simply taking a copy of publicly availabe project & make your own changes )
+
+	login to your github account
+	on github webpage in "seach bar" on top left
+	search for a project of your choice & open the project 
+	if it s a publicly available project - you will see a "fork" option on top right -- click on it -- the project will be copied on to your account successfully.
+	
+	goto your repositories & see it is available on your repositories list. you can clone it & make changes, push it back to your remote.
+	
+	Note: all the chagnes you push will be pushed to the project under you account, but not to the project from where you copied, if you want update/merge your chages into the original project you need to create a pull request & the original owner of the project will review & accept if they are ok. 
+	
+	
+	
+	

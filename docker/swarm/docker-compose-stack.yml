@@ -1,0 +1,28 @@
+version: '3.2'
+services:
+  webserver:
+    image: mynginx23
+    ports: 
+      - "80"
+    networks: 
+      - demo
+    volumes:
+      - /home/docker/:/var/www/html
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+          - node.labels.env==prod
+  appserver:
+    image: myappserver
+    ports:
+      - "8080"
+    networks: 
+      - demo
+    deploy:
+      replicas: 4
+      placement:
+        constraints:
+          - node.labels.env==prod
+networks:
+   demo:

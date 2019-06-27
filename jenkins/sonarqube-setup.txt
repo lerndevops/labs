@@ -1,0 +1,61 @@
+Installation & start sonarqube
+
+Install SonarQube ( container or download zip )
+
+	if .zip download & installation follow below steps:
+	
+		cd /tmp ; wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-6.7.6.zip
+		cd /tmp ; unzip sonarqube-6.7.6.zip
+		cd /tmp ; mv sonarqube-6.7.6 /opt
+		groupadd devops
+		useradd devops -m -d /home/devops -s /bin/bash -g devops
+		passwd devops ( enter passwd )
+		cd /opt ; chown -R devops:devops sonarqube-6.7.6 ; chmod -R 755 sonarqube-6.7.6
+		cd /opt/sonarqube-6.7.6/bin/linux-x86-64/ ; ./sonar.sh start
+	
+		after starting successfully goto browser & hit below
+			http://<IP addr>:9000
+			login to sonarqube ( default credentials admin/admin )
+	
+	if docker --> run run below command ( ensure docker is installed on your machine )
+	
+		docker run -d --name sonarqube -p 9000:9000 sonarqube
+		after starting successfully goto browser & hit below
+			http://<IP addr>:9000
+			login to sonarqube ( default credentials admin/admin )
+
+
+Jenkins Configuration
+
+Install SonarQube-runner ( on Jenkins machine )
+
+	cd /tmp ; wget http://repo1.maven.org/maven2/org/codehaus/sonar/runner/sonar-runner-dist/2.4/sonar-runner-dist-2.4.zip
+	cd /tmp ; unzip sonar-runner-dist-2.4.zip
+	cd /tmp ; mv sonar-runner-dist-2.4 /opt
+	
+ 
+	Step1: Installing sonarqube plugin in Jenkins
+			Manage Jenkins --> manager plugins --> install plugin ( SonarQube Scanner for Jenkins )
+			
+	Step2: sonarqube configuration in Jenkins
+			Manage Jenkins --> configure System --> SonarQube servers --> configure below
+				Name: sonarqube ( can be any string )
+				Server URL: http://192.168.40.128:9002 < http://<machine IP of where sonarqube is installed>:<port on which sonarqube is running>
+				Server authentication token: < the token you will get it when you login to sonarqube console )
+				
+	Step3: SonarQube Runner Configuration in Jenkins
+			Manage Jenkins --> Global Tool Configuration --> SonarQube Scanner --> configure below
+				Name: sonar-runner ( can be any string )
+				SONAR_RUNNER_HOME: path of sonar-runner installation on Jenkins Server ( /opt/sonar-runner-dist-2.4 )
+
+======================================================================================================
+
+Job5-package: post build action 
+
+	sonar        : 	sonar.projectKey=sampleapp
+					sonar.ProjectName=sampleapp
+					sonar.sources=src/main/java/
+					sonar.java.binaries=target/classes/
+					sonar.language=java
+					sonar.java.source=1.8
+

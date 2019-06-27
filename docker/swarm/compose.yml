@@ -1,0 +1,22 @@
+version: "3.7"
+services:
+  web:
+    # replace username/repo:tag with your name and image details
+    image: tomcat
+    deploy:
+      replicas: 4
+      placement:
+        constraints: 
+          - node.labels.node-type == appserver
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+    ports:
+      - "9090:8080"
+    networks:
+      - webnet
+networks:
+  webnet:

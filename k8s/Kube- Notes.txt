@@ -1,0 +1,397 @@
+kubectl get nodes ( on master )
+kubectl describe nodes <nodename/ip>
+
+
+
+
+------------------------------------------------------------------------------
+POD
+-----
+pod.yml
+-------
+kubectl get pods --all-namespaces
+kubectl get pods
+
+kubectl run testsvr --image=nginx --replicas=7 #### run pods manually ( creates a deployment )
+=====================================================================================================================
+apiVersion: v1  #-- stable from 2015.. stable
+kind: Pod   #--- what kind of object we are doing.. kubernetes know it
+metadata:
+  name: firstpod
+  labels:
+    zone: prod
+    version: v1
+spec: # what is the need
+  containers:
+  - name: hello
+    image: nginx
+    ports:
+    - containerPort: 80
+
+
+	
+root@ip-172-31-18-171:/kube# kubectl create -f pod.yml
+pod/firstpod created
+
+kubectl get pods
+
+root@ip-172-31-18-171:/kube# kubectl get pods/firstpod
+NAME       READY   STATUS    RESTARTS   AGE
+firstpod   1/1     Running   0          13m
+
+
+kubectl describe pods  # explains, node, state, details of pod
+kubectl delete pod firstpod   # to remove pod
+
+------
+Now replication controller for desired state: we never go with pods only
+kube always makes sure you have ur desired state is always true
+--------
+kubectl delete pods/firstpod   # remove pod and run rc
+
+=========================================================================================================================
+
+Required Fields in yaml
+
+apiVersion - Which version of the Kubernetes API you’re using to create this object
+kind - What kind of object you want to create ( pod, replicaset, deployment etc.. )
+metadata - Data that helps uniquely identify the object, including a name string, UID, and optional namespace
+
+
+=========================================================================================================================
+
+rc.yml
+-------
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: first-rc
+spec:
+  replicas: 6
+  selector:
+    app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello1
+        image: tomcat
+        ports:
+        - containerPort: 8080
+		
+kubectl create -f rc.yml
+kubectl get rc -o wide
+kubectl describe rc
+
+now update replcias to 10
+
+kubectl apply -f rc.yml  # now we will see 10 pods with new time stamps
+
+kubectl get rc
+kubectl get pods
+
+kubectl delete rc first-rc
+
+=========================================================================================================================== 
+ 
+Service
+----------
+client cant connect to pods (we need to use static ip) so service is the Option
+service has its own Virtual IP and port (same port on any node, will be routed to pods) 
+
+service connect to pods using labels
+
+we unable to access the app until unless we expose 
+
+kubectl expose rc first-rc --name=hello-svc --target-port=8080 --type=NodePort
+
+kubectl describe svc hello-svc  # we can see the ports are exposed
+we can now access the URL using the exposed node port
+
+range : 30000-32767
+
+ex: http://13.233.164.247:30681/
+
+======================================================================================================================
+
+Declarative Service:
+----
+
+kubectl get svc  -- to see services
+kubectl delete svc hello-svc
+
+service "hello-svc" deleted
+
+svc.yml:
+=======
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-svc
+  labels:
+    app: hello-world
+spec:
+  type: NodePort   # 3 types, Cluster Ip, NodePort & Load Balancer (integrates nodeport with cloud based load balancers)
+  ports:
+  - port: 8080  # inside container
+    nodePort: 30001 #expose , if dont give takes default
+    protocol: TCP
+  selector:
+    app: hello-world
+	
+
+root@ip-172-31-18-171:/kube# kubectl create -f svc.yml
+service/hello-svc created
+
+root@ip-172-31-18-171:/kube# kubectl describe svc hello-svc
+Name:                     hello-svc
+Namespace:                default
+Labels:                   app=hello-world
+Annotations:              <none>
+Selector:                 app=hello-world
+Type:                     NodePort
+IP:                       10.100.49.219
+Port:                     <unset>  8080/TCP
+TargetPort:               8080/TCP
+NodePort:                 <unset>  30001/TCP
+Endpoints:                10.244.1.10:8080,10.244.1.11:8080,10.244.1.12:8080 + 7 more...
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+
+### The following commands list all Endpoint objects on the cluster and then describes the Endpoint object called "hello-svc"
+kubectl get ep
+kubectl describe ep hello-svc
+
+==============================================================================================================================
+
+Deployments:
+------------
+
+It is about rolling updates and rollbacks.
+Deployments manage replica sets and replica sets manage pods.
+
+kubectl delete rc first-rc
+
+deploy.yml
+----------
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-deploy
+spec:
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: firstpod
+        image: tomcat
+        ports:
+        - containerPort: 8080
+
+make sure service is running.
+		
+		
+root@ip-172-31-18-171:/kube# kubectl create -f deploy.yml
+deployment.extensions/hello-deploy created
+
+
+kubectl describe deploy hello-deploy
+
+
+root@ip-172-31-18-171:/kube# kubectl get rs
+NAME                      DESIRED   CURRENT   READY   AGE
+hello-deploy-77dd6d4884   5         5         5       2m30s
+
+kubectl describe rs
+access the app -------- done
+
+---------------------------------------------------------
+
+Update & Rollback
+
+let us update the image in deploy.yml
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-deploy
+spec:
+  replicas: 5
+  minReadySeconds: 20 # wait for 10 sec before pod is ready going to next
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1  # take down 1 pod at a time
+      maxSurge: 1        # bring one at a time
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: firstpod
+        image: jenkins
+        ports:
+        - containerPort: 8080
+
+kubectl apply -f deploy.yml --record
+
+now it brings down and up 1 at a time and waits for 20 sec.
+
+root@ip-172-31-18-171:/kube# kubectl rollout status deployments hello-deploy
+
+Waiting for deployment "hello-deploy" rollout to finish: 4 of 5 updated replicas are available...
+deployment "hello-deploy" successfully rolled out
+
+root@ip-172-31-18-171:/kube# kubectl get deploy hello-deploy    # completed
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+hello-deploy   5/5     5            5           15m
+
+Try accessing app
+
+root@ip-172-31-18-171:/kube# kubectl rollout history deployments hello-deploy
+
+deployment.extensions/hello-deploy
+REVISION  CHANGE-CAUSE
+1         <none>   # without record flag
+2         kubectl apply --filename=deploy.yml --record=true   # advantage of --record flag
+
+
+root@ip-172-31-18-171:/kube# kubectl get rs
+NAME                      DESIRED   CURRENT   READY   AGE
+hello-deploy-5cf7d48fb8   5         5         5       11m     # new deploy
+hello-deploy-77dd6d4884   0         0         0       25m
+
+
+kubectl describe deploy hello-world  # to see new app image and pods
+
+----------
+Rollback
+---------
+
+
+root@ip-172-31-18-171:/kube# kubectl rollout undo deployment hello-deploy --to-revision=1
+deployment.extensions/hello-deploy rolled back
+root@ip-172-31-18-171:/kube# kubectl get deploy
+NAME           READY   UP-TO-DATE   AVAILABLE   AGE
+hello-deploy   6/5     2            4           29m
+
+
+root@ip-172-31-18-171:/kube# kubectl rollout status deployments hello-deploy
+
+
+root@ip-172-31-18-171:/kube# kubectl get rs
+NAME                      DESIRED   CURRENT   READY   AGE
+hello-deploy-5cf7d48fb8   0         0         0       17m
+hello-deploy-77dd6d4884   5         5         5       30m
+
+
+
+------------------------------------------------
+
+Dashboard/Console:
+
+kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
+kubectl proxy 
+http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+
+token generation: 
+
+kubectl create serviceaccount dashboard -n default
+kubectl create clusterrolebinding dashboard-admin -n default --clusterrole=cluster-admin --serviceaccount=default:dashboard
+kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+
+Note: 
+
+To access the dashboard need to tunnel the port & host in putty Settings 
+goto putty Settings --> Connection --> SSH --> Tunnels ( Secure Port: 8001, Destination: localhost:8001 then Add & Apply )
+
+
+
+
+
+
+=================================================================================================================
+
+
+kubectl -n kube-system get secret
+kubectl -n kube-system describe secret service-controller-token-2qbr5
+kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | awk '/^deployment-controller-token-/{print $1}') | awk '$1=="token:"{print $2}' 
+
+reference: https://stackoverflow.com/questions/46664104/how-to-sign-in-kubernetes-dashboard
+
+kubectl proxy --address="192.168.0.101" -p 8001 --accept-hosts='^*$'
+http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
+
+kubectl create serviceaccount cluster-admin-dashboard-sa
+kubectl create clusterrolebinding cluster-admin-dashboard-sa --clusterrole=cluster-admin --serviceaccount=default:cluster-admin-dashboard-sa
+kubectl get secret | grep cluster-admin-dashboard-sa
+kubectl describe secret cluster-admin-dashboard-sa-token-6xm8l
+kubectl proxy --address="192.168.40.130" -p 8001 --accept-hosts='^*$'
+
+
+
+
+
+
+https://docs.giantswarm.io/guides/install-kubernetes-dashboard/
+-----------------------------------------------------------------------
+
+links
+
+diff between replication controller, replica sets & deployments 
+
+https://www.mirantis.com/blog/kubernetes-replication-controller-replica-set-and-deployments-understanding-replication-options/
+
+
+========================================================================================
+
+
+kubectl drain ip-172-31-47-184 --ignore-daemonsets --delete-local-data
+
+
+kubectl scale --replicas=7 deployment/soaktest
+
+
+
+kubectl get pods -l app=soaktest
+
+ 
+ 
+ 
+========================================================================================================================
+
+kube taints
+
+kubectl taint nodes --all node-role.kubernetes.io/master- ### to schedule container on master
+kubectl taint nodes --all node-role.kubernetes.io/master-
+kubectl taint nodes ip-172-31-5-78 node-role.kubernetes.io/master="":NoSchedule
+
+kubectl taint nodes node2 node2=DoNotSchedulePods:NoExecute
+
+
+	
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+

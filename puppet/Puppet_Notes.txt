@@ -1,0 +1,245 @@
+Manifest 1:
+-----------
+site.pp: 
+
+We'll begin by creating the default manifest, site.pp, in the default location
+
+/etc/puppetlabs/code/environments/production/manifests/site.pp
+
+file {'/tmp/hellodevopsi':                        # resource type file and filename
+
+  ensure  => present,                             # make sure it exists
+
+  mode    => '0644',                              # file permissions
+
+  content => "It works on ${ipaddress_eth0}!\n",  # Print the eth0 IP fact 
+}
+puppet parser validate site.pp # fir syntax errors
+
+
+By default Puppet Server runs the commands in its manifests by default every 30 minutes. If the file is removed, the ensure directive will cause it to be recreated. The mode directive will set the file permissions, and the content directive add content to the directive.
+
+We can also test the manifest on a single node using puppet agent --test. Note that --test is not a flag for a dry run; if it's successful, it will change the agent's configuration.
+
+
+/opt/puppetlabs/bin/puppet agent --test  # run on Nodes
+
+You can check the log file on the Puppet master to see when Puppet last compiled the catalog for an agent, which indicates that any changes required should have been applied.
+
+ tail /var/log/puppetlabs/puppetserver/puppetserver.log
+ 
+ 
+ Manifest 2:
+ -----------
+ site.pp
+ 
+ # execute 'apt-get update'
+exec { 'apt-update':                    # exec resource named 'apt-update'
+  command => '/usr/bin/apt-get update'  # command this resource will run
+}
+
+# install apache2 package
+package { 'apache2':
+  require => Exec['apt-update'],        # require 'apt-update' before installing
+  ensure => installed,
+}
+
+# ensure apache2 service is running
+service { 'apache2':
+  ensure => running,
+}
+
+# install mysql-server package
+package { 'mysql-server':
+  require => Exec['apt-update'],        # require 'apt-update' before installing
+  ensure => installed,
+}
+
+# ensure mysql service is running
+service { 'mysql':
+  ensure => running,
+}
+
+# install php5 package
+package { 'php7.0':
+  require => Exec['apt-update'],        # require 'apt-update' before installing, v5 for os < v16
+  ensure => installed,
+}
+
+# ensure info.php file exists
+file { '/var/www/html/info.php':
+  ensure => file,
+  content => '<?php  phpinfo(); ?>',    # phpinfo code
+  require => Package['apache2'],        # require 'apache2' package before creating
+}
+
+
+
+Manifest 3:
+-----------
+tou may use node definitions with class also
+
+node 'nodename'{
+class{'linux':}
+}
+
+node 'node2'{
+other code
+}
+
+class linux{
+# execute 'apt-get update'
+exec { 'apt-update':                    # exec resource named 'apt-update'
+  command => '/usr/bin/apt-get update'  # command this resource will run
+}
+
+# install apache2 package
+package { 'apache2':
+  require => Exec['apt-update'],        # require 'apt-update' before installing
+  ensure => installed,
+}
+
+# ensure apache2 service is running
+service { 'apache2':
+  ensure => running,
+}
+}
+
+
+
+Manifest 4:
+-----------
+site.pp
+# remove git on remote node
+node 'ip-172-31-23-98.ap-south-1.compute.internal'{
+class{'linux':}
+}
+class linux{
+# execute 'apt-get update'
+$soft=['git','vim']
+exec { 'apt-update':
+  command => '/usr/bin/apt-get update'
+}
+
+# install soft
+package {$soft:
+  require => Exec['apt-update'],
+  ensure => installed,
+}
+}
+
+
+Puppet Environment:
+-------------------
+  By default node is connecting to production and calling site.pp
+we can create another env on master.
+
+/etc/puppetlabs/code/environments# mkdir QA
+/etc/puppetlabs/code/environments# cd QA
+/etc/puppetlabs/code/environments/QA# mkdir manifests
+/etc/puppetlabs/code/environments/QA# cd manifests/
+
+create manifest here
+site.pp
+
+node 'ip-172-31-23-98.ap-south-1.compute.internal'{
+file{'/tmp/QAEnvFile':
+ ensure => 'present',
+ content => " created from QA ENV"
+}
+}
+
+NOW go back to Nodes
+open /etc/puppetlabs/puppet/puppet.conf
+edit and enter below value
+
+environment=QA
+
+/opt/puppetlabs/bin/puppet agent --test
+
+ Automatic Pull:
+ --------------
+ 
+ go to node puppet.conf and edit runinterval=1m or 2m
+  /etc/puppetlabs/puppet# vi puppet.conf
+  runinterval=1m
+  
+now you will see the change on node in 1 min
+ 
+Modules:
+-----------
+
+we are building a project with modules.. 
+php, apache,mysql,code
+
+go to production folder om master
+mkdir modules
+cd modules
+
+puppet module generate ravi-site --environment production
+
+now module will be created (it asks a few questions.. just follow)
+
+root@ip-172-31-26-231:/etc/puppetlabs/code/environments/production/modules/ravi-site# ls -ltr
+total 28
+drwxr-xr-x 2 root root 4096 Dec  9 09:35 tests
+drwxr-xr-x 3 root root 4096 Dec  9 09:35 spec
+-rw-r--r-- 1 root root 2891 Dec  9 09:35 README.md
+-rw-r--r-- 1 root root  633 Dec  9 09:35 Rakefile
+-rw-r--r-- 1 root root  268 Dec  9 09:35 metadata.json
+drwxr-xr-x 2 root root 4096 Dec  9 09:35 manifests
+-rw-r--r-- 1 root root  242 Dec  9 09:35 Gemfile
+
+Go to Manifests.. it has init.pp
+now init.pp contains default class with the name we have, now start editing.
+
+step1: edit class section with below code
+
+class site {
+ package{'php-mysql':,
+  ensure => 'present',
+    }
+ package{'php-xml':,
+  ensure => 'present',
+    }
+ }
+
+By default our nodes talk to only site.pp under production/manifests.
+
+Now we need to include our init.pp as part of site.pp
+
+
+our site.pp: 
+------------
+node 'ip-172-31-23-98.ap-south-1.compute.internal'{
+class{'linux':}
+class{'site':}   # this is from our site module
+}
+class linux{
+# execute 'apt-get update'
+$soft=['git','vim']
+exec { 'apt-update':
+  command => '/usr/bin/apt-get update'
+}
+
+# install soft
+package {$soft:
+  require => Exec['apt-update'],
+  ensure => installed,
+}
+}
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+ 
+

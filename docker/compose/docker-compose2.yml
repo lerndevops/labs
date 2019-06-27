@@ -1,0 +1,16 @@
+version: '3'
+services:
+  webserver:
+    image: nginx 
+    ports: 
+      - "80"
+    restart: always
+    network_mode: bridge
+    volumes:
+      - /home/docker/:/usr/share/nginx/html
+  appserver:
+    image: tomcat 
+    ports:
+      - "8080"
+    network_mode: bridge
+    restart: always

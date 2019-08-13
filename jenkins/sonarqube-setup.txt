@@ -1,16 +1,24 @@
 Installation & start sonarqube
 
+Install JAVA
+ 
+	sudo add-apt-repository ppa:openjdk-r/ppa
+	sudo apt-get update
+	sudo apt-get install -y openjdk-8-jdk
+
 Install SonarQube ( container or download zip )
 
 	if .zip download & installation follow below steps:
 	
 		cd /tmp ; wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-6.7.6.zip
+		apt-get install unzip 
 		cd /tmp ; unzip sonarqube-6.7.6.zip
 		cd /tmp ; mv sonarqube-6.7.6 /opt
 		groupadd devops
 		useradd devops -m -d /home/devops -s /bin/bash -g devops
 		passwd devops ( enter passwd )
 		cd /opt ; chown -R devops:devops sonarqube-6.7.6 ; chmod -R 755 sonarqube-6.7.6
+		su - devops
 		cd /opt/sonarqube-6.7.6/bin/linux-x86-64/ ; ./sonar.sh start
 	
 		after starting successfully goto browser & hit below
@@ -59,3 +67,9 @@ Job5-package: post build action
 					sonar.language=java
 					sonar.java.source=1.8
 
+
+
+mvn sonar:sonar \
+  -Dsonar.projectKey=sampleapp \
+  -Dsonar.host.url=http://18.218.176.225:9000 \
+  -Dsonar.login=admin

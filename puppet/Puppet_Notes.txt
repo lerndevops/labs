@@ -6,7 +6,7 @@ We'll begin by creating the default manifest, site.pp, in the default location
 
 /etc/puppetlabs/code/environments/production/manifests/site.pp
 
-file {'/tmp/hellodevopsi':                        # resource type file and filename
+file {'/tmp/hellodevops':                        # resource type file and filename
 
   ensure  => present,                             # make sure it exists
 

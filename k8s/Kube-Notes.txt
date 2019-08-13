@@ -1,19 +1,8 @@
-kubectl get nodes ( on master )
-kubectl describe nodes <nodename/ip>
-
-
-
-
-------------------------------------------------------------------------------
 POD
------
-pod.yml
--------
+
 kubectl get pods --all-namespaces
 kubectl get pods
 
-kubectl run testsvr --image=nginx --replicas=7 #### run pods manually ( creates a deployment )
-=====================================================================================================================
 apiVersion: v1  #-- stable from 2015.. stable
 kind: Pod   #--- what kind of object we are doing.. kubernetes know it
 metadata:
@@ -43,14 +32,6 @@ firstpod   1/1     Running   0          13m
 kubectl describe pods  # explains, node, state, details of pod
 kubectl delete pod firstpod   # to remove pod
 
-------
-Now replication controller for desired state: we never go with pods only
-kube always makes sure you have ur desired state is always true
---------
-kubectl delete pods/firstpod   # remove pod and run rc
-
-=========================================================================================================================
-
 Required Fields in yaml
 
 apiVersion - Which version of the Kubernetes API you’re using to create this object
@@ -59,6 +40,9 @@ metadata - Data that helps uniquely identify the object, including a name string
 
 
 =========================================================================================================================
+
+Now replication controller for desired state: we never go with pods only
+kube always makes sure you have ur desired state is always true
 
 rc.yml
 -------
@@ -118,7 +102,6 @@ ex: http://13.233.164.247:30681/
 ======================================================================================================================
 
 Declarative Service:
-----
 
 kubectl get svc  -- to see services
 kubectl delete svc hello-svc
@@ -295,19 +278,21 @@ hello-deploy-77dd6d4884   5         5         5       30m
 
 
 
-------------------------------------------------
+==================================================================================================================
 
 Dashboard/Console:
 
 kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/aio/deploy/recommended/kubernetes-dashboard.yaml
-kubectl proxy 
-http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 
 token generation: 
 
 kubectl create serviceaccount dashboard -n default
 kubectl create clusterrolebinding dashboard-admin -n default --clusterrole=cluster-admin --serviceaccount=default:dashboard
 kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+
+
+kubectl proxy 
+http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/
 
 Note: 
 
@@ -348,24 +333,14 @@ https://docs.giantswarm.io/guides/install-kubernetes-dashboard/
 links
 
 diff between replication controller, replica sets & deployments 
-
 https://www.mirantis.com/blog/kubernetes-replication-controller-replica-set-and-deployments-understanding-replication-options/
 
 
 ========================================================================================
 
-
 kubectl drain ip-172-31-47-184 --ignore-daemonsets --delete-local-data
-
-
 kubectl scale --replicas=7 deployment/soaktest
-
-
-
 kubectl get pods -l app=soaktest
-
- 
- 
  
 ========================================================================================================================
 
@@ -377,7 +352,9 @@ kubectl taint nodes ip-172-31-5-78 node-role.kubernetes.io/master="":NoSchedule
 
 kubectl taint nodes node2 node2=DoNotSchedulePods:NoExecute
 
+=========================================================================================================================
 
+kubectl run testsvr --image=nginx --replicas=7 #### run pods manually ( creates a deployment )
 	
 
 

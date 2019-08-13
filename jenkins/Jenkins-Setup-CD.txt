@@ -83,7 +83,7 @@ ansible-playbook -i hosts addressbook-deploy.yml
 ===============================================================================================================================
 simply -- in your jenkins job we should see only below content. above all is for your information 
 
-sudo docker build -t addressbookapp:v2 -f /path/to/dockerfile /path/to/warfile
+sudo docker build -t addressbookapp:v2 -f /path/to/dockerfile /path/to/warfile/
 sudo docker login -u <username> -p <password>
 sleep 15  
 sudo docker tag addressbookapp:v2 leaddevops/addressbook:v2

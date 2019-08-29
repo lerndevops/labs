@@ -23,8 +23,8 @@ echo "Available Docker Version for Install"
 echo " "
 apt-cache madison docker-ce | awk '{print $3}'
 echo " "
-read -p 'Enter Required Version: ' version
-sudo apt-get install -y docker-ce=$version
+#read -p 'Enter Required Version: ' version
+sudo apt-get install -y docker-ce='5:18.09.8~3-0~ubuntu-xenial'
 if [ $? -eq 0 ];then
      echo "docker-ce-$version is successfully installed"
 else

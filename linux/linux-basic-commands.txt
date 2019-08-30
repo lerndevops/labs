@@ -96,4 +96,4 @@ file/directory permissions
 			   chmod 755 fire/dir -- rwx for root, rw for owner, rw for others
 			   chmod 400 firl/dir -- r for root, for owner/other no permissions
 			   
-		like wise we can update the permissions as needed
+		like wise we can update the permissions as needed..

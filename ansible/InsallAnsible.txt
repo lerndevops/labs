@@ -8,3 +8,5 @@ sudo apt-get install ansible
 
 Installation Steps for centos
 =====================================================================
+
+devops/devops

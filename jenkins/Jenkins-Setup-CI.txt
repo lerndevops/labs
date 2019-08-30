@@ -36,4 +36,4 @@ job3-unittest    :	unit test                  : test                 : target/su
 
 job4-metriccheck :	metric check               : cobertura:cobertura -Dcobertura.report.format=xml  : target/site/cobertura/coverage.xml ( publish cobertura coverage report )
 
-job5-package     :  package                    : package               : NA ( for sonarExecute Sonarqube Scanner
+job5-package     :  package                    : package               : NA

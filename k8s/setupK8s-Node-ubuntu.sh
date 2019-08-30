@@ -6,7 +6,7 @@ sleep 30
 
 #### Remove any pre installed docker packages  
 sudo apt-mark unhold docker-ce kubectl kubeadm kubelet
-sudo apt-get remove -y docker docker-engine docker.io docker-ce kubeadm kubectl kubelet
+sudo apt-get remove -y docker docker-engine docker.io containerd runc kubeadm kubectl kubelet
 cd /var/lib
 sudo rm -r docker
 #### set swap off 
@@ -14,7 +14,7 @@ sudo rm -r docker
 
 #### Install Specific Docker version
 sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common 
 ## Add Dockers official GPG key
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -23,8 +23,9 @@ echo "Available Docker Version for Install"
 echo " "
 apt-cache madison docker-ce | awk '{print $3}'
 echo " "
-read -p 'Enter Required Version: ' version
-sudo apt-get install -y docker-ce=$version
+#read -p 'Enter Required Version: ' version
+version="5:18.09.8~3-0~ubuntu-bionic"
+sudo apt-get install -y docker-ce=$version docker-ce-cli=$version containerd.io --allow-downgrades
 if [ $? -eq 0 ];then
      echo "docker-ce-$version is successfully installed"
 else

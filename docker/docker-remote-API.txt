@@ -7,7 +7,7 @@ Enabling Docker Remote API on machine where we will use to build docker images
 Ubuntu 16.04
 
 	sudo vi /lib/systemd/system/docker.service   
-	ExecStart=/usr/bin/docker daemon -H fd:// -H tcp://0.0.0.0:4243		
+	ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:4243		
 	systemctl daemon-reload
 	sudo service docker restart
 	
@@ -17,3 +17,24 @@ OR
 	DOCKER_OPTS=’-H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock’
 	systemctl daemon-reload
 	sudo service docker restart
+
+=======================================================================================
+
+# Create the directory to store the configuration file.
+sudo mkdir -p /etc/systemd/system/docker.service.d
+
+# Create a new file to store the daemon options.
+sudo nano /etc/systemd/system/docker.service.d/options.conf
+
+# Now make it look like this and save the file when you're done:
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd -H unix:// -H tcp://0.0.0.0:2375
+
+# Reload the systemd daemon.
+sudo systemctl daemon-reload
+
+# Restart Docker.
+sudo systemctl restart docker
+
+=======================================================================================

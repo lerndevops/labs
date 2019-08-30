@@ -1,0 +1,21 @@
+CI ( continuous Integration )
+
+Jenkins Job      :  build lifecycle(build)     : maven goal           : post build action 
+
+job1-compile	    compile                    : compile              : NA
+job2-codereview	 :  codereview                 : -P metrics pmd:pmd   : **/pmd.xml ( publish pmd analysis results )
+job3-unittest    :	unit test                  : test                 : target/surefire-reports/*.xml
+job4-metriccheck :	metric check               : cobertura:cobertura -Dcobertura.report.format=xml  : target/site/cobertura/coverage.xml ( publish cobertura coverage report )
+
+
+job5-package     :  package                    : package .war             : 
+
+step1: build docker image with war file generated
+step2: push the docker image created to dockerhub
+
+step3: create two different servers ( assume one as qa server & other as prod server )
+step4: install docker on both qa & prod servers
+
+step5: deploy the docker image to qa server from docker hub
+
+step6: deploy the docker image to prod server from docker hub

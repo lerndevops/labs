@@ -1,40 +1,46 @@
-docker setup
-
 Jenkins plugins ==> docker-build-step
 
 Enabling Docker Remote API on machine where we will use to build docker images 
 
-Ubuntu 16.04
+=======================================================================================================
+Ubuntu 16.04 / 18.04 LTS
 
 	sudo vi /lib/systemd/system/docker.service   
 	ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:4243		
 	systemctl daemon-reload
 	sudo service docker restart
 	
-	test: curl http://localhost:4243/version
-OR
+			test: curl http://localhost:4243/version
+
+            OR
+
 	vi /etc/init/docker.conf
 	DOCKER_OPTS=’-H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock’
 	systemctl daemon-reload
 	sudo service docker restart
+	
+			test: curl http://localhost:4243/version
 
-=======================================================================================
+            OR
+	    
 
-# Create the directory to store the configuration file.
-sudo mkdir -p /etc/systemd/system/docker.service.d
+	# Create the directory to store the configuration file.
+	sudo mkdir -p /etc/systemd/system/docker.service.d
 
-# Create a new file to store the daemon options.
-sudo nano /etc/systemd/system/docker.service.d/options.conf
+	# Create a new file to store the daemon options.
+	sudo vi /etc/systemd/system/docker.service.d/options.conf
 
-# Now make it look like this and save the file when you're done:
-[Service]
-ExecStart=
-ExecStart=/usr/bin/dockerd -H unix:// -H tcp://0.0.0.0:2375
+	# Now make it look like this and save the file when you're done:
+	[Service]
+	ExecStart=
+	ExecStart=/usr/bin/dockerd -H unix:// -H tcp://0.0.0.0:2375
+	
+ 
+	sudo systemctl daemon-reload
+	# Restart Docker.
+	sudo systemctl restart docker
+	
+			test: curl http://localhost:2375/version
+=======================================================================================================
 
-# Reload the systemd daemon.
-sudo systemctl daemon-reload
 
-# Restart Docker.
-sudo systemctl restart docker
-
-=======================================================================================

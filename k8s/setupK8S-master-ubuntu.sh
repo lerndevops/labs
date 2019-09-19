@@ -32,7 +32,6 @@ else
      echo "issue with docker-ce installation - process abort"
      exit 1
 fi
-sudo apt-mark hold docker-ce docker-ce-cli
 sudo service docker start
 echo " "
 #### Install Kubernetes latest components
@@ -47,7 +46,7 @@ else
      echo "issue in installing kubelet, kubeadm & kubectl - process abort"
      exit 2
 fi
-sudo apt-mark hold kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl docker-ce docker-ce-cli
 echo " "
 
 #### k8s with flannel pod network

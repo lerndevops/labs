@@ -51,7 +51,8 @@ echo " "
 
 #### k8s with flannel pod network
 echo "initializing kubernetes master ... may take couple of minutes ...."
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+#sudo kubeadm init --pod-network-cidr=10.244.0.0/16 ## flannel
+sudo kubeadm init --pod-network-cidr=192.168.0.0/16 ## calico
 if [ $? -eq 0 ];then
    echo " "
    echo "kubernetes master initiazied successfully..."
@@ -67,7 +68,8 @@ fi
 echo " "
 echo "Setting up flannel pod network"
 echo " "
-sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+#sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+sudo kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
 sleep 30
 echo " "
 kubectl get nodes

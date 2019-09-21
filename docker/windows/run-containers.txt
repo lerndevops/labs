@@ -1,0 +1,12 @@
+docker pull mcr.microsoft.com/windows/nanoserver:1809
+docker inspect mcr.microsoft.com/windows/nanoserver:1809
+
+
+docker run -it mcr.microsoft.com/windows/nanoserver:1809 cmd.exe
+docker inspect contid 
+
+docker ps / docker ps -a 
+docker images 
+
+
+https://docs.microsoft.com/en-us/virtualization/windowscontainers/quick-start/building-sample-app

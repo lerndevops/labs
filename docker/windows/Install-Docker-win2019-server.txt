@@ -1,0 +1,23 @@
+System Requiremetns 
+
+2CPU & 4GB RAM
+ensure powershell installed
+
+Install Docker 
+
+    Run powershell as administartor & run below command in powershell window
+		Install-Module DockerMsftProvider -Force
+		Install-Package Docker -ProviderName DockerMsftProvider -Force
+		
+		after install check if a restart is required - run below command in powershell
+		
+		(Install-WindowsFeature Containers).RestartNeeded  -- if the output is yes then we need to reboot the windows
+		
+		Restart-Computer -Force 
+		
+		stop/start docker from powershell
+		
+		net stop docker
+		net start docker
+		net status docker
+

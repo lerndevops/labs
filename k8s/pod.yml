@@ -1,0 +1,13 @@
+apiVersion: v1  #-- stable from 2015.. stable
+kind: Pod   #--- what kind of object we are doing.. kubernetes know it
+metadata:
+  name: firstpod
+  labels:
+    zone: prod
+    version: v1
+spec: # what is the need
+  containers:
+  - name: hello
+    image: nginx
+    ports:
+    - containerPort: 80

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-svc1
+  labels:
+    app: hello-world
+spec:
+  type: NodePort   
+  ports:
+  - port: 8080  # inside container
+    nodePort: 30001 #expose , if dont give takes default
+    protocol: TCP
+  selector:
+    app: hello-world

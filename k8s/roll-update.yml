@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-deploy
+spec:
+  replicas: 5
+  minReadySeconds: 20 # wait for 10 sec before pod is ready going to next
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1  # take down 1 pod at a time
+      maxSurge: 1        # bring one at a time
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: firstpod
+        image: jenkins
+        ports:
+        - containerPort: 8080

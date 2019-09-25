@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: sampleapp-service
+spec:
+  type: NodePort
+  selector:
+    app: sampleapp
+  ports:
+  - protocol: TCP
+    port: 8080
+    nodePort: 8080
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sampleapp-deployment
+  labels:
+    app: sampleapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sampleapp
+  template:
+    metadata:
+      labels:
+        app: sampleapp
+    spec:
+      containers:
+      - name: sampleapp
+        image: $DOCKER_IMAGE_NAME:$BUILD_NUMBER
+        ports:
+        - containerPort: 8080

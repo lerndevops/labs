@@ -16,7 +16,7 @@ K8s Master Setup:  ubuntu 16 WITH 2 CPUS & 4GB RAM
 	sudo apt-get update ; clear
 	sudo apt-get install -y kubelet kubeadm kubectl
 
-	sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+	sudo kubeadm init --pod-network-cidr=192.168.0.0/16
 
 		Note: note down the kubeadm join command 
 
@@ -25,8 +25,7 @@ K8s Master Setup:  ubuntu 16 WITH 2 CPUS & 4GB RAM
    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
    sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-	sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-fl
-annel.yml
+   sudo kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
 
 ============================================================================================
 

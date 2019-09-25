@@ -358,9 +358,28 @@ kubectl run testsvr --image=nginx --replicas=7 #### run pods manually ( creates 
 	
 
 
+=========================================================================================================================
 
-	
+Replica Set and Replication Controller do almost the same thing. Both of them ensure that a specified number of pod replicas are running at any given time. 
 
+The difference comes with the usage of selectors to replicate pods. 
+
+Replica Set use Set-Based selectors
+	1)environment in (production, qa), This selects all resources with key equal to environment and value equal to production or qa
+	2) rollout command is used for updating the replica set. Even though replica set can be used independently, it is best used along with deployments which makes them declarative.
+
+Replication controllers use Equity-Based selectors
+	1) environment = production This selects all resources with key equal to environment and value equal to production    
+	2) rolling-update command is used for updating the replication controller. This replaces the specified replication controller with a new replication controller by updating one pod at a time to use the new Pod Template.
+
+============================================================================================================================
+rolling update	
+
+kubectl create -f deploy.yml --record
+kubectl apply -f roll-update.yml --record
+kubectl rollout status deployments tomcat-deployment
+kubectl rollout history deployments tomcat-deployment
+kubectl rollout undo deployment tomcat-deployment --to-revision=1
 
 
 

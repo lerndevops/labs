@@ -1,0 +1,108 @@
+Dashboard/Console:
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta1/aio/deploy/recommended.yaml
+
+token generation: 
+
+kubectl create serviceaccount dashboard -n default
+kubectl create clusterrolebinding dashboard-admin -n default --clusterrole=cluster-admin --serviceaccount=default:dashboard
+kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+
+
+kubectl proxy 
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+
+
+Note: 
+To access the dashboard need to tunnel the port & host in putty Settings 
+goto putty Settings --> Connection --> SSH --> Tunnels ( Secure Port: 8001, Destination: localhost:8001 then Add & Apply )     
+
+==============================================================================================================================
+https://joshh.info/2018/kubernetes-dashboard-https-nodeport/
+
+Deploying a publicly accessible Kubernetes Dashboard
+
+1. Certificates
+You need a dashboard.key and dashboard.crt files for HTTPS.
+
+It is easy to create self signed ones like so:
+
+mkdir $HOME/certs
+cd $HOME/certs
+openssl genrsa -out dashboard.key 2048
+openssl rsa -in dashboard.key -out dashboard.key
+openssl req -sha256 -new -key dashboard.key -out dashboard.csr -subj '/CN=localhost'
+openssl x509 -req -sha256 -days 365 -in dashboard.csr -signkey dashboard.key -out dashboard.crt
+Replace localhost accordingly.
+
+Next, load the certificates into a secret:
+
+kubectl -n kube-system create secret generic kubernetes-dashboard-certs --from-file=$HOME/certs
+
+2. Deploy dashboard
+Use the recommended setup to magically deploy the kubernetes-dashboard service account, role, rolebinding, deployment and service.
+
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml
+3. Check if the replica set is fulfuilled
+Find the dashboard replica set:
+
+kubectl -n kube-system get rs
+If the desired, current and ready counts are all 1, then congratulations! You can skip to step 5.
+
+Otherwise, if desired is 1 but current and ready counts are 0, then chances are you using Pod Security Policy - in the absense of a valid policy, the default is to reject.
+
+Get the details:
+
+kubectl -n kube-system describe rs kubernetes-dashboard-xxxxxxxxxx
+If you see a message such as unable to validate against any pod security policy: [], then continue to step 4.
+
+4. Set up Pod Security Policy
+If you haven’t already done so, create an appropriate Pod Security Policy that will be used to create the dashboard pod.
+
+4.1 Create a PSP
+Tweak to your requirements. A permissive example but blocking privileged mode:
+
+kubectl -n kube-system create -f - <<EOF
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: dashboard
+spec:
+  privileged: false
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  runAsUser:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny
+  volumes:
+  - '*'
+EOF
+4.2 Create a role to allow use of the PSP
+kubectl -n kube-system create role psp:dashboard --verb=use --resource=podsecuritypolicy --resource-name=dashboard
+4.3 Bind the role to kubernetes-dashboard service account
+kubectl -n kube-system create rolebinding kubernetes-dashboard-policy --role=psp:dashboard --serviceaccount=kube-system:kubernetes-dashboard
+Check that the output of the following command is yes:
+
+kubectl --as=system:serviceaccount:kube-system:kubernetes-dashboard -n kube-system auth can-i use podsecuritypolicy/dashboard
+After a while, check the status of your replica set and it should now have been able to create the pods!
+
+If you still have trouble, check that the permissions of your PSP are appropriate for the dashboard (this is left as an exercise for the reader).
+
+5. Expose dashboard service on a NodePort
+Finally, we can expose the dashboard service on a NodePort. This will allow it to be publically accessible via a port forwarded on the Kubernetes hosts.
+
+Edit the kubernetes-dashboard service and change the following options:
+
+spec.type from ClusterIP to NodePort
+spec.ports[0].nodePort from 32641 to whatever port you want it to be exposed on
+kubectl -n kube-system edit service kubernetes-dashboard
+When you save the close the text file, find out which port was allocated:
+
+# kubectl -n kube-system get services
+NAME                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)         AGE
+kube-dns               ClusterIP   ...              <none>        53/UDP,53/TCP   28d
+kubernetes-dashboard   NodePort    ...              <none>        443:32641/TCP   27m
+Here you can see that the dashboard was assigned port 32641. It should now be accessible in your browser on that port, and because we created a self-signed (or installed a valid) certificate, you won’t run into the corrupt certificate problem on Windows clients.

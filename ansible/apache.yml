@@ -3,10 +3,10 @@
 #  become: yes
   tasks:
 #### copy a file
-    - name: copy file
-      copy:
-        src: /tmp/demo.txt
-        dest: /tmp
+#    - name: copy file
+#      copy:
+#        src: /tmp/demo.txt
+#        dest: /tmp
 #### create a folder or file
 #    - name: Create a new file
 #      file:
@@ -30,23 +30,23 @@
 #        - three.java
 #        - Four.txt
 #### conditons
-#    - name: install a webserver redhat/centos
-#      yum:
-#        name: httpd
-#        state: latest
-#      when: ansible_distribution == 'RedHat'
-#    - name: start the service
-#      service:
-#         name: httpd
-#         state: started
-#      when: ansible_distribution == 'RedHat'
-#    - name: install a webserver on ubuntu
-#      apt:
-#        name: apache2
-#        state: latest
-#      when: ansible_distribution == 'Ubuntu'
-#    - name: start the service
-#      service:
-#         name: apache2
-#         state: started
-#      when: ansible_distribution == 'Ubuntu'
+    - name: install a webserver redhat/centos
+      yum:
+        name: httpd
+        state: latest
+      when: ansible_distribution == 'RedHat'
+    - name: start the service
+      service:
+         name: httpd
+         state: started
+      when: ansible_distribution == 'RedHat'
+    - name: install a webserver on ubuntu
+      apt:
+        name: apache2
+        state: latest
+      when: ansible_distribution == 'Ubuntu'
+    - name: start the service
+      service:
+         name: apache2
+         state: started
+      when: ansible_distribution == 'Ubuntu'

@@ -1,0 +1,31 @@
+- hosts: qa
+  become: yes
+  tasks:
+    - name: ensure nginx is at the latest version
+      apt: 
+        name: nginx 
+        state: latest
+    - name: start nginx
+      service:
+          name: nginx
+          state: started
+    - name: copy the content of the web site
+      copy:
+        src: /tmp/index.html
+        dest: /var/www/html/
+      notify:
+         - restart nginx
+  handlers:
+   - name: restart nginx
+     service: 
+       name: nginx 
+       state: started
+#   - name: stop nginx
+#      service:
+#          name: nginx
+#          state: stopped
+#    - name: ensure nginx is not installed
+#      apt: 
+#        name: nginx 
+#        state: absent 
+##

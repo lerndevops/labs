@@ -1,11 +1,12 @@
 apiVersion: v1
-kind: ReplicationController
+kind: ReplicaSet
 metadata:
-  name: first-rc
+  name: first-rs
 spec:
   replicas: 6
   selector:
-    app: hello-world
+    matchLabels:
+      app: hello-world
   template:
     metadata:
       labels:

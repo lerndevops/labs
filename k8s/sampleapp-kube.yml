@@ -1,18 +1,3 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: sampleapp-service
-spec:
-  type: NodePort
-  selector:
-    app: sampleapp
-  ports:
-  - protocol: TCP
-    port: 8080
-    nodePort: 8080
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,7 +5,7 @@ metadata:
   labels:
     app: sampleapp
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       app: sampleapp
@@ -31,6 +16,21 @@ spec:
     spec:
       containers:
       - name: sampleapp
-        image: $DOCKER_IMAGE_NAME:$BUILD_NUMBER
+        image: lerndevops/addressbook:latest 
         ports:
         - containerPort: 8080
+
+---
+
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: sampleapp-service
+spec:
+  type: NodePort
+  selector:
+    app: sampleapp
+  ports:
+  - protocol: TCP
+    port: 8080
+    nodePort: 32105

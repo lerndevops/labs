@@ -1,9 +1,12 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-deploy
 spec:
   replicas: 5
+  selector:
+    matchLabels:
+      app: hello-deploy
   minReadySeconds: 20 # wait for 10 sec before pod is ready going to next
   strategy:
     type: RollingUpdate
@@ -13,10 +16,10 @@ spec:
   template:
     metadata:
       labels:
-        app: hello-world
+        app: hello-deploy
     spec:
       containers:
       - name: firstpod
-        image: jenkins
+        image: tomcat:9.0.26-jdk8-openjdk-slim
         ports:
         - containerPort: 8080

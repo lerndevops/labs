@@ -2,7 +2,7 @@
   hosts: localhost
   tasks:
     - ec2:
-        key_name: ueokey 
+        key_name: mykey
         instance_type: t2.micro
         image: ami-05c1fa8df71875112 
         wait: yes
@@ -19,7 +19,7 @@
         hostname: "{{item.public_ip}}"
         groupname: myservers
         ansible_user: ubuntu
-        ansible_ssh_private_key_file: /aws/lerndevops/ueokey.pem
+        ansible_ssh_private_key_file: /aws/mykey.pem
         ansible_python_interpreter: /usr/bin/python3
       with_items: "{{out.instances}}"
 

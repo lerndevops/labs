@@ -49,6 +49,20 @@ class apache {
 }
 class{'apache':}
 
+class linux{
+
+	$soft=['git','vim']
+	exec { 'apt-update':
+		command => '/usr/bin/apt-get update'
+	}
+	package {$soft:
+		require => Exec['apt-update'],
+		ensure => installed,
+	}
+	
+}
+class{'linux':}
+
 ================================================================================================
 
 example 4: class definitions

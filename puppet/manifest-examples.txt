@@ -1,0 +1,131 @@
+example 1: 
+
+## create a file
+
+file {'/tmp/hellodevops':                        # resource type file and filename
+  ensure  => present,                             # make sure it exists
+  mode    => '0644',                              # file permissions
+  content => "It works on ${ipaddress_eth0}!\n",  # Print the eth0 IP fact 
+}
+
+=============================================================================================
+example 2: 
+
+# execute 'apt-get update'
+exec { 'apt-update':                    # exec resource named 'apt-update'
+  command => '/usr/bin/apt-get update'  # command this resource will run
+}
+
+# install nginx package
+package { 'nginx':
+  require => Exec['apt-update'],        # require 'apt-update' before installing
+  ensure => installed,
+}
+
+# ensure nginx service is running
+service { 'nginx':
+  ensure => running,
+}
+
+===============================================================================================
+
+example 3: class definitions
+
+class apache {
+	# execute 'apt-get update'
+	exec { 'apt-update':                    # exec resource named 'apt-update'
+		command => '/usr/bin/apt-get update'  # command this resource will run
+	}
+
+	# install apache2 package
+	package { 'apache2':
+		require => Exec['apt-update'],        # require 'apt-update' before installing
+		ensure => installed,
+	}
+	# ensure apache2 service is running
+	service { 'apache2':
+		ensure => running,
+	}
+}
+class{'apache':}
+
+================================================================================================
+
+example 4: class definitions
+
+class docker { 
+       package {'curl': 
+               ensure  => present, 
+       } 
+       exec {'apt-update': 
+               command => '/usr/bin/apt-get update' 
+       } 
+       exec {'download_docker_key': 
+               command => '/usr/bin/curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -' 
+       } 
+       exec {'add_docker_repo': 
+               command => '/usr/bin/add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"',  
+               require => Exec['apt-update'] 
+       } 
+       exec {'docker_cache': 
+               command => '/usr/bin/apt-cache policy docker-ce' 
+       } 
+       exec {'install_docker': 
+               command => '/usr/bin/apt-get install -y docker-ce' 
+       } 
+}
+
+class{'docker':}
+
+================================================================================================
+
+example 5: node & class definitions
+
+node 'node1ip'{
+	file {'/tmp/node1':                        
+		ensure  => present,                             
+		mode    => '0644',                              
+		content => "It works on ${ipaddress_eth0}!\n",
+	}
+	class{'node1':}
+}
+
+node 'node2ip'{
+
+	file {'/tmp/node2':                        
+		ensure  => present,                             
+		mode    => '0644',                              
+		content => "It works on ${ipaddress_eth0}!\n",
+	}
+	class{'node2':}
+}
+
+class node1{
+
+	exec { 'apt-update':                    
+		command => '/usr/bin/apt-get update'
+	}
+	package { 'nginx':
+		require => Exec['apt-update'],
+		ensure => installed,
+	}
+	service { 'nginx':
+		ensure => running,
+	}
+	
+}
+
+class node2{
+
+	exec { 'apt-update':                    
+		command => '/usr/bin/apt-get update'
+	}
+	package { 'apache2':
+		require => Exec['apt-update'],
+		ensure => installed,
+	}
+	service { 'apache2':
+		ensure => running,
+	}
+	
+}

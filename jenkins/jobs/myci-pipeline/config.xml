@@ -29,7 +29,7 @@
       <submoduleCfg class="list"/>
       <extensions/>
     </scm>
-    <scriptPath>Jenkinsfile</scriptPath>
+    <scriptPath>Jenkinsfile-linux</scriptPath>
     <lightweight>true</lightweight>
   </definition>
   <triggers/>

@@ -1,0 +1,12 @@
+- hosts: "{{ env }}"
+  become: yes
+  tasks: 
+    - name: remove any previous app services
+      shell: | 
+         if [ `docker service ls | grep -v NAME | grep mysvc | awk '{print $2}' | wc -l` -gt 0 ]; then  
+            docker service rm `docker service ls | grep -v NAME | grep mysvc | awk '{print $2}'`
+         else 
+            echo "No Service found"
+         fi
+    - name: deploy app
+      command: docker service create --name mysvc --replicas 4 -p 9080:8080 lerndevops/addressbook:{{ build }}

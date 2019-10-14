@@ -1,0 +1,26 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<project>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>sudo docker build -t addressbookapp:v2 -f /home/dockerlab/dockerfiles/Dockerfile_addressbook /var/lib/jenkins/workspace/job5-package/target
+sudo docker login -u nareshmnvs -p Jabra@1234
+sleep 15
+sudo docker tag addressbookapp:v2 nareshmnvs/addressbook:v2
+sudo docker push nareshmnvs/addressbook:v2
+cd /home/ansible 
+ansible-playbook -i hosts addressbook-deploy.yml</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

@@ -1,3 +1,6 @@
+To run job1 to job7 without failure, need to setup below accordingly
+========================================================================================================
+
 Tools need to install on Jenkins machine / Server
   1) git
   2) maven
@@ -18,7 +21,7 @@ Create Credentials ( Setup these from Jenkins UI )
   Jenkins ( main page ) ==> Credentials ==> global ==> Add Credentials 
 	--> kind: secret text 
 	--> scope: Global 
-	--> Secret: <enter your docker hub password ) 
+	--> Secret: <enter your docker hub password> 
 	--> ID: DOCKER_HUB_PWD 
 	--> Description: DOCKER_HUB_PWD
 
@@ -26,4 +29,9 @@ Setup Docker with Jenkins
    sudo usermod -aG docker jenkins ( add jenkins user to docker group to run docker commands with jenkins user )
    service jenkins restart ( mandatory to reflect the changes with jenkins )
 
+Setup Ansible Inventory
+   vi /tmp/inv 
+   enter your servers in gruops called qa & prod 
+   ( look at the sample inventory file under https://github.com/lerndevops/samplejavaapp/tree/master/deploy )
+   ensure to update the qa & prod server credentials accrodingly in /tmp/inv file
 

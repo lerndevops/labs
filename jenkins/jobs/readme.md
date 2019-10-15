@@ -15,8 +15,8 @@ Required plugin to run the jobs
   
 Create Credentials 
     Jenkins ( main page ) ==> Credentials ==> global ==> Add Credentials
-          kind: secret text
-          scope: Global
-          Secret: <enter your docker hub password )
-          ID: DOCKER_HUB_PWD
-          Description: DOCKER_HUB_PWD
+       -->  kind: secret text
+       -->  scope: Global
+       -->  Secret: <enter your docker hub password )
+       -->  ID: DOCKER_HUB_PWD
+       -->  Description: DOCKER_HUB_PWD

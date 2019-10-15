@@ -4,11 +4,11 @@
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties/>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.12.1">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <url>https://github.com/lerndevops/DevOpsClassCodes.git</url>
+        <url>https://github.com/lerndevops/samplejavaapp</url>
       </hudson.plugins.git.UserRemoteConfig>
     </userRemoteConfigs>
     <branches>
@@ -28,8 +28,8 @@
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.tasks.Maven>
-      <targets>package</targets>
-      <mavenName>maven3.6</mavenName>
+      <targets>clean package</targets>
+      <mavenName>(Default)</mavenName>
       <usePrivateRepository>false</usePrivateRepository>
       <settings class="jenkins.mvn.DefaultSettingsProvider"/>
       <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
@@ -38,8 +38,8 @@
     <hudson.tasks.Shell>
       <command>cd $WORKSPACE
 docker login -u lerndevops -p $DOCKER_HUB_PWD
-docker build -f Dockerfile -t lerndevops/addressbook:$BUILD_NUMBER .
-docker push lerndevops/addressbook:$BUILD_NUMBER</command>
+docker build -f Dockerfile -t lerndevops/samplejavaapp:$BUILD_NUMBER .
+docker push lerndevops/samplejavaapp:$BUILD_NUMBER</command>
     </hudson.tasks.Shell>
   </builders>
   <publishers>
@@ -61,7 +61,7 @@ docker push lerndevops/addressbook:$BUILD_NUMBER</command>
     </hudson.plugins.parameterizedtrigger.BuildTrigger>
   </publishers>
   <buildWrappers>
-    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.17">
+    <org.jenkinsci.plugins.credentialsbinding.impl.SecretBuildWrapper plugin="credentials-binding@1.20">
       <bindings>
         <org.jenkinsci.plugins.credentialsbinding.impl.StringBinding>
           <credentialsId>DOCKER_HUB_PWD</credentialsId>

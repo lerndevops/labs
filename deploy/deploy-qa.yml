@@ -1,4 +1,0 @@
-- hosts: qa
-  become: yes
-  tasks: 
-    - shell: docker run -d -P lerndevops/addressbook:{{ build }}

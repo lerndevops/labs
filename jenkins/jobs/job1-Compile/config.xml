@@ -38,7 +38,7 @@
   </builders>
   <publishers>
     <hudson.tasks.BuildTrigger>
-      <childProjects>Job2-codereview</childProjects>
+      <childProjects>job2-codereview</childProjects>
       <threshold>
         <name>FAILURE</name>
         <ordinal>2</ordinal>

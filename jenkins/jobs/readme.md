@@ -14,9 +14,9 @@ Required plugin to run the jobs
   5) SonarQube Scanner ( if you using sonar for code review )
   
 Create Credentials 
-    Jenkins ( main page ) ==> Credentials ==> global ==> Add Credentials
-       -->  kind: secret text
-       -->  scope: Global
-       -->  Secret: <enter your docker hub password )
-       -->  ID: DOCKER_HUB_PWD
-       -->  Description: DOCKER_HUB_PWD
+	Jenkins ( main page ) ==> Credentials ==> global ==> Add Credentials 
+		--> kind: secret text 
+		--> scope: Global 
+		--> Secret: <enter your docker hub password ) 
+		--> ID: DOCKER_HUB_PWD 
+		--> Description: DOCKER_HUB_PWD

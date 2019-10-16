@@ -1,0 +1,26 @@
+A package manager or package-management system is a collection of software tools that automates the process of installing, upgrading, 
+configuring, and removing computer programs for a computer's operating system in a consistent manner. ... 
+Package managers are designed to eliminate the need for manual installs and updates
+
+Ubuntu (apt or apt-get )
+==============================
+apt-get update
+apt-get install vim
+apt-get update vim
+apt-get purge vim
+
+
+centos / redhat / amazon linux ( yum )
+==========================================
+yum update
+yum install vim
+yum update vim
+yum remove vim
+
+
+SUSE 
+==========================================
+zypper update
+zypper install vim
+zypper update vim
+zypper remove vim

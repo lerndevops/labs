@@ -1,4 +1,5 @@
-Ad-Hoc commands are one-liner ansible commands that performs one task on the target host. It allows you to execute simpleone-line task against one or group of hosts defined on the inventory file configuration.
+Ad-Hoc commands are one-liner ansible commands that performs one task on the target host. 
+It allows you to execute simpleone-line task against one or group of hosts defined on the inventory file configuration.
 
 
 how to run ansible ad-hoc commands ( default inventory ) with uid/pwd

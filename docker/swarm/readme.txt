@@ -18,6 +18,7 @@ example2:
 
 various options while creating service 
 
+	docker service create --name mysvc --replicas 2 -p 9080:80 -d nginx
 	docker service create --name nginxsvc --replicas 2 --replicas-max-per-node 1 nginx
 	docker service create --name nginxsvc --replicas 3 --mount type=volume,destination=/path/in/container nginx:alpine
 	docker service create --name tomcatsvc --replicas 3 --constraint 'node.labels.type == queue' tomcat
@@ -25,6 +26,9 @@ various options while creating service
 ======================================================================================================
 
 Updating Service 
+
+update service with new image ( rolling update )
+	docker service update --image=tomcat <serivename/id>
 
 updating service with new network
 	docker service update --network-add myoverlay <servicename/id>

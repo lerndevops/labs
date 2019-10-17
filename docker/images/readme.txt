@@ -88,3 +88,10 @@ how to push images offline ( docker save & docker load )
     scp mycentos.tgz to target machine / server
     docker load < mycentos.tgz
 
+==================================================================================================================
+
+Advanced image concepts
+
+find dangling images 
+   docker images -f dangling=true
+   docker image prune --dangling=true

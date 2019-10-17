@@ -55,3 +55,13 @@ how to access the applications running inside the container from external world 
 		docker ps -- to check the container port 
 		to access : in the browser http://<docker host IP>:<exposed port>  ex: http://52.14.62.88:1234
 
+===============================================================================================================================
+
+Advanced Container commands 
+
+updating container network 
+	docker network disconnect bridge 209c1cdcb10e
+	docker network connect myb 209c1cdcb10e
+
+	docker run -itd --net net1 alpine
+	docker network connect net2 contid ( container will be present in both net1 & net2 networks )

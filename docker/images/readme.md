@@ -1,9 +1,11 @@
 how to build docker image
+=========================
    two ways
      MANAUL
      AUTOMATED
 
    Manual Process
+   ==============
      choose a base image
      run it as cotnainer in interactive mode
      make neccessary changes inside the container
@@ -31,7 +33,7 @@ how to build docker image
           new image name -- anyname for your new image ( ex: mynginx )
 
     Automated process ( real time practice )
-
+    =========================================
       create a simple text file & write the all the instructions build an image
 
       vi mydockerfile
@@ -48,6 +50,7 @@ how to build docker image
 
 
 how to push docker images into docker hub
+==========================================
         create an account in hub.docker.com
                 create a reportsitory after logged into the account (ex: myapp)
                 on docker host
@@ -63,7 +66,7 @@ how to push docker images into docker hub
 
 
 how to push images to private repo ---- DTR ( docker trusted registry )
-
+=======================================================================
           goto mydockerrepo.com & create an acct
           inside the acct create a repo
           come back to the server & login to the private repo ( docker login mydockerrepo.com ) provide uid/pwd
@@ -74,7 +77,7 @@ how to push images to private repo ---- DTR ( docker trusted registry )
 
 
 how to push images to private repo ( registry container by docker )
-
+===================================================================
           docker run -d -p 5000:5000 --restart always --name registry registry:2
           local registry container address -- localhost:5000
           docker tag local-image:tagname new-repo:tagname
@@ -84,6 +87,7 @@ how to push images to private repo ( registry container by docker )
 
 
 how to push images offline ( docker save & docker load )
+========================================================
     docker save -o mycentos.tgz mycentos:v1
     scp mycentos.tgz to target machine / server
     docker load < mycentos.tgz
@@ -91,7 +95,8 @@ how to push images offline ( docker save & docker load )
 ==================================================================================================================
 
 Advanced image concepts
+=======================
 
-find dangling images 
-   docker images -f dangling=true
-   docker image prune --dangling=true
+   find dangling images 
+       docker images -f dangling=true
+       docker image prune --dangling=true

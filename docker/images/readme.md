@@ -1,8 +1,8 @@
 how to build docker image
 =========================
    two ways
-     MANAUL
-     AUTOMATED
+     1) MANAUL
+     2) AUTOMATED
 
    Manual Process
    ==============
@@ -32,8 +32,8 @@ how to build docker image
           cont id -- in which the changes are made will have to be freezed / saved
           new image name -- anyname for your new image ( ex: mynginx )
 
-    Automated process ( real time practice )
-    =========================================
+   Automated process ( real time practice )
+   =========================================
       create a simple text file & write the all the instructions build an image
 
       vi mydockerfile

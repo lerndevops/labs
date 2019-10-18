@@ -95,6 +95,7 @@ how to push images offline ( docker save & docker load )
 
 Advanced image concepts
 =======================
-   find dangling images 
-      docker images -f dangling=true
-      docker image prune --dangling=true
+   find dangling images
+ 
+   docker images -f dangling=true
+   docker image prune --dangling=true

@@ -1,8 +1,8 @@
 how to build docker image
 =========================
    two ways
-     1) MANAUL
-     2) AUTOMATED
+      1) MANAUL
+      2) AUTOMATED
 
    Manual Process
    ==============
@@ -53,6 +53,7 @@ how to push docker images into docker hub
 ==========================================
         create an account in hub.docker.com
                 create a reportsitory after logged into the account (ex: myapp)
+      
                 on docker host
                 docker login
                         username: docker hub username
@@ -92,11 +93,8 @@ how to push images offline ( docker save & docker load )
     scp mycentos.tgz to target machine / server
     docker load < mycentos.tgz
 
-==================================================================================================================
-
 Advanced image concepts
 =======================
-
    find dangling images 
-       docker images -f dangling=true
-       docker image prune --dangling=true
+      docker images -f dangling=true
+      docker image prune --dangling=true

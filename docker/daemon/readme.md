@@ -15,4 +15,4 @@ Docker Client:
 
 	The Docker client can reside on the same host as the daemon or connect to a daemon on a remote host. A docker client can communicate with more than one daemon.
 
-![Docker Architecturre](DockerArchitecture.png)
+                          ![Docker Architecturre](DockerArchitecture.png)

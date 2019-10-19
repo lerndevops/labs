@@ -1,9 +1,9 @@
 ---
 - hosts: qa
   vars: 
-     docker-ce-version: 5:18.09.9~3-0~ubuntu-bionic
-     docker-ce-cli-version: 5:18.09.9~3-0~ubuntu-bionic
-     containerd.io-version: 1.2.6-3
+     dockerceversion: 5:18.09.9~3-0~ubuntu-bionic
+     dockercecliversion: 5:18.09.9~3-0~ubuntu-bionic
+     containerdioversion: 1.2.6-3
   tasks:
     - name: Add Docker GPG key
       apt_key: url=https://download.docker.com/linux/ubuntu/gpg
@@ -24,9 +24,9 @@
         state: present
       with_items:
 #            - docker-ce
-            - docker-ce= "{{ docker-ce-version }}"
+            - docker-ce= "{{ dockerceversion }}"
 #            - docker-ce-cli
-            - docker-ce-cli= "{{ docker-ce-cli-version }}"
+            - docker-ce-cli= "{{ dockercecliversion }}"
 #            - containerd.io
-            - containerd.io= "{{ containerd.io-version }}"
+            - containerd.io= "{{ containerdioversion }}"
       become: yes

@@ -1,0 +1,23 @@
+Set the default logging driver
+==========================================
+
+	sudo vi /etc/docker/daemon.json
+		{
+  		   "log-driver": "syslog"
+		}
+
+		OR
+
+		{
+  		   "log-driver": "json-file",
+  		   "log-opts": {
+    			"max-size": "15m"
+  		   }
+		}
+
+	sudo systemctl restart docker
+	docker info | grep Logging
+
+	more info: https://docs.docker.com/config/containers/logging/syslog/
+
+

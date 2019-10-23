@@ -59,9 +59,23 @@ how to access the applications running inside the container from external world 
 
 Advanced Container commands 
 
+limit container resources
+	docker run -d --restart unless-stopped -p 8080:80 --memory 500M --memory-reservation 256M nginx
+	docker run -d -P --cpus=".5" nginx
+
+Run a docker container, overriding the system default logging driver settings:
+	docker run --log-driver json-file --log-opt max-size=50m nginx
+
 updating container network 
-	docker network disconnect bridge 209c1cdcb10e
-	docker network connect myb 209c1cdcb10e
+	docker network disconnect bridge <contid>
+	docker network connect myb <contid>
 
 	docker run -itd --net net1 alpine
-	docker network connect net2 contid ( container will be present in both net1 & net2 networks )
+	docker network connect net2 contid
+	( container will be present in both net1 & net2 networks )
+
+--restart flag: specify when the container should be automatically restarted
+	1) no(default): Never restart the container
+	2) on-failure: only if the container fails (exits with non-zero exit code)
+	3) always: Always restart the container whether it succeeds or fails. Also start the container automatically on  daemon startup
+	4) unless-stopped: Always restart the container whether it succeeds or fails, and the daemon startup, unless the container was manually stopeed

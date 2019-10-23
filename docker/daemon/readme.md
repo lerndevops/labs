@@ -17,3 +17,12 @@ Docker Client:
 
 
 ![Docker Architecturre](DockerArchitecture.png?style=centerme)
+
+
+Container Format: 
+=================
+
+	Docker Engine combines the namespaces, control groups, and UnionFS into a wrapper called a container format.
+	The default container format is libcontainer.
+	In the future, Docker may support other container formats by integrating with technologies such as BSD Jails or Solaris Zones
+

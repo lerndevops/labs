@@ -1,6 +1,19 @@
+what are Docker Images: 
+=======================
+An image is a package that consists of an application and all of its dependencies to run the application in a container. 
+containers and images use a layered file system. Each layer consists only the differences from the previous layer.
+the image consists of one or more read only layers, while container adds on one writable layer on top of image layers. 
+
+
+The layered file system allows multiple images and containers to share the same layers. 
+this would result in: 
+	smaller overall storage footprint
+	faster image transfer
+	faster image build
+	
 how to build docker image
 =========================
-   two ways
+two ways
       1) MANAUL
       2) AUTOMATED
 

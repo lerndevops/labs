@@ -1,0 +1,32 @@
+Get the current storage driver:
+	docker info
+
+Two ways we can set the storage drivers
+
+	1) Set the storage driver explicitly by providing a flag to the Docker daemon:
+		 sudo vi /usr/lib/systemd/system/docker.service
+		 Edit the ExecStart line, adding the --storage-driver devicemapper flag:
+		 ExecStart=/usr/bin/dockerd --storage-driver devicemapper ...
+		 After any edits to the unit file, reload Systemd and restart Docker:
+
+		 sudo systemctl daemon-reload
+		 sudo systemctl restart docker
+
+
+	2) We can also set the storage driver explicitly using the daemon configuration file. 
+	   This is the method that Docker recommends. 
+	   Note that we cannot do this and pass the --storage-driver flag to the daemon at the same time
+
+	sudo vi /etc/docker/daemon.json
+	Set the storage driver in the daemon configuration file:
+
+		{
+			"storage-driver": "devicemapper"
+		}
+	Restart Docker after editing the file. 
+	It is also a good idea to make sure Docker is running properly after changing the configuration file:
+
+	sudo systemctl restart docker
+	sudo systemctl status docker
+
+more Info: https://docs.docker.com/storage/storagedriver/select-storage-driver/

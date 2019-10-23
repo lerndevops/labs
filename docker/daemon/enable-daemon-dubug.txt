@@ -1,0 +1,8 @@
+enable dubug
+=============
+
+   vi /etc/docker/daemon.json
+
+	{
+  	   "debug": true
+	}

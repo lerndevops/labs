@@ -1,0 +1,67 @@
+Persistant Data with Continaers:
+ 
+  Docker containers are designed so that their internal storage can be easily destroyed. However, sometimes you might need more permanent data. Docker volumes and bind mounts allow you to attach external storage to containers.
+
+Bind Mounts vs. Volumes:
+  When mounting external storage to a container, you can use either a bind mount or a volume.
+  We can use --mount OR --volume syntax to attache external storage to a container.
+
+Bind mounts:
+  1) Mount a specific path on the host machine to the container. 
+  2) Not portable, dependant on the host machine's file system and directory structure. 
+Volumes: 
+  1) Stores data on the host file system, but the storage location is managed by Docker. 
+  2) More portable.
+  3) Can mount the same volume to multiple containers. 
+  4) Work in more scenarios. 
+
+we can create both volumes/bind mounts using either of the syntax.
+  i.e. we can create a "bind mount" using --mount syntax as well with --volume syntax similarly
+       we can create a "volume" using --mount syntax as well with --volumes syntax.
+
+--mount syntax:
+  docker run --mount key=value,key=value..
+
+  type: bind (bind mount), volume, or tmpfs (temporary in-memory storage)
+  source,src: Volume name or bind mount path.
+  destination,dst,target: Path to mount inside the container.
+  readonly: Make the volume or bind mount read-only.
+
+  Example:
+     cd ~/
+     mkdir message
+     echo Hey, You! > message/message.txt
+
+     Mount the directory to a container with a bind mount.
+         docker run --mount type=bind,source=/home/cloud_user/message,destination=/root,readonly busybox cat /root/message.txt
+   
+     Run a container with a mounted volume.
+         docker run --mount type=volume,source=my-volume,destination=/root busybox sh -c 'echo hello > /root/message.txt && cat /root/message.txt'
+	  
+-v syntax: 
+  docker run -v SORUCE:DESTINATION[:OPTIONS]
+
+  SOURCE: if this is a volume name, it will create a volume. if this is a path it will createa bind mount.
+  DESTINATION: Location to mount the data inside the container. 
+  OPTIONS: comma-sepereated list of options. For example ro for read-only.
+
+  Example:
+     cd ~/
+     mkdir message
+     echo Hey, You! > message/message.txt
+   
+     Mount the directory to a container with a bind mount
+        docker run -v /home/cloud_user/message:/root:ro busybox cat /root/message.txt
+   
+     Run a container with a mounted volume.
+        docker run -v my-volume:/root busybox sh -c 'cat /root/message.txt'
+
+Note: in swarm mode when we deploy services, only --mount can be used, -v syntax doesn't work with services. 
+
+
+Create and manage volumes using docker volume commands
+  docker volume create myvol
+  docker volume ls
+  docker volume inspect myvol
+  docker volume rm myvol
+====================================================================================================================

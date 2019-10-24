@@ -1,0 +1,13 @@
+Network Troubleshooting:
+   There are several ways we can gather information to troubleshoot networking issues. 
+      docker logs CONTAINER  ==> Get container logs
+	  docker service logs SERVICE ==> Get collated logs from the tasks of a service
+	  journalctl -u docker ==> Get Docker Daemon logs.
+   
+   another way to troubleshoot network issues is to run a container within the context of a Docker Network. we can use it to test connectivity and gather information. 
+   
+   Netshoot is an image that come with a variety of network troubleshoot tools.
+   we can run netshoot by using the container image nicolaka/netshoot
+   we can even run netshoot within the network namespace of an existing container!
+   
+   more Info: https://success.docker.com/article/troubleshooting-container-networking

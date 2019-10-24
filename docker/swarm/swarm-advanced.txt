@@ -1,0 +1,90 @@
+Node Labels: 
+
+You can add pieces of metadata to your swarm nodes using node labels. You can then use these labels to determine which nodes tasks will run on.
+
+  UseCase:
+     with nodes in multiple datacenters or availability zones, you can use labels to specify which zone each node is in. Then, execute tasks in specific zones or distribute them evenly across zones
+
+     Add a lable to a Node: docker node update --label-add LABEL=VALUE NODE
+     view node labels with: docker node inspect --pretty NODE
+
+Node Constraints:
+  --constraint: 
+     To run a service's tasks only on nodes with a specific label value, 
+          docker service create --constraint node.labels.LABEL==VALUE IMAGE
+
+     we can also use a constraint to run only on nodes without a perticular value
+          docker service create --constraint node.labels.LABEL!=VALUE IMAGE
+    
+     we can use the --constraint flag multiple times to list multiple constraints. All constraints must be satisfied for tasks to run on a node.
+
+  --placement-pref:
+     use --placement-pref with spread strategy to spread tasks evenly across all values of a perticular label
+          docker service create --placement-pref spread=node.labels.LABEL IMAGE
+
+     ex: if we have a label called availability_zone with three values (east,west and south) the taks will be divided evenly among the node groups with each of those three values, no matter how many nodes are in each group.
+
+===================================================================================================
+high availabilty:
+
+In order to build a highly-available and fault-tolerant Swarm, it is a good idea to have multiples swarm mangers. 
+
+Docker uses the Raft Consensus alogorithm to maintain a consistent cluster state acorss multiple mangers. 
+
+More manager nodes means better fault-tolerance, However, there can be decrease in performance as the number of managers grows, since more managers means more network traffic as managers agree to updates in the cluster state. 
+
+Quorum: 
+
+A Quorum is the majority (more than half) of the managers in a swarm. For example for a swarm with 5 managers the quorum is 3. 
+
+A quorum must be maintained in order to make changes to the cluster state. if a quorum is not available, node cannot be added or removed, new tasks cannot be added, and existing tasks cannot be changed or moved. 
+
+Note that since a quorum requires more than half of the managers nodes, it is recomended to have an odd number of managers.
+===================================================================================================
+backup & restore swarm:
+   
+   Create the Backup On the manager:
+        sudo systemctl stop docker
+        sudo tar -zvcf backup.tar.gz -C /var/lib/docker/swarm
+        sudo systemctl start docker
+   Restore from Backup On the manager:
+        sudo systemctl stop docker
+        sudo rm -rf /var/lib/docker/swarm/*
+        sudo tar -zxvf backup.tar.gz -C /var/lib/docker/swarm/
+        sudo systemctl start docker
+        docker node ls
+
+===================================================================================================
+Swarm Autolock: 
+
+what is autolock & why ?
+
+Docker swarm encrypts sesitive data for security reasons, such as:
+    Raft logs on swarm managers
+    TLS communication between swarm nodes
+by default, Docker manages the keys used for this encryption automatically, but they are stored unencrypted on the manage
+rs disks.
+Autolock is a feature that automatically locks the swarm allowing you to manage the encryption keys yourslef. This gives
+you control of the keys and can allow for greater security.
+However, it requires you to unlock the swarm every time Docker is restarted on one of your managers.
+
+Enable autolock.
+    docker swarm init --autolock
+    docker swarm update --autolock=true
+    Note: Make note of the unlock key genereated !
+Run a command to interact with the swarm, then restart docker & try the command again to verify that the swarm is locked.
+    docker node ls
+    sudo systemctl restart docker
+    docker node ls
+Unlock the swarm using the unlock key and verify that it is unlocked.
+    docker swarm unlock
+    docker node ls
+get the existing unlock key.
+    docker swarm unlock-key
+Rotate the unlock key.
+    docker swarm unlock-key --rotate
+Disable autolock.
+    docker swarm update --autolock=false
+    sudo systemctl restart docker
+    docker node ls
+===================================================================================================

@@ -1,0 +1,43 @@
+what is docker service ? 
+
+A service is used to run an application on a Docker Swarm. A service specifies a set of one or more replica tasks. These tasks will be distributed automatically acorss the nodes in the cluster and executed as containers.
+=====================================================================================================
+
+how to create a service in docker swarm
+
+   docker service create --name mysvc --replicas 4 -p 9080:8080 tomcat
+   docker service ls
+   docker service mysvc ps
+   docker service inspect mysvc
+   docker service inspect --pretty mysvc
+   docker service rm mysvc 
+
+various options while creating service 
+
+   docker service create --name mysvc --replicas 2 -p 9080:80 -d nginx
+   docker service create --name nginxsvc --replicas 2 --replicas-max-per-node 1 nginx
+   docker service create --name nginxsvc --replicas 3 --mount type=volume,destination=/path/in/container nginx:alpine
+   docker service create --name tomcatsvc --replicas 3 --constraint 'node.labels.type == queue' tomcat
+
+======================================================================================================
+
+Updating Service 
+
+update service with new image ( rolling update )
+   docker service update --image=tomcat <serivename/id>
+
+updating service with new network
+   docker service update --network-add myoverlay <servicename/id>
+	
+updating/adding service port after creating a service 
+   docker service update --publish-add 9080:80 <servicename/id>
+	
+updating/adding mount on service after creating service 
+   docker service update --mount-add source=abc,target=/tmp <servicename/id>
+   docker service update --mount-add type=volume,source=abc,target=/tmp <servicename/id>
+
+======================================================================================================
+Different ways to scale a service:
+
+   docker service update --replicas 3 nginx
+   docker service scale nginx=4

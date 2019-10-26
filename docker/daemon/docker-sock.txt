@@ -1,0 +1,33 @@
+A network socket is an internal endpoint for sending or receiving data within a node on a computer network
+
+A socket is a software object that acts as an end point establishing a bidirectional network communication link between a server-side and a client-side program.
+
+In UNIX, a socket can also be referred to as an endpoint for interprocess communication(IPC) within the operating system.
+
+Systemd is a new init system intended to replace traditional SysV init system. One of its key features is faster init process. Socket activation is one of the technologies used in Systemd to speed up service initialization
+
+When you start the Docker daemon, -H fd:// will tell Docker that the service is being started by Systemd and will use socket activation. systemd will then create the target socket and pass it to the Docker daemon to use.
+
+To receive requests, the service needs a socket to listen on. Take Docker as an example, it needs a unix domain socket like /var/run/docker.sock or a TCP socket. Of course these sockets needs something to create them and most of the time it is the service itself at start time
+
+With socket activation, SystemD will create these sockets and listen to them for services, and pass these sockets to service with exec when the service is started. One benefit is that client requests can be queued in the socket buffer once the socket is successfully created, even before the related service is started.
+
+The socket info for a certain service used by Systemd is in socket unit file, for Docker it's docker.socket
+	ps aux | grep 'docker' 	 
+	lsof -Ua | grep 'docker'
+
+systemctl start docker.socket
+	
+After starting docker.socket, we can see that there's still no docker process running, but the socket /var/run/docker.sock has been created, and it belongs to the process systemd.
+
+Note: Actually the socket is ready to receive requests now, even though docker is not running yet. systemd will start docker.service at the moment the first request comes, passing the already created sockets to Docker. This is so-called on-demand auto-spawning
+
+when we use -H fd:// docker will expect the socket to be passed by its parent process rather than creating it by itself. When it's started by Systemd, Systemd will do the job, but when you manually start it on terminal, you don't do the job so the docker daemon process fails.
+
+The -H fd:// syntax is used when running docker inside of systemd. Systemd itself will create a socket in the docker.socket unit file and listen to it, and this socket is connected to the docker daemon with the fd:// syntax in the docker.service unit file
+
+docker cli will parse protocol/addr from host specified in -H and make an http request to the docker daemon. The default host is unix:///var/run/docker.sock. The supported protocols include tcp, unix, npipe and fd. from systemd source code the transport configuration for fd is the same as tcp. 
+
+more info on Systemd & socket: 
+	http://0pointer.de/blog/projects/systemd.html
+	http://0pointer.de/blog/projects/socket-activation.html

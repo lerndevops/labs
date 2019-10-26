@@ -1,0 +1,65 @@
+Docker Content Trust (DCT):
+===========================
+Docker Content Trust (DCT) provides a secure way to verify the integrity of images before you pull or run them on your systems.
+
+With DCT, the image creator signs each image with a certificate, which clients can use to verify the image before running it.
+	docker trust key genereate <signer name>
+
+Genereate a delegation key pair. This gives users access to sing images for a repository.
+	docker trust signer add --key <key file> <signer name> <repo>  -- add a signer to a repo
+	docker trust sign <repo>:<tag>  --- Sign an image and push it to the repository.
+	
+Enablling DCT:
+==============
+Docker Content Trust can be enabled by setting the DOCKER_CONTENT_TRUST environment variable to 1.
+
+In Docker Enterprise Edition, we can also enable it in daemon.json
+
+When DIT is enabled, Docker will only pull and run signed images, Attempting to pull and/or run an unsigned image will result in an error message.
+
+Note that when
+DOCKER_CONTENT_TRUST=1, docker push will automatically sign the image before pushing it. 
+
+we can disable the Docker Content Trust by setting DOCKER_CONTENT_TRUST environment variable to 0. 
+
+=========================================================================================================
+
+log in to Docker Hub from CLI. Enter your Docker Hub credentials when prompted.
+	docker login
+
+Generate a delegation key pair. We can enter a passphrase of our choosing, but make note of it as we will need it later on in the lesson.
+	cd ~/
+	docker trust key generate <your docker hub username>
+
+Then we'll add ourselves as a signer to an image repository. Once again, be sure to make note of the passphrases used.
+	docker trust signer add --key <your docker hub username>.pub <your docker hub username> <your docker hub username>/testrepo-dct
+
+Create and build a simple Docker image with an unsigned tag, and then push it to Docker Hub:
+	mkdir ~/testrepo-dct
+	cd testrepo-dct
+	vi Dockerfile
+		FROM busybox:latest
+		CMD echo hello there!
+	docker build -t <your docker hub username>/testrepo-dct:unsigned
+	docker push <your docker hub username>/testrepo-dct:unsigned
+
+Run the image to verify whether it can run successfully:
+	docker run <your docker hub username>/testrepo-dct:unsigned
+
+Now, enable Docker content trust and attempt to run the unsigned image again:
+	Note: We should see it fail.
+
+	export DOCKER_CONTENT_TRUST=1
+	docker run <your docker hub username>/testrepo-dct:unsigned
+
+Build and push a signed tag to the repo. Enter the passphrase — this will be the one that was chosen earlier when running the docker trust key generate command:
+	docker build -t <your docker hub username>/testrepo-dct:signed .
+	docker trust sign <your docker hub username>/testrepo-dct:signed
+
+Run it to verify that the signed image can run properly with Docker Content Trust enabled:
+	docker image rm <your docker hub username>/testrepo-dct:signed
+	docker run <your docker hub username>/testrepo-dct:signed
+
+Turn off Docker Content Trust and attempt to run the unsigned image again:
+	export DOCKER_CONTENT_TRUST=0
+	docker run <your docker hub username>/testrepo-dct:unsigned

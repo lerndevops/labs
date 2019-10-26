@@ -1,0 +1,11 @@
+MTLS in Docker Swarm:
+Docker Swarm provides addtional security by encrypting communication between various components int he cluster. 
+
+Mutually Authenticated Transport Layer Security (MTLS):
+  1) Both participants in communication exchange certificates and all communication is authenticated and encrypted.
+  2) when a swarm is initialized, a root certificate autority (CA) is created, which is used to genereate certificates for all nodes as they join the cluster. 
+  3) worker and manager tokens are genereated using the CA and are used to join new nodes to the cluster.
+  4) used for all cluster level communication between swarm nodes
+  5) Enabled by default
+
+more info: https://docs.docker.com/engine/swarm/how-swarm-mode-works/pki/

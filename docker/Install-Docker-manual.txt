@@ -14,7 +14,7 @@ Add your user to the docker group, giving the user permission to run docker comm
 Test the installation by running a simple container:
         docker run hello-world
 
-	### FYI Only ## Check Available Version for Install"
+	## FYI Only ## Check Available Version for Install"
 	apt-cache madison docker-ce | awk '{print $3}'
 
 

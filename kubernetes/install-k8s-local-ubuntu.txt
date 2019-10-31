@@ -1,5 +1,7 @@
 pre-requisites to be done on local ubuntu machine for k8s setup.
 
+for Ubuntu 18 LTS 
+====================
 disable swap ( on master & nodes )
 
 	swapoff -a 
@@ -7,6 +9,16 @@ disable swap ( on master & nodes )
 		comment the swap line putting hash infront of the line
 		ex: #UUID=9fb8bc78-f247-4b69-8b4a-44171adeda7b none            swap    sw              0       0
 
+for Ubuntu 16 LTS
+====================
+
+disable swap ( on master & nodes )
+
+	swapoff -a 
+	vi /etc/fstab 
+		comment the swap line putting hash infront of the line
+		ex: #UUID=9fb8bc78-f247-4b69-8b4a-44171adeda7b none            swap    sw              0       0
+		
 disblae default reslov conf services & install dnsmasq ( only on master )
 
 	sudo systemctl disable systemd-resolved.service
@@ -22,6 +34,7 @@ set the nameserver ( only on master )
 vi /etc/resolv.conf
 	nameserver 8.8.8.8
 =========================================================================================
+
 K8s Master Setup Local Ubuntu
 
 	Install docker
@@ -50,8 +63,7 @@ K8s Master Setup Local Ubuntu
 	make note of kubeadm join command to be run on Nodes
 	
 	for coredns pods to come up run below
-	
-		kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+		kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml
 
 ========================================================================================
 		

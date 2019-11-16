@@ -3,11 +3,10 @@ Jenkins & Jfrog:
 JFROG Setup:
 ------------
 Run the below commands to download the image and run the container:
-
-	docker pull docker.bintray.io/jfrog/artifactory-oss:latest
-
-	docker run --name artifactory -d -p 8081:8081 docker.bintray.io/jfrog/artifactory-oss:latest
-
+    
+	docker pull lerndevops/jfrog-artifactory-oss:latest
+	docker run --name artifactory -d -p 8081:8081 lerndevops/jfrog-artifactory-oss:latest
+	
 	Access jfrog using http://Locahost:8081/artifactory/webapp/#/home
 
 	create a password.. default username/pwd is admin/password
@@ -17,6 +16,9 @@ Run the below commands to download the image and run the container:
 
 	give any keyname, and select the existing local-repo and include it.
 
+	DO NOT USE THESE:
+	  docker pull docker.bintray.io/jfrog/artifactory-oss:latest
+	  docker run --name artifactory -d -p 8081:8081 docker.bintray.io/jfrog/artifactory-oss:latest
 
 Jenkins Setup:
 ---------------

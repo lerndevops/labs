@@ -1,0 +1,41 @@
+Jenkins Master Slave configuration Setup
+
+on Jenkins UI ( master )
+
+	Manage Jenkins --> Configure Global Security --> Agents
+
+		TCP port for inbound agents
+			by deafault it will be "disabled"
+			ensure it is selected as "Random"
+		apply & save
+
+	Manage Jenkins --> Manage Nodes --> New Node
+
+		Node name: myslave
+		select "Permanent Agent" & click on "OK" button
+		
+			# of executors: 5
+			Remote root directory: /home/jenkinslave
+			Labels: slave1
+			Launch method: launch agent by connecting it to the master
+			save
+		click on new node
+		copy:
+			Run from agent command line:
+				java -jar agent.jar -jnlpUrl http://18.221.224.86:8080/computer/myslave/slave-agent.jnlp -secret 970f69a4f138c2df4b4d39de9e7b3d59228a05260743b70659e58b37b204b656 -workDir "/home/jenkinslave" &
+		download the agent.jar by clicking on it. 
+		
+======================================================================================
+
+on slave machine 
+
+	login to the machine & switch to root user
+	mkdir -p /home/jenkinslave
+	chmod 777 /home/jenkinslave
+	cd /home/jenkinslave ( copy agent.jar downloaded from master here )
+	chmod 777 agent.jar
+	Run from agent command line: (copied from master ui)
+		java -jar agent.jar -jnlpUrl http://18.221.224.86:8080/computer/myslave/slave-agent.jnlp -secret 970f69a4f138c2df4b4d39de9e7b3d59228a05260743b70659e58b37b204b656 -workDir "/home/jenkinslave" &
+	
+	Note: above command is just an example only, copy the url from your jenkins UI after configuring node
+	

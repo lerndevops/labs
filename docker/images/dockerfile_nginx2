@@ -1,4 +1,4 @@
 FROM nginx 
-COPY code/index.html /var/www/html
+COPY index.html /var/www/html
 EXPOSE 80
-CMD /usr/sbin/nginx -g 'daemon off;'
+ENTRYPOINT /usr/sbin/nginx -g 'daemon off;'

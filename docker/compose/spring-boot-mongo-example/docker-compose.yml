@@ -1,0 +1,19 @@
+version: '3.1'
+services:
+  springbootapp:
+    image: lerndevops/springboot-mongo-app:latest
+#    container_name: springboot
+    ports:
+      - 8080
+    depends_on:
+      - mongo
+    restart: on-failure
+  mongo:
+    image: lerndevops/mongo
+    container_name: springboot-mongo
+    ports:  # for demo/debug purpose only
+      - 27017:27017
+    volumes:
+      - /data:/data/db
+      - /data-bkp:/data/bkp
+    restart: always

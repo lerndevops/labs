@@ -3,7 +3,7 @@ these instruction can be used against CentOS/RedHat/Fedora Systems.
 Install JAVA
  
 	sudo yum -y update
-	sudo yum install -y java-1.8.0-openjdk
+	sudo yum install java-1.8.0-openjdk-devel
 	
 Install Jenkins
 

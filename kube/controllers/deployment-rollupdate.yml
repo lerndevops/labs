@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-deploy
+  name: mydeployment
 spec:
   replicas: 5
   selector:
     matchLabels:
-      app: hello-deploy
+      app: myapp
   minReadySeconds: 20 # wait for 10 sec before pod is ready going to next
   strategy:
     type: RollingUpdate
@@ -16,10 +16,10 @@ spec:
   template:
     metadata:
       labels:
-        app: hello-deploy
+        app: myapp
     spec:
       containers:
-      - name: firstpod
-        image: tomcat:9.0.26-jdk8-openjdk-slim
+      - name: myapp-cont
+        image: lerndevops/samplepyapp:v2
         ports:
-        - containerPort: 8080
+        - containerPort: 3000

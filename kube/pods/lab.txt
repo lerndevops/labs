@@ -1,0 +1,28 @@
+kubectl explain pods
+
+lab:
+====
+kubectl get pods                         # list all running pods in current active namespace
+kubectl get pods -n kube-system          # list all running pods in specified namespace
+kubectl get pods --all-namespaces        # list all running pods in all namespaces available
+kubectl get pods -o wide                 # list all running pods in current active namespace wider output
+
+kubectl describe pod <podname>              # detailed output about a pod in current namespace
+kubectl describe pod <podname> -n namespace # detailed output about a pod in current namespace
+kubectl describe pod <podname> -o wide      # detailed output about a pod wider output
+kubectl describe pod <podname> -o yaml      # detailed manifest file from apiserver yaml format
+kubectl describe pod <podname> -o json      # detailed manifest file from apiserver json format
+
+kubectl logs my-pod                                 # dump pod logs (stdout)
+kubectl logs -f my-pod                              # stream pod logs (stdout)
+kubectl logs -f my-pod -c my-container              # stream pod container logs (stdout, multi-container case)
+
+kubectl exec -it my-pod -- /bin/bash     # get interactive shell of the container in existing pod ( 1 container case )
+kubectl exec -it my-pod -c my-container -- /bin/bash # get interative shell of the container in existing pod ( multi container ) 
+
+kubectl expose pod nginx --port=80 --target-port=80  # expose pod as service within the cluster
+kubectl expose pod nginx --target-port=80 --type=NodePort # expose pod as service within the cluster & outside of the cluster
+
+kubectl delete pods <podname>                    # delete a pod in current active namespace
+kubectl delete pods --all                        # delete all pods 
+kubectl delete pod <pod-name> --grace-period=0 --force  # delete pod forcefully

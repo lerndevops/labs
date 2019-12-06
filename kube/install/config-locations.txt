@@ -1,0 +1,19 @@
+/etc/kubernetes/	                                           # Config folder
+/etc/kubernetes/pki/	                                       # Certificate files
+/etc/kubernetes/kubelet.conf	                               # Credentials to API server
+/etc/kubernetes/admin.conf	                                   # Superuser credentials
+~/.kube/config	                                               # kubectl config file
+/var/lib/kubelet/	                                           # Kubernets working dir
+/var/lib/docker/, /var/log/containers/	                       # Docker working dir
+/var/lib/etcd/	                                               # Etcd working dir
+/etc/cni/net.d/	                                               # Network cni
+/var/log/pods/	                                               # Log files
+/etc/systemd/system/kubelet.service.d/10-kubeadm.conf	       # Env
+export KUBECONFIG=/etc/kubernetes/admin.conf	               # Env
+/lib/systemd/system/kubelet.service                            # systemd unit file for kubelet
+/lib/systemd/system/docker.service                             # systemd unit file for docker
+
+
+
+journalctl -u kubelet                                          # to view the kubelet logs
+journalctl -u kube-proxy

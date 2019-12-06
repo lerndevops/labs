@@ -1,0 +1,16 @@
+kubectl get all --all-namespaces
+
+kubectl get componentstatus        # get schedular / etcd / controller manager status
+kubectl cluster-info                                                  # Display addresses of the master and services
+kubectl cluster-info dump                                             # Dump current cluster state to stdout
+kubectl cluster-info dump --output-directory=/path/to/cluster-state   # Dump current cluster state to /path/to/cluster-state
+
+kubectl api-resources
+kubectl api-resources --namespaced=true      # All namespaced resources
+kubectl api-resources --namespaced=false     # All non-namespaced resources
+kubectl api-resources -o name                # All resources with simple output (just the resource name)
+kubectl api-resources -o wide                # All resources with expanded (aka "wide") output
+kubectl api-resources --verbs=list,get       # All resources that support the "list" and "get" request verbs
+kubectl api-resources --api-group=extensions # All resources in the "extensions" API group
+
+kubectl api-versions                         # List api group

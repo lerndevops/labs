@@ -1,0 +1,53 @@
+pre-requisites to be done on local ubuntu machine for k8s setup.
+
+for Ubuntu 18 LTS 
+====================
+disable swap ( on master & nodes )
+
+	swapoff -a 
+	vi /etc/fstab 
+		comment the swap line putting hash infront of the line
+		ex: #UUID=9fb8bc78-f247-4b69-8b4a-44171adeda7b none            swap    sw              0       0
+
+for Ubuntu 16 LTS
+====================
+
+disable swap ( on master & nodes )
+
+	swapoff -a 
+	vi /etc/fstab 
+		comment the swap line putting hash infront of the line
+		ex: #UUID=9fb8bc78-f247-4b69-8b4a-44171adeda7b none            swap    sw              0       0
+		
+disblae default reslov conf services & install dnsmasq ( only on master )
+
+	sudo systemctl disable systemd-resolved.service
+	sudo systemctl disable resolvconf.service
+	sudo systemctl stop systemd-resolved
+	sudo systemct stop resolvconf.service
+	sudo apt-get install dnsmasq
+
+	reboot the machine 
+
+set the nameserver ( only on master )
+
+vi /etc/resolv.conf
+	nameserver 8.8.8.8
+=========================================================================================
+
+Install K8s Local Ubuntu
+
+	Install docker
+		sudo apt-get update
+		sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+		curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+		sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+		sudo apt-get update
+		sudo apt-get install docker-ce docker-ce-cli containerd.io
+		
+	Insall kube
+		curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+		echo 'deb http://apt.kubernetes.io/ kubernetes-xenial main' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+		apt-get update
+		apt-get install -y kubelet kubeadm kubectl
+

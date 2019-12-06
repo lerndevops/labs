@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  springbootapp:
+    image: lerndevops/springboot-mongo-app:latest
+    deploy:
+      replicas: 4
+#      placement:
+#        constraints:
+#          - node.labels.role==app
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 150M
+    ports:
+      - "9090:8080"
+    depends_on:
+      - mongo
+  mongo:
+    image: lerndevops/mongo
+    deploy:
+      replicas: 2
+#      placement:
+#        constraints:
+#          - node.labels.role==db
+      restart_policy:
+        condition: on-failure
+    ports: 
+      - "27017:27017"
+#    volumes:
+#      - /data:/data/db
+#      - /data-bkp:/data/bkp

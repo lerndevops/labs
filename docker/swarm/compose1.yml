@@ -5,9 +5,6 @@ services:
     image: tomcat
     deploy:
       replicas: 4
-      placement:
-        constraints: 
-          - node.labels.node-type == appserver
       restart_policy:
         condition: on-failure
       resources:
@@ -16,7 +13,3 @@ services:
           memory: 50M
     ports:
       - "9090:8080"
-    networks:
-      - webnet
-networks:
-  webnet:

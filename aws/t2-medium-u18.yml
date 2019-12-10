@@ -19,7 +19,7 @@
         hostname: "{{item.public_ip}}"
         groupname: myservers
         ansible_user: ubuntu
-        ansible_ssh_private_key_file: /aws/mykey.pem
+        ansible_ssh_private_key_file: /aws/devops.pem
         ansible_python_interpreter: /usr/bin/python3
       with_items: "{{out.instances}}"
 

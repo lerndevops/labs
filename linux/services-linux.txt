@@ -1,0 +1,9 @@
+service apache2 status -- to show the status of a process / service 
+service apache2 stop   -- to stop the a process / service
+service apache2 start  -- to start the a process / service
+service apache2 restart -- to restart (stop/start) a process / service
+
+here apache2 is package/software that we install & register as service. if you use package managers to install a package/software the 
+service is registed as part of installation automatically.
+
+

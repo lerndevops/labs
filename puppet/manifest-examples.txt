@@ -1,3 +1,18 @@
+Syntax to Write puppet resources inside manifests. 
+
+resourcetype{'title':
+	argument or attribute => value,
+	argument or attribute => value,
+}
+
+example: 
+service{'crond':
+	ensure => 'stopped',
+	enable => 'false',
+}
+
+============================================================================================
+
 example 1: 
 
 ## create a file
@@ -6,6 +21,10 @@ file {'/tmp/hellodevops':                        # resource type file and filena
   ensure  => present,                             # make sure it exists
   mode    => '0644',                              # file permissions
   content => "It works on ${ipaddress_eth0}!\n",  # Print the eth0 IP fact 
+}
+
+file {'devops.txt':
+	path => '/tmp/devops.txt'
 }
 
 =============================================================================================
@@ -140,6 +159,60 @@ class node2{
 	}
 	service { 'apache2':
 		ensure => running,
+	}
+	
+}
+
+=======================================================================================================
+example 6: what if we want to run some block of code against all remote nodes, with node definition
+
+node default {                        ## default means it runs on all nodes "default can replaced with a specific node name"
+	file {'/tmp/nodeall':                        
+		ensure  => present,                             
+		mode    => '0644',                              
+		content => "It works on ${ipaddress_eth0}!\n",
+	}
+	class{'node1':}
+	class{'restart_apache':}
+}
+=======================================================================================================
+
+example 7: puppet modules 
+
+mymodule/
+	manifests/    ## where our puppet code goes 
+	files/        ## flat configuration files to copied
+	templates/    ## dynamic configuration files
+	tests/        ## smoke tests / example usage
+	spec/         ## automated tests
+
+puppet module genereate naresh-tomcat
+mkdir tomcat/{fies, templates}
+
+/opt/puppetlabs/bin/puppet generate module <author-modulename>
+/opt/puppetlabs/bin/puppet generate module naresh-tomcat
+
+class tomcat {
+
+include setup_user
+
+}
+
+setup-user.pp
+
+calss setup_user {
+
+	group { 'tomcat':
+		name => 'tomcat',
+		ensure => 'present',
+		gid => '894',
+	}
+	user { 'tomcat':
+		name => 'tomcat',
+		ensure => 'present',
+		uid => '894',
+		gid => '894',
+		shell => '/bin/bash',
 	}
 	
 }

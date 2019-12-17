@@ -1,16 +1,3 @@
----
-reviewers:
-- fgrzadkowski
-- jszczepkowski
-- justinsb
-- directxman12
-title: Horizontal Pod Autoscaler Walkthrough
-content_template: templates/task
-weight: 100
----
-
-{{% capture overview %}}
-
 Horizontal Pod Autoscaler automatically scales the number of pods
 in a replication controller, deployment, replica set or stateful set based on observed CPU utilization
 (or, with beta support, on some other, application-provided metrics).
@@ -479,5 +466,3 @@ kubectl create -f https://k8s.io/examples/application/hpa/php-apache.yaml
 ```
 horizontalpodautoscaler.autoscaling/php-apache created
 ```
-
-{{% /capture %}}

@@ -4,12 +4,6 @@ in a replication controller, deployment, replica set or stateful set based on ob
 
 This document walks you through an example of enabling Horizontal Pod Autoscaler for the php-apache server.  For more information on how Horizontal Pod Autoscaler behaves, see the [Horizontal Pod Autoscaler user guide](/docs/tasks/run-application/horizontal-pod-autoscale/).
 
-{{% /capture %}}
-
-
-
-{{% capture prerequisites %}}
-
 This example requires a running Kubernetes cluster and kubectl, version 1.2 or later.
 [metrics-server](https://github.com/kubernetes-incubator/metrics-server/) monitoring needs to be deployed in the cluster
 to provide metrics via the resource metrics API, as Horizontal Pod Autoscaler uses this API to collect metrics. The instructions for deploying this are on the GitHub repository of [metrics-server](https://github.com/kubernetes-incubator/metrics-server/), if you followed [getting started on GCE guide](/docs/setup/production-environment/turnkey/gce/),
@@ -21,10 +15,6 @@ must be able to communicate with the API server providing the custom metrics API
 not related to any Kubernetes object you must have a Kubernetes cluster at version 1.10 or later, and
 you must be able to communicate with the API server that provides the external metrics API.
 See the [Horizontal Pod Autoscaler user guide](/docs/tasks/run-application/horizontal-pod-autoscale/#support-for-custom-metrics) for more details.
-
-{{% /capture %}}
-
-{{% capture steps %}}
 
 ## Run & expose php-apache server
 
@@ -126,11 +116,10 @@ NAME         READY   UP-TO-DATE   AVAILABLE   AGE
 php-apache   7/7      7           7           19m
 ```
 
-{{< note >}}
+## Note
 It may take a few minutes to stabilize the number of replicas. Since the amount
 of load is not controlled in any way it may happen that the final number of replicas
 will differ from this example.
-{{< /note >}}
 
 ## Stop load
 
@@ -159,13 +148,9 @@ php-apache   1/1     1            1           27m
 
 Here CPU utilization dropped to 0, and so HPA autoscaled the number of replicas back down to 1.
 
-{{< note >}}
+## Note
 Autoscaling the replicas may take a few minutes.
-{{< /note >}}
 
-{{% /capture %}}
-
-{{% capture discussion %}}
 
 ## Autoscaling on multiple metrics and custom metrics
 

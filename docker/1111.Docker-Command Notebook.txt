@@ -1,0 +1,554 @@
+Container Commands:
+
+docker run -itd ubuntu /bin/bash -- enter into a container
+docker run -itd --name testubuntu ubuntu /bin/bash   -- to change the name of container
+docker ps
+docker stop contid
+docker start/restart
+docker kill contid
+docker ps -a
+
+docker run -d tomcat
+docker run -d -P tomcat
+docker run -d -p 1234:8080  tomcat
+
+docker ps
+
+
+docker run -it -P jenkins /bin/bash
+cat /etc/os-release
+/usr/local/bin$ ./jenkins.sh -- to start jenkins inside cont
+
+docker ps -aq    -- list of all contids (includes died)
+docker cp ravi e9903e9b3122:/tmp     (source local, dest cont)
+docker cp e9903e9b312:/tmp/ravi .     (source cont, dest local)
+docker exec -it e9903e9b3122 ls /tmp   -- list the file copied
+
+
+docker export e9903e9b3122 >export.tar    -- Export a container’s filesystem as a tar archive
+docker import export.tar newimage:v1      -- Import the contents from a tarball to create a filesystem image , docker images to check
+
+docker logs [OPTIONS] CONTAINER    : --follow, --tail   ---- show jenkins example
+
+docker ps -a ; docker container prune -- remove unused contaienrs
+
+docker inspect e9903e9b3122   ---- id, created date, image, platform, hsot, ip
+
+
+
+-------------------------------------------------
+
+IMAGES:
+
+docker inspect 307457479447 -- about Image
+docker history 307457479447  -- for image layers
+docker history tomcat
+
+docker commit -m "ubuntu with curl" contid name:tag
+
+
+docker login 
+
+Username: ravindramca43
+Password: 
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+
+
+docker tag fd14f028beec  ravindramca43/image:v1
+docker push ravindramca43/image
+
+
+
+docker build -t ubuntu:dockfile .
+
+Dockerfile1:  
+
+FROM ubuntu
+MAINTAINER "Ravi"
+RUN apt-get update
+RUN apt-get install -y curl vim
+
+
+Dockerfile2:  docker run -d -P imageid 
+
+FROM debian:latest
+RUN apt-get update
+RUN apt-get install -y procps vim curl nginx
+EXPOSE 80
+CMD /usr/sbin/nginx -g "daemon off;"
+
+
+Dockerfile3:  docker run -d -P imageid
+
+FROM centos
+MAINTAINER "Ravi"
+RUN yum update -y
+RUN yum install -y httpd
+EXPOSE 80
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+
+
+Dockerfile4: 
+
+FROM ubuntu
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install openjdk-8-jdk wget
+RUN mkdir /usr/local/tomcat
+RUN wget http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.35/bin/apache-tomcat-8.5.35.tar.gz -O /tmp/tomcat.tar.gz
+RUN cd /tmp && tar xvfz tomcat.tar.gz
+RUN cp -Rv /tmp/apache-tomcat-8.5.35/* /usr/local/tomcat/
+EXPOSE 8080
+CMD /usr/local/tomcat/bin/catalina.sh run
+
+
+
+options: 
+
+FROM 
+ADD
+COPY
+ENV
+EXPOSE
+FROM
+LABEL
+VOLUME
+WORKDIR
+
+
+The FROM instruction initializes a new build stage and sets the Base Image for subsequent instructions. As such, a valid Dockerfile must start with a FROM instruction.
+
+The RUN instruction will execute any commands in a new layer on top of the current image and commit the results
+
+The main purpose of a CMD is to provide defaults for an executing container.
+CMD ["executable","param1","param2"] (exec form, this is the preferred form)
+CMD ["param1","param2"] (as default parameters to ENTRYPOINT)
+CMD command param1 param2 (shell form)
+There can only be one CMD instruction in a Dockerfile. If you list more than one CMD then only the last CMD will take effect.
+
+The EXPOSE instruction informs Docker that the container listens on the specified network ports at runtime.
+
+To actually publish the port when running the container, use the -p flag on docker run to publish and map one or more ports, or the -P flag to publish all exposed ports and map them to high-order ports.
+
+The ENV instruction sets the environment variable <key> to the value <value>. ENV myName="John Doe"
+
+The ADD instruction copies new files, directories or remote file URLs from <src> and adds them to the filesystem of the image at the path <dest>
+ADD test /absoluteDir
+
+
+The COPY instruction copies new files or directories from <src> and adds them to the filesystem of the container at the path 
+
+An ENTRYPOINT allows you to configure a container that will run as an executable.
+ENTRYPOINT ["executable", "param1", "param2"] (exec form, preferred)
+ENTRYPOINT command param1 param2
+
+The WORKDIR instruction sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it in the Dockerfile
+WORKDIR /path/to/workdir
+
+
+docker save -o name.tgz imageid   -- to save image to local and scp to remote
+
+docker rmi -- remove all images 
+
+docker load < name.tgz
+
+-----------------------------------------------------
+
+VOLUMES:
+
+
+docker volume create my-vol    -- to create a new vol
+docker volume ls
+
+A volume named my-vol will be created under /var/lib/docker/volumes
+cd /var/lib/docker/volumes
+
+see your vol name _data
+
+create something there
+
+run any contaienrs
+
+docker run -d -P -v my-vol:/tmp imagename
+
+
+docker run -d -P -v /tmp/test:/usr/share/nginx/html nginx   --- we can also directly do like this
+
+
+In above command 
+	/tmp/test is source path on your host os
+	/usr/share/nginx/html is dest path
+	
+	
+	
+If /tmp/test directory does not exist on your host os it will create it
+docker volume create command always creates the volume under /var/lib/docker/volumes/<vol-name> directory 
+For custom source directory paths we can follow the above simply.
+
+
+docker inspect my-vol
+
+docker volume rm my-vol
+ 
+ 
+$ docker volume prune    --To remove all unused volumes and free up space
+
+
+
+-------------------------------------------------------------------------------------------------------
+
+COMPOSE:
+
+Download : look https://github.com/docker/compose/releases 
+
+curl -L https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+
+case1: deploy multiple containers from a single image
+
+Compose 1 :  docker-compose -f docker-compose.yml up --scale web=4 -d    ; docker-compose down
+
+version: '3'
+services:
+   web:
+     image: nginx
+     ports:
+       - "80"
+     volumes:
+       - /home/docker/ravi:/usr/share/nginx/html
+	   
+
+case 2: deploy multiple containers from multiple images 
+
+Compose 2 : docker-compose -f docker-compose.yml -p webapps up -d --scale web=2 --scale app=2
+
+version: '3'
+services:
+   web:
+     image: nginx
+     ports:
+       - "80"
+     volumes:
+       - /home/docker/ravi:/usr/share/nginx/html
+   app:
+     image: tomcat
+     ports:
+       - "8080"
+
+	   
+case 3: build multiple images & deploy multiple containers from multiple images	; create compose files in two folders
+
+docker-compose -f docker-compose.yml up --scale web=2 --scale app=2 -d
+
+image1 Dockerfile
+
+FROM ubuntu
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install nginx
+EXPOSE 80
+CMD /usr/sbin/nginx -g 'daemon off;'
+
+image2 Dockerfile
+
+FROM ubuntu
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install openjdk-8-jdk wget
+RUN mkdir /usr/local/tomcat
+RUN wget http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.35/bin/apache-tomcat-8.5.35.tar.gz  -O /tmp/tomcat.tar.gz
+RUN cd /tmp && tar xvfz tomcat.tar.gz
+RUN cp -Rv /tmp/apache-tomcat-8.5.35/* /usr/local/tomcat/
+EXPOSE 8080
+CMD /usr/local/tomcat/bin/catalina.sh run
+
+docker-compose.yml
+
+version: '3'
+services:
+   web:
+     build:
+        context: .
+     ports:
+       - "80"
+     volumes:
+       - /home/docker/ravi:/usr/share/nginx/html
+   app:
+     build:
+        context: ./tomcat
+     ports:
+       - "8080"  
+
+
+
+-------------------------------------------------------------------
+
+Docker Swarm
+
+docker swarm init --advertise-addr 192.168.0.18
+
+docker swarm join-token manager     -- to join as another manager
+docker swarm leave
+
+--------------------------------------------------------------------------	   
+
+Docker Service
+
+docker service create --name web --replicas 4 -p 8080:80 nginx
+docker service ps ServiceID
+
+docker service update web --replicas 8
+
+
+docker node update --availability drain node2
+docker node update --availability active node4
+
+--availability		Availability of the node (“active”|”pause”|”drain”)
+
+--label-add		Add or update a node label (key=value)
+
+--label-rm		Remove a node label if exists
+
+--role		Role of the node (“worker”|”manager”)
+
+
+docker node demote	Demote one or more nodes from manager in the swarm
+docker node inspect	Display detailed information on one or more nodes
+docker node ls	List nodes in the swarm
+docker node promote	Promote one or more nodes to manager in the swarm
+docker node ps	List tasks running on one or more nodes, defaults to current node
+docker node rm	Remove one or more nodes from the swarm
+
+docker node ps node2 node3 node4 -- to see all docker containers
+
+docker service rm servicename
+
+
+docker node update --label-add node-type=appserver worker1
+docker node update --label-add node-type=webserver worker2
+
+docker service create --replicas 2 --constraint 'node.label.node-type == webserver' -p 8090:80 --name service nginx
+
+Rolling Updates:
+=============
+
+$ docker service create \
+  --replicas 3 \
+  --name redis \
+  --update-delay 10s \
+  redis:3.0.6
+
+
+The --update-delay flag configures the time delay between updates to a service task or sets of tasks. You can describe the time T as a combination of the number of seconds Ts, minutes Tm, or hours Th. So 10m30s indicates a 10 minute 30 second delay.
+
+By default the scheduler updates 1 task at a time. You can pass the --update-parallelism flag to configure the maximum number of service tasks that the scheduler updates simultaneously.
+
+By default, when an update to an individual task returns a state of RUNNING, the scheduler schedules another task to update until all tasks are updated. If, at any time during an update a task returns FAILED, the scheduler pauses the update. You can control the behavior using the --update-failure-action flag for docker service create or docker service update.
+
+
+Now you can update the container image for redis. The swarm manager applies the update to nodes according to the UpdateConfig policy:
+
+$ docker service update --image redis:3.0.7 redis 
+
+The scheduler applies rolling updates as follows by default:
+
+Stop the first task.
+Schedule update for the stopped task.
+Start the container for the updated task.
+If the update to a task returns RUNNING, wait for the specified delay period then start the next task.
+If, at any time during the update, a task returns FAILED, pause the update
+
+
+docker service inspect --pretty redis
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+docker stack :
+============
+
+docker-compose.yml :   docker stack deploy -c docker-compose.yml appstack
+
+version: "3"
+services:
+  app:
+    # replace username/repo:tag with your name and image details
+    image: nareshmnvs/myapp:latest
+    deploy:
+      replicas: 5
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 150M
+    ports:
+      - "3000:3000"
+  web:
+    # replace username/repo:tag with your name and image details
+    image: nareshmnvs/nginx:v1
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+    ports:
+      - "8090:80"
+networks:
+   mynet:
+
+
+
+
+
+------------------------------------------------------------------------------------
+Cobtinuous Deploy
+
+vi /etc/sudoers
+jenkins ALL=(ALL) NOPASSWD: ALL
+
+root@ubuntu:/etc/sudoers.d# vi jenkins
+jenkins ALL=(ALL) NOPASSWD: ALL
+
+
+In Jenkins Build Section:
+------------------------
+
+rm /tmp/deploy
+mkdir /tmp/deploy
+cd /tmp/deploy
+cp /var/lib/jenkins/workspace/package/target/addressbook.war .
+touch Dockerfile
+cat <<EOT>>Dockerfile
+FROM tomcat
+ADD addressbook.war /usr/local/tomcat/webapps
+CMD "catalina.sh" "run"
+EXPOSE 8080
+EOT
+sudo docker build -t edureka/deployimage:$BUILD_NUMBER .
+sudo docker run -itd --name=deployapp-$BUILD_NUMBER -P edureka/deployimage:$BUILD_NUMBER
+
+Access app : http://192.168.111.138:32768/addressbook/
+
+
+--------------------------------------------
+
+sudo chown jenkins:jenkins /tmp/deploy1
+cd /tmp/deploy1
+sudo cp /var/lib/jenkins/workspace/package1/addressbook.war .
+sudo touch Dockerfile
+sudo chown jenkins:jenkins Dockerfile
+sudo cat <<EOT>> Dockerfile
+FROM tomcat
+ADD addressbook.war /usr/local/tomcat/webapps
+CMD "catalina.sh" "run"
+EXPOSE 8080
+EOT
+sudo docker build -t ravi/deployimage:$BUILD_NUMBER .
+sudo docker run -itd --name=deployapp-$BUILD_NUMBER -P ravi/deployimage:$BUILD_NUMBER
+sudo docker ps
+
+
+-------------------------------------
+
+Networks:
+
+docker run -d ubuntu sleep 1000   (run two times and see diff ips)
+docker inspect 7f0dfc
+
+"Gateway": "172.17.0.1",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "172.17.0.3",
+
+			
+ "Networks": {
+                "bridge": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "NetworkID": "58d04eb694fac3ea778a9a1a03ec015902d47243745a2b                                                   a5b192c6ce52d25463",
+
+					
+----------
+
+docker run -d --net host --name cont1 alpine ping google.com
+
+see inspect as host
+
+
+docker run -d --net none --name cont2 alpine ping google.com
+
+
+----------
+
+docker network create ravinet
+docker network ls
+
+docker run -d --net ravinet --name cont3 alpine ping google.com
+
+ docker swarm init
+ docker network ls
+
+ root@ubuntu:/tmp/deploy# docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+58d04eb694fa        bridge              bridge              local
+247120965c44        docker_gwbridge     bridge              local
+2d3b30748098        host                host                local
+nt2kw4mrttvd        ingress             overlay             swarm  -- for swarm
+4932c2fda7ee        none                null                local
+0d1cadac5822        ravinet             bridge              local
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

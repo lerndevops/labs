@@ -20,7 +20,7 @@ services:
   mongo:
     image: lerndevops/mongo
     deploy:
-      replicas: 2
+      replicas: 1
 #      placement:
 #        constraints:
 #          - node.labels.role==db

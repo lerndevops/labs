@@ -5,7 +5,7 @@ metadata:
   labels:
     app: myapp
 spec:
-  replicas: 3
+  replicas: 5
   selector:
     matchLabels:
       app: myapp
@@ -19,3 +19,18 @@ spec:
         image: lerndevops/samplepyapp:v1
         ports:
         - containerPort: 3000
+
+---
+
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: myapp-svc
+spec:
+  type: NodePort
+  selector:
+    app: myapp
+  ports:
+  - protocol: TCP
+    port: 3000
+#    nodePort: 32105

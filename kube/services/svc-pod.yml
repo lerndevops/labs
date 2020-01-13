@@ -1,11 +1,26 @@
 apiVersion: v1
+kind: Pod
+metadata:
+   name: mypod
+   labels:
+     app: myapp
+spec:
+   containers:
+     - name: httpd
+       image: httpd
+       ports:
+         - containerPort: 80
+
+---
+
+apiVersion: v1
 kind: Service
 metadata:
-  name: pod-svc
+  name: mysvc
 spec:
-  type: NodePort
+  type: ClusterIP 
   selector:
-    app: MyApp
+    app: myapp
   ports:
    - protocol: TCP
-     port: 8080
+     port: 90

@@ -1,9 +1,8 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: frontend
+  name: my-rs 
   labels:
-    app: sampleapp
     tier: frontend
 spec:
   replicas: 3
@@ -20,3 +19,18 @@ spec:
         image: httpd
         ports:
           - containerPort: 80
+
+---
+
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: frontend-svc
+spec:
+  type: NodePort
+  selector:
+    tier: frontend
+  ports:
+  - protocol: TCP
+    port: 80
+#    nodePort: 32105

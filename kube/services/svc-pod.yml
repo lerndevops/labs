@@ -8,8 +8,8 @@ spec:
    containers:
      - name: httpd
        image: httpd
-       ports:
-         - containerPort: 80
+       #       ports:
+       #  - containerPort: 80
 
 ---
 
@@ -23,4 +23,4 @@ spec:
     app: myapp
   ports:
    - protocol: TCP
-     port: 90
+     port: 80

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-app1
+  labels:
+    app: app1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      name: nginx-app1
+      labels:
+        app: app1
+    spec:
+      containers:
+        - name: app1
+          image: lerndevops/nginx:app1
+          ports: 
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-app1-svc
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: app1

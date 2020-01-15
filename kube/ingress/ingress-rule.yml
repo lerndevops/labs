@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mying-rule
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+        - path: /app1
+          backend:
+            serviceName: nginx-app1-svc
+            servicePort: 80
+        - path: /app2
+          backend:
+            serviceName: nginx-app2-svc
+            servicePort: 80
+        - path: /app3
+          backend:
+            serviceName: nginx-app3-svc
+            servicePort: 80

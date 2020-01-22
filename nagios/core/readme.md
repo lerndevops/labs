@@ -11,7 +11,7 @@ NagiosGraph configuration lives in /opt/nagiosgraph/etc
 ### Install
 
 ```sh
-docker pull lerndevops/nagios:core
+docker pull lerndevops/nagios:core4.4
 ```
 
 ### Running
@@ -19,7 +19,7 @@ docker pull lerndevops/nagios:core
 Run with the example configuration with the following:
 
 ```sh
-docker run -d --name nagios4 -p 8080:80 lerndevops/nagios:core
+docker run -d --name nagios4 -p 8080:80 lerndevops/nagios:core4.4
 ```
 
 #### Credentials
@@ -36,7 +36,7 @@ docker run -d --name nagios4  \
   -v /path-to-custom-plugins:/opt/Custom-Nagios-Plugins \
   -v /path-to-nagiosgraph-var:/opt/nagiosgraph/var \
   -v /path-to-nagiosgraph-etc:/opt/nagiosgraph/etc \
-  -p 8080:80 lerndevops/nagios:core
+  -p 8080:80 lerndevops/nagios:core4.4
 ```
 
 Note: The path for the custom plugins will be /opt/Custom-Nagios-Plugins, you will need to reference this directory in your configuration scripts.

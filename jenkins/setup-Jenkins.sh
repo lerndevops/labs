@@ -29,7 +29,8 @@ cd /tmp ; tar -xzf apache-maven-3.6.3-bin.tar.gz -C /opt
 
 #Install SonarQube-runner ( on Jenkins machine )
 
-cd /tmp ; wget http://repo1.maven.org/maven2/org/codehaus/sonar/runner/sonar-runner-dist/2.4/sonar-runner-dist-2.4.zip
+#cd /tmp ; wget http://repo2.maven.org/maven2/org/codehaus/sonar/runner/sonar-runner-dist/2.4/sonar-runner-dist-2.4.zip
+cd /tmp ; wget https://repo1.maven.org/maven2/org/codehaus/sonar/runner/sonar-runner-dist/2.4/sonar-runner-dist-2.4.zip
 cd /tmp ; unzip sonar-runner-dist-2.4.zip
 cd /tmp ; mv sonar-runner-2.4 /opt
 

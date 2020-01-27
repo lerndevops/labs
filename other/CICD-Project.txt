@@ -32,12 +32,12 @@ get a new Ubuntu VM ( free tier ) from AWS
 		* install docker on the Same Jenkins VM
 		* build docker image from Jenkins using the artifact genereated as part of CI & Version the Image 
 		* Push the Docker Image to docker hub using Jenkins
-		* Install Ansible of Jenkins Machine, so that it can act as Ansible Controller
-		* Configure Ansible Inventory with QA & PROD Server Information
-		* write a playbook to deploy the image as container into QA & PROD
-		* Invoke Ansible from Jenkins to Connect to QA Swarm Mananger & Deploy the Docker Container in QA
+		* Install Ansible on Jenkins Machine, so that it can act as Ansible Controller
+		* create Ansible Inventory with QA & PROD Server Information
+		* write a playbook, which can take env & image-version as variables to deploy the image as container into QA & PROD
+		* Invoke Ansible from Jenkins to Connect to QA Swarm Mananger & Deploy the Docker Containers in QA
 		* if QA Deployment fails do not proceed further. 
-		* Invoke Ansible from Jenkins to Connect to QA Swarm Mananger & Deploy the Docker Container in QA
+		* Invoke Ansible from Jenkins to Connect to PROD Swarm Mananger & Deploy the Docker Containers in PROD
 		
 		every time pipeline runs, old version should be removed & new version should be deployed.
 

@@ -1,0 +1,47 @@
+Problem Statement
+
+MongoBite Co. is using Cloud for one of their products. The project uses modular components, multiple frameworks and want the components to be developed by different teams or by 3rd-party vendors.
+
+The company’s goal is to deliver the product updates frequently to production with High quality & Reliability. They also want to accelerate software delivery speed, quality and reduce feedback timebetween developers, testers & ops teams.
+
+they need to implement Continuous Integration & Continuous Deployment with DevOps using following tools:
+
+	Git – For version control for tracking changes in the code files
+	Jenkins – For continuous integration and continuous deployment
+	Docker – For containerizing applications ( preparing images )
+	Ansible - For Setting application hosting environment & to deploy the Containers
+	Docker Swarm / Kubernetes -- For hosting containerized applications ( for running containers )
+	
+	
+This project will be about how to do deploy code to dev/stage/prod etc, just on a click of button.
+
+
+============================================================================
+
+CICD Setup: 
+
+get a new Ubuntu VM ( free tier ) from AWS
+
+	* install git, Java, Jenkins & setup the CI Pipeline to Generate the artifact (.war) 
+	* for implementing the CD Pipeline from Jenkins follow the below steps 
+	
+	pre-req: create 4 VMs in aws ( free tier ) 
+				2 for qa environment ( install docker & setup a docker swarm (1 manager & 1 node ))
+				2 for prod environment ( install docker & setup a docker swarm (1 manager & 1 node ))
+
+		* install docker on the Same Jenkins VM
+		* build docker image from Jenkins using the artifact genereated as part of CI & Version the Image 
+		* Push the Docker Image to docker hub using Jenkins
+		* Install Ansible of Jenkins Machine, so that it can act as Ansible Controller
+		* Configure Ansible Inventory with QA & PROD Server Information
+		* write a playbook to deploy the image as container into QA & PROD
+		* Invoke Ansible from Jenkins to Connect to QA Swarm Mananger & Deploy the Docker Container in QA
+		* if QA Deployment fails do not proceed further. 
+		* Invoke Ansible from Jenkins to Connect to QA Swarm Mananger & Deploy the Docker Container in QA
+		
+		every time pipeline runs, old version should be removed & new version should be deployed.
+
+
+after building this flow, with single click / or whenever there is code change the app should be deploy till prod without manual intervention. 
+
+	

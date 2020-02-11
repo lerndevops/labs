@@ -1,0 +1,92 @@
+We already know Kubernetes will run pods and deployments, but what happens when you need to update or change the version of your application running inside of the Kubernetes cluster? That’s where rolling updates come in, allowing you to update the app image with zero downtime. In this lesson, we’ll go over a rolling update, how to roll back, and how to pause the update if things aren’t going well.
+
+The YAML for a deployment:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubeserve
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kubeserve
+  template:
+    metadata:
+      name: kubeserve
+      labels:
+        app: kubeserve
+    spec:
+      containers:
+      - image: leaddevops/kubeserve:v1
+        name: app
+        
+        
+Create a deployment with a record (for rollbacks):
+
+kubectl create -f kubeserve-deployment.yaml --record
+Check the status of the rollout:
+
+kubectl rollout status deployments kubeserve
+
+View the ReplicaSets in your cluster:
+
+kubectl get replicasets
+Scale up your deployment by adding more replicas:
+
+kubectl scale deployment kubeserve --replicas=5
+Expose the deployment and provide it a service:
+
+kubectl expose deployment kubeserve --port 80 --target-port 80 --type NodePort
+
+Check the services:
+kubectl get services
+
+
+Set the minReadySeconds attribute to your deployment:
+
+kubectl patch deployment kubeserve -p '{"spec": {"minReadySeconds": 10}}'
+
+Now open the yml file and change the image version to ‘v2’
+
+Use kubectl apply to update a deployment:
+
+kubectl apply -f kubeserve-deployment.yaml
+
+We can try describing deployment to see the update of image.
+
+Now, edit the version of image back to ‘v1’
+
+Use kubectl replace to replace an existing deployment:
+
+Apply: updates the objects and can also create if object doesn’t exist.
+Replace: only for updates , the object should exist.
+
+kubectl replace -f kubeserve-deployment.yaml
+
+kubectl get services — copy service IP
+
+Run this curl look while the update happens:
+
+while true; do curl http://serviceIP; done    # Run this on Node -- DO NOT ON MASTER
+
+Open another window, Perform the rolling update:
+
+kubectl set image deployments/kubeserve app=leaddevops/kubeserve:v2 --v 6
+
+Describe a certain ReplicaSet:
+
+kubectl describe replicasets 
+
+Apply the rolling update to version 3 (buggy):
+
+kubectl set image deployment kubeserve app=leaddevops/kubeserve:v3
+Undo the rollout and roll back to the previous version:
+
+kubectl rollout undo deployments kubeserve
+Look at the rollout history:
+
+kubectl rollout history deployment kubeserve
+Roll back to a certain revision:
+
+kubectl rollout undo deployment kubeserve --to-revision=2

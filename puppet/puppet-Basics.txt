@@ -124,6 +124,47 @@ puppet module install nano
 /opt/puppetlabs/bin/puppet apply --modulepath=<path> <modulename>/tests/init.pp --noop 
 
 
+Nodes - Default classification
+==============================
 
+A node is identified by the PuppetMaster by its certname, which defaults to the node's fqdn
+
+In the first manifest file parsed by the Master, site.pp, we can define nodes with a syntax like:
+
+node 'web01' {
+  include apache
+}
+We can also define a list of matching names:
+
+node 'web01' , 'web02' , 'web03' {
+  include apache
+}
+or use a regular expression:
+
+node /^www\d+$/ {
+  include apache
+}
+A node can inherit another node and include all the classes and variables defined for it, this feature is now deprecated and is not supported anymore on Puppet 4.
+
+Useful paths
+=============
+
+/var/log/puppet contains logs (but also on normal syslog files, with facility daemon), both for agents and master
+
+/var/lib/puppet contains Puppet operational data (catalog, certs, backup of files...)
+
+/var/lib/puppet/ssl contains SSL certificate
+
+/var/lib/puppet/clientbucket contains backup copies of the files changed by Puppet
+
+/etc/puppet/manifests/site.pp (On Master) The first manifest that the master parses when a client connects in order to produce the configuration to apply to it (Default on Puppet < 3.6 where are used config-file environments)
+
+/etc/puppet/environments/production/manifests/site.pp (On Master) The first manifest that the master parses when using directory environments (recommended from Puppet 3.6 and default on Puppt >= 4)
+
+/etc/puppet/modules and /usr/share/puppet/modules (On Master) The default directories where modules are searched
+
+/etc/puppet/environments/production/modules (On Master) An extra place where modules are looked for when using directory environments
+
+/var/lib/puppet/reports -- To see the reports reported by nodes
 
 

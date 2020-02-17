@@ -289,6 +289,11 @@ service { 'apache2':
   ensure => running,
 }
 }
+
+
+
+Puppet Tutorial : https://www.example42.com/tutorials/PuppetTutorial/
+
  
 
 

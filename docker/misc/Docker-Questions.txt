@@ -1,0 +1,275 @@
+1. How should we give a user permission to interact with the Docker daemon on a machine without giving them unnecessary additional access?
+
+	A.  Add the user to the docker group.
+	B.  Give the user the ability to run docker commands with sudo.
+	C.  Have them log in as the docker user.
+	D.  Give the user the root user credentials so they can run docker commands as root.
+
+Correct Answer: A
+
+2. Which Docker edition would we choose for obtaining the latest Docker Engine updates?
+
+	A. Docker Developer Edition (DE)
+	B. Docker Community Edition (CE)
+	C. Either Docker CE or Docker EE
+	D. Docker Enterprise Edition (EE)
+
+Correct Answer: C
+
+3. Where does the docker daemon persist all docker related data on host machine?
+	
+	A. /var/lib/docker-ce
+	B. /etc/docker
+	C. /usr/lib/docker
+	D. /var/lib/docker
+
+Correct Answer: D
+
+4. Which of the following namespaces is not enabled by default?
+
+	A.  mnt
+	B.  uts
+	C.  pid
+	D.  user
+
+Correct Answer: D
+
+5. Nancy wants to run a container using an image called foo. She wants to publish the container's port 3001 to port 5050 on the host. Which of the following commands will accomplish this?
+
+	A. docker run -d -p 5050:3001 foo
+	B. docker run --port 5050:3001 foo
+	C. docker run -d -p 3001:5050 foo
+	D. docker run foo -p 5050:3001
+
+Correct Answer: A
+
+6. How a running container can be interpreted on a Linux host? 
+
+	A. an application 
+	B. a process
+	C. a program
+	D. a file
+
+Correct Answer: B
+
+7. We have a Docker host that is running low on storage. What command could help us identify how the host is using storage?
+
+	A. docker system df
+	B. docker container ls
+	C. docker image inspect
+	D. docker image prune
+
+Correct Answer: A
+
+8. Which of the following commands would we use to view a container's logs?
+
+	A. docker logs <container>
+	B. docker service logs <service>
+	C. docker container get-log
+	D. sudo journalctl -u docker
+
+Correct Answer: A
+
+9. Which set of commands can identify the publishd port(s) for a container? (Choose 1.)
+
+	A. 'docker port inspect', 'docker container inspect'
+	B. 'docker container inspect', docker port'
+	C. 'docker info','docker network inspect'
+	D. 'docker network inspect','docker port'
+	
+Correct Answer: B
+
+10. Which of the following helps execute command "ls /tmp" inside a running container
+
+	A. docker run -it container ls /tmp
+	B. docker exec -it container ls /tmp
+	C. docker exec container ls /tmp
+	D. all of the above
+
+Correct Answer: C
+
+==============================================================================================================
+
+11. What is the default extension of Dockerfile ? 
+
+	A. ".txt"
+	B. ".dockerfile"
+	C. ".yaml"
+	D. None of the above
+
+Correct Answer: D
+
+12. Which of the following commands will build an image from a Dockerfile located in the current directory and tag it as my-custom-image:1?
+
+	A. docker build -t my-custom-image:1 .
+	B. docker build .
+	C. docker build -tag my-custom-image:1 .
+	D. docker build -tag my-custom-image:1
+
+Correct Answer: A
+
+13. Which Dockerfile directive would set up the base image that can serve as our starting point for establishing a new image?
+
+	A. START
+	B. FROM
+	C. BASE
+	D. ARG
+
+Correct Answer: B
+
+14. What is the difference between the ADD and COPY dockerfile instructions? (choosen 2)
+
+	A. ADD supports compression format handling while COPY does not.
+	B. COPY supports regular expression handling while ADD does not.
+	C. COPY supports compression format handling while ADD does not.
+	D. ADD support remote URL handling while COPY does not.
+	E. ADD supports regular expression handling while COPY does not.
+	
+Correct Answer: A or D both
+
+15. What is the functionality of RUN instruction in Dockerfile? 
+	
+	A. it run the Dockerfile and creates a new Docker image 
+	B. it executes the command on the writable layer of the container and commit the result
+	C. it executes command in a new layer on top of the current image and commits the result 
+	D. None of the above
+
+Correct Answer: C
+
+
+16. Which of the following is the correct command to store an image to a registry? 
+
+	A. docker upload [OPTIONS] NAME[:TAG]
+	B. docker push [OPTIONS] NAME[:TAG]
+	C. docker commit [OPTIONS] NAME[:TAG]
+	D. docker store [OPTIONS] NAME[:TAG]
+	
+Correct Answer: B
+
+17. How would we create a volume called new-volume without running a container?
+
+	A. We would run docker volume create new-volume.
+	B. We would use docker run -v new-volume:/tmpnginx.
+	C. We would run docker run --rm -v new-volume:/tmpnginx.
+	D. We would run docker create volume new-volume.
+
+Correct Answer: A
+
+18. Which of the following mounts can grant read/write permissions on host file system to a process running inside a container?
+
+	A. Volume
+	B. bind mount
+	C. tmpfs
+	D. all of the above
+
+Correct Answer: B
+
+19. What is the use of  “ docker commit”  command ?
+
+	A.	To create a new container from existing container
+	B.	To save the container changes to existing image
+	C.	To save the container changes as a new image
+	D.	To create a new image by using Dockerfile
+	
+Correct Answer:  C
+
+20. which tool helps for defining and running multi-container Docker applications.
+
+	A. Docker Engine
+	B. Docker Hub
+	C. Docker Toolbox
+	D. Docker Compose
+
+Correct Answer: D
+
+======================================================================================================================
+
+21. Which of the following is NOT a docker native network driver? 
+
+	A. Load Balancer
+	B. bridge
+	C. host
+	D. macvlan
+
+Correct Answer: A
+
+22. Which of the following networks removes the network isolation between container and docker host?
+
+	A. ingress
+	B. bridge
+	C. host
+	D. macvlan
+
+Correct Answer: C
+
+23. Containers on user-defined bridge network can communicate only via IP addresses. 
+
+	A. True
+	B. False 
+	
+Correct Answer: B
+
+24. Which docker network is used to connect one or more docker daemons of participating nodes in swarm cluster? 
+
+	A. bridge
+	B. overlay
+	C. ingress
+	D. docker_gwbridge
+
+Correct Answer: D
+
+25. which of the follwing command is used create docker swarm manager node
+
+	A. docker swarm setup
+	B. docker swarm run
+	C. docker swarm init
+	D. docker swarm create
+
+Correct Answer: C
+
+26. Which of the following commands is used to revoke cluster management and orchestrating privileges from manager node? 
+
+	A. docker node down
+	B. docker node rm
+	C. docker node demote 
+	D. None of the above
+
+Correct Answer: C
+
+27. which of the following command used create a nginx service in replicated mode & 8080 published port in cluster
+
+	A. docker service run --name nginx replicate 4 -p 8080:80 nginx:latest
+	B. docker service run --name nginx --replicas 4 -P nginx:latest
+	C. docker service create --name nginx --replicas 4 -p 8080:80 nginx:latest
+	D. docker service create --name nginx replicate 4 -p 8080:80 nginx:latest
+
+Correct Answer: C
+
+28. What is the limitation of docker service scale command in swarm mode? 
+
+	A. it can only scale UP the service
+	B. i can only be applied on replicated services
+	C. it can only scale one service at a time 
+	D. all of the above
+
+Correct Answer: B
+
+29. Which of the following tools allows users to implement RBAC? 
+
+	A. Docker Hub
+	B. Docker Compose
+	C. Docker Universal Control Plane
+	D. Docker Swarm
+	
+Correct Answer: C
+
+30. You have a five node swarm cluster deployed on your local system. What will happen if the only manage node of the cluster fails?
+
+	A. swarm services will continue to run
+	B. all memeber nodes will perform a re-election among them to elect a new manager
+	C. swarm cluster will stop all the process until user configures a new manager of the cluster
+	D. no actions will be taken 
+
+Correct Answer: A
+
+==========================================================================================================================

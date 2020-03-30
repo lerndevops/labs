@@ -1,10 +1,10 @@
 ---
-- hosts: prod
+- hosts: all
   become: yes
   tasks: 
 #### execute shell script & print the output
     - name : execute a shell
-      script: sh /tmp/test.sh
+      script: /tmp/test.sh
       register: abc
     - debug:
          msg: "{{ abc.stdout_lines }}"

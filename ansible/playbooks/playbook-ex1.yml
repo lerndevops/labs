@@ -1,5 +1,5 @@
 ---
-- hosts: prod
+- hosts: all 
 #  become: yes
   tasks:
 #### copy a file

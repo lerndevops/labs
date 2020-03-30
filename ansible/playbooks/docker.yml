@@ -1,32 +1,31 @@
 ---
-- hosts: qa
+- hosts: all
+  become: yes
   vars: 
      dockerceversion: 5:18.09.9~3-0~ubuntu-bionic
      dockercecliversion: 5:18.09.9~3-0~ubuntu-bionic
      containerdioversion: 1.2.6-3
   tasks:
     - name: Add Docker GPG key
-      apt_key: url=https://download.docker.com/linux/ubuntu/gpg
-      become: yes
+      apt_key: 
+        url: https://download.docker.com/linux/ubuntu/gpg
     - name: Install basic list of packages
       apt:
         name: ['apt-transport-https','ca-certificates','curl','gnupg2','software-properties-common']
         state: present
         update_cache: yes
-      become: yes
     - name: Add Docker APT repository
       apt_repository:
           repo: deb [arch=amd64] https://download.docker.com/linux/{{ansible_distribution|lower}} {{ansible_distribution_release}} stable
-      become: yes
     - name: Install Docker packages
       apt:
-        name: "{{ item }}" 
+#        name: "{{ item }}" 
+        name: ['docker-ce={{ dockerceversion }}','docker-ce-cli={{ dockercecliversion }}', 'containerd.io={{ containerdioversion }}']
         state: present
-      with_items:
-            - docker-ce= "{{ dockerceversion }}"
-            - docker-ce-cli= "{{ dockercecliversion }}"
-            - containerd.io= "{{ containerdioversion }}"
+#      with_items:
+#            - docker-ce={{ dockerceversion }}
+#            - docker-ce-cli={{ dockercecliversion }}
+#            - containerd.io={{ containerdioversion }}
 #            - docker-ce
 #            - docker-ce-cli
 #            - containerd.io
-      become: yes

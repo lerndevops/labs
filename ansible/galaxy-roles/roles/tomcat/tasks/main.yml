@@ -11,13 +11,13 @@
   become_method: sudo
 
 - name: Download Tomcat
-  get_url: url=http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.50/bin/apache-tomcat-8.5.50.tar.gz dest=/opt/apache-tomcat-8.5.50.tar.gz
+  get_url: url=http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.53/bin/apache-tomcat-8.5.53.tar.gz dest=/opt/apache-tomcat-8.5.53.tar.gz
 
 - name: Extract archive
-  command: chdir=/usr/share /bin/tar xvf /opt/apache-tomcat-8.5.50.tar.gz -C /opt/ creates=/opt/apache-tomcat-8.5.50
+  command: chdir=/usr/share /bin/tar xvf /opt/apache-tomcat-8.5.53.tar.gz -C /opt/ creates=/opt/apache-tomcat-8.5.53
 
 - name: Symlink install directory
-  file: src=/opt/apache-tomcat-8.5.50 path=/usr/share/tomcat state=link
+  file: src=/opt/apache-tomcat-8.5.53 path=/usr/share/tomcat state=link
 
 - name: Change ownership of Tomcat installation
   file: path=/usr/share/tomcat/ owner=tomcat group=tomcat mode=0755 state=directory recurse=yes
@@ -39,8 +39,14 @@
 - name: Deploy Applicaiton
   copy:
     src: sampleapp.war
-    dest: /usr/share/tomcat/webapps  
+    dest: /usr/share/tomcat/webapps
 
 - name: Start Tomcat
-  command: "nohup /usr/share/tomcat/bin/startup.sh"
-  tags: starttom
+  service: name=tomcatd state=restarted
+
+- name: wait for tomcat to start
+  wait_for: port={{http_port}}
+
+#- name: Start Tomcat
+#  command: "nohup /usr/share/tomcat/bin/startup.sh"
+#  tags: starttom

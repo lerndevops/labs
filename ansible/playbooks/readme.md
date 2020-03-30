@@ -6,15 +6,15 @@
 
 ## execute playbooks with SSH Keys Configured to target hosts 
 ```
-how to run a ansible playbook  ( default invenotry ) with uid/pwd
+how to run a ansible playbook  ( default invenotry )
 
 	ansible-playbook myplaybook.yml 
 
-how to run ansible playbook with custom inventory with uid/pwd
+how to run ansible playbook with custom inventory
 
 	ansible-playbook -i /path/to/inventory myplaybook.yml
 
-how to run ansible playbook with super user (root) with uid/pwd
+how to run ansible playbook with super user (root)
 
         ansible-playbook -i /path/to/inventory myplaybook.yml
 ```

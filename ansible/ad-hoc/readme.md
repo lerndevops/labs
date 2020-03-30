@@ -4,7 +4,7 @@
 ## Ansible Ad-Hoc Commands to use when SSH Keys configured with target hosts
 
 ```
-how to run ansible ad-hoc commands ( default inventory ) with uid/pwd
+how to run ansible ad-hoc commands ( default inventory )
 
 	ansible all -m setup
         ansible qa -m ping
@@ -12,12 +12,12 @@ how to run ansible ad-hoc commands ( default inventory ) with uid/pwd
         ansible iat -m copy -a "src=/tmp/naresh.txt dest=/tmp"
         ansible prod -m file -a "path=/tmp/helousername.txt state=touch"
 
-how to run ansible ad-hoc with custom inventory & uid/pwd
+how to run ansible ad-hoc with custom inventory
 
 	ansible all -i /path/to/inventory ping
         ansible dev -i /path/to/inventory -m copy -a "src=/tmp/new.txt dest=/tmp"
 
-how to run ansible ad-hoc with super user (root) with uid/pwd
+how to run ansible ad-hoc with super user (root)
 
         ansible all -i /path/to/inventory -b ping
         ansible dev -i /path/to/inventory -m copy -a "src=/tmp/new.txt dest=/tmp" -b

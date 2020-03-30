@@ -24,7 +24,7 @@
 		   mkdir -p /home/ansible/.ssh
 		   touch /home/ansible/.ssh/authorized_keys
 		   chmod 600 /home/ansible/.ssh/authorized_keys
-		   vi /home/user/.ssh/authorized_keys  (copy the contet of id_rsa.pub from ansible controller)
+		   vi /home/ansible/.ssh/authorized_keys  (copy the contet of id_rsa.pub from ansible controller)
 ```	
 	
 

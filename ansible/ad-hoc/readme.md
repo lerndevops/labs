@@ -23,7 +23,7 @@ how to run ansible ad-hoc with super user (root) with uid/pwd
         ansible dev -i /path/to/inventory -m copy -a "src=/tmp/new.txt dest=/tmp" -b
 ```
 
-## Ansible Ad-Hoc Commands to use when no No SSH Keys configured with target hosts
+## Ansible Ad-Hoc Commands to use when No SSH Keys configured with target hosts
 
 ```
 how to run ansible ad-hoc commands ( default inventory ) with uid/pwd

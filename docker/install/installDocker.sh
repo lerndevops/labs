@@ -47,7 +47,7 @@ if [ -f /etc/os-release ];then
        install_ubuntu
    elif [ $osname == "amzn" ];then
        install_centos
-   else [ $osname == "amzn" ];then
+   elif [ $osname == "centos" ];then
        install_centos
   fi
 else

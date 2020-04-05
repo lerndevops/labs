@@ -68,7 +68,7 @@
    ensure to update the qa & prod server credentials accrodingly in /tmp/inv file
 ```
 
-### Step9 -- `Now Let's start creating CICD Pipeline on Jenkins UI`
+### Step9 -- `Login to Jenkins UI`
 
 ```
 	hit `http://IP:8080` in browser ## incase of cloud please use Public IP ensure the Port is allowed to access. 
@@ -122,3 +122,5 @@ Git Configuration in Jenkins console
 		Name: git ( can be any string )
 		MAVEN_HOME: /path/to/githome ( ex: /usr/bin/git )
 ```
+
+## Step 13: Now Let's start creating CICD Pipeline

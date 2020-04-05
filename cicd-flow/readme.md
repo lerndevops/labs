@@ -270,4 +270,5 @@ Jenkins ( home page ) ==> My Views ==> New View ==> View Name Enter "CICD-View" 
 ### Step15 -- `Run The Pipeline & Validate`
 
 > validate the containers are deployed to QA & PROD without failure
+
 > re run the pipeline after the first successfull ru & validate older Version removed & new Version deployed on QA & PROD

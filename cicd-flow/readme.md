@@ -178,16 +178,80 @@ insdie job parameters as below
 		Credential: Specific credentials: (click on dropdown) choose credential created in step11 
 		
 	Build --> (click on drop down) Invoke top-level Maven targets
+		
 		Maven Version --> select value from drop down (ex: maven3.6) as configured in Step12
 		Goals: package
+	
 	Build --> (click on dropdown) Execute Shell --> command (enter below in box)
+	
 		cd $WORKSPACE
 		docker build -f Dockerfile -t lerndevops/samplejavaapp:$BUILD_NUMBER .  ## use your docker hub repo
 		docker login -u lerndevops -p $DOCKER_HUB_PWD  ## replace lerndevops with your docker hub username
 		docker push lerndevops/samplejavaapp:$BUILD_NUMBER
 
-	Post-build Actions --> [Depricated] Publish JUnit test results report --> Test report XMLs (target/surefire-reports/*.xml)
+	Post-build Actions --> (click on dropdown) trigger parameterized build on other projects
+		Projects to build: job5-deploy.qa
+		click on dropdown Add Parameters --> Predefined parameters --> prameters box enter "Package_Build_Number=$BUILD_NUMBER"
 Apply & Save
-	
-	After running this JOB validate the Image is Uploaded to Docker Hub Sucessfully 
+
+
+After running this JOB validate the Image is Uploaded to Docker Hub Sucessfully 
+```
+
+### `JOB5 -- Deploy to QA`
+```
+Jenkins ( home page ) ==> New Item ==> job5-deploy.qa ==> Freestyle project ==> ok
+insdie job parameters as below 
+
+	General --> select "This project is parameterized" --> click on dropdown "Add Parameter" --> select "String parameter"
+		Name: Package_Build_Number
+		
+	Source Code Management --> Git --> Repository URL (https://github.com/lerndevops/samplejavaapp)
+		
+	Build --> (click on dropdown) Execute Shell --> command (enter below in box)
+		cd $WORKSPACE/deploy
+		sudo su ansible -c "ansible-playbook -i /tmp/inv deploy.yml -e 'env=qa build=$Package_Build_Number'"
+
+	Post-build Actions --> (click on dropdown) trigger parameterized build on other projects
+		Projects to build: job6-Selenium-test
+		click on dropdown Add Parameters --> Predefined parameters --> prameters box enter "pbn=$Package_Build_Number"
+	Apply & Save
+
+```
+
+### `JOB6 -- Run Automation Tests`
+```
+Jenkins ( home page ) ==> New Item ==> job6--Selenium.test ==> Freestyle project ==> ok
+insdie job parameters as below 
+
+	General --> select "This project is parameterized" --> click on dropdown "Add Parameter" --> select "String parameter"
+		Name: pbn
+		
+	Source Code Management --> Git --> Repository URL (https://github.com/lerndevops/samplejavaapp)  ## must give automation test suit repository
+		
+	Build --> (click on dropdown) Execute Shell --> command (enter below in box)
+		echo "Automations Test Cases Executed Successfully"
+
+	Post-build Actions --> (click on dropdown) trigger parameterized build on other projects
+		Projects to build: job7-deploy.prod
+		click on dropdown Add Parameters --> Predefined parameters --> prameters box enter "prod_release=$pbn"
+	Apply & Save
+
+```
+
+### `JOB7 -- Deploy to PROD`
+```
+Jenkins ( home page ) ==> New Item ==> job7-deploy.prod ==> Freestyle project ==> ok
+insdie job parameters as below 
+
+	General --> select "This project is parameterized" --> click on dropdown "Add Parameter" --> select "String parameter"
+		Name: prod_release
+		
+	Source Code Management --> Git --> Repository URL (https://github.com/lerndevops/samplejavaapp)
+		
+	Build --> (click on dropdown) Execute Shell --> command (enter below in box)
+		cd $WORKSPACE/deploy
+		sudo su ansible -c "ansible-playbook -i /tmp/inv deploy.yml -e 'env=prod build=$prod_release'"
+	Apply & Save
+
 ```

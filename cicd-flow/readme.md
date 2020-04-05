@@ -46,26 +46,26 @@
 
     echo -e 'jenkins  ALL=(ALL)  NOPASSWD:  ALL' > /etc/sudoers.d/jenkins
 
-### Step7 -- `configure ssh keys for ansible user & Setup target Environments`
+### Step7 -- `Setup target Environments & configure ssh keys for ansible user`
 
-> since we are going to use the same jenkins machine as ansible controller, create user & configure the ssh keys. 
-	
 > setup two docker swarm clusters one for QA & one for PROD
 ```
-       create two VMs for QA & create docker swarm cluster one manager & one node
-       create two VMs for PROD & create docker swarm cluster one manager & one node 
+       create two VMs for QA, Install Docker on both & create docker swarm cluster, one manager - one node
+       create two VMs for PROD, Install Docker on both & create docker swarm cluster, one manager - one node
 ```
+> since we are going to use the same jenkins machine as ansible controller, create user ansible & configure the ssh keys. 
+	
 > Copy the ssh-keys for ansible user from Jenkins machine (acting as ansible controller) to QA Swarm Manager & PROD Swarm Manager so that Jenkins can connect & deploy the containers. 
 
    [SSH-KEYS-SETUP](https://github.com/lerndevops/labs/blob/master/ansible/install/ssh-keys-setup.md)
 
-### Step8 -- `Setup Ansible Inventory`
+### Step8 -- `Setup Ansible Inventory on Jenkins machine`
 
 ```
    vi /tmp/inv 
    enter your servers in gruops called qa & prod 
    ( look at the sample inventory file under https://github.com/lerndevops/samplejavaapp/tree/master/deploy )
-   ensure to update the qa & prod server credentials accrodingly in /tmp/inv file
+   ensure to put only manager IPs in inventory file -- DO NOT PUT NODE IPs
 ```
 
 ### Step9 -- `Login to Jenkins UI`

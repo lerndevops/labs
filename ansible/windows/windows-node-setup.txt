@@ -1,0 +1,16 @@
+[winhost:vars]
+
+ansible_user=testuser
+ansible_password="(O5dAh2tdhld3VkC5c2IYE@l6(@U?Wcm"
+ansible_connection=winrm
+ansible_winrm_server_cert_validataion=ignore
+
+sudo apt install python-pip
+sudo pip install pywinrm
+
+check winrm on windows:
+
+Test-WSMan
+Get-Service WinRM
+
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 8

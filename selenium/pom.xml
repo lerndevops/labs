@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Se-Test</groupId>
+  <artifactId>Se-Test</artifactId>
+  <version>0.0.2-SNAPSHOT</version>
+  <dependencies>
+  <!-- Selenium -->
+     <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-java</artifactId>
+        <version>3.4.0</version>
+     </dependency>
+  <!-- TestNG -->
+     <dependency>
+        <groupId>org.testng</groupId>
+        <artifactId>testng</artifactId>
+        <version>6.8</version>
+        <scope>test</scope>
+     </dependency>
+  <!-- Selenium Server-->
+     <dependency>
+        <groupId>org.seleniumhq.selenium</groupId>
+        <artifactId>selenium-server</artifactId>
+        <version>3.141.59</version>
+     </dependency>
+  </dependencies>
+ </project>

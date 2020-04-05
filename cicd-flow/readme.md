@@ -52,7 +52,16 @@
 	
    [SSH-KEYS-SETUP](https://github.com/lerndevops/labs/blob/master/ansible/install/ssh-keys-setup.md)
 
-### Step8 -- Now Let's start creating CICD Pipeline on Jenkins
+### Step8 -- Setup Ansible Inventory
+
+```
+   vi /tmp/inv 
+   enter your servers in gruops called qa & prod 
+   ( look at the sample inventory file under https://github.com/lerndevops/samplejavaapp/tree/master/deploy )
+   ensure to update the qa & prod server credentials accrodingly in /tmp/inv file
+```
+
+### Step9 -- Now Let's start creating CICD Pipeline on Jenkins
 
 ```
 	hit `http://IP:8080` in browser ## incase of cloud please use Public IP ensure the Port is allowed to access. 
@@ -62,4 +71,26 @@
 	click on `Install Suggested Plugins`
 
 	continue next and finish the setup. 
+```
+
+### Step10 -- Install reqired Plugins (Install these from Jenkins UI)
+```
+install all these from Jenkins UI )
+  Manage Jenkins --> manage plugins -- Available -- search & install the below
+  	1) PMD
+  	2) cobertura
+  	3) Junit
+  	4) build with parameters
+  	5) BuildPipeline
+```
+
+### Step11 -- Create Credentials (Setup these from Jenkins UI)
+
+```
+  Jenkins ( main/home page ) ==> Credentials ==> global ==> Add Credentials 
+	--> kind: secret text 
+	--> scope: Global 
+	--> Secret: <enter your docker hub password> 
+	--> ID: DOCKER_HUB_PWD 
+	--> Description: DOCKER_HUB_PWD
 ```

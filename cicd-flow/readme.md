@@ -127,67 +127,67 @@ Git Configuration in Jenkins console
 
 ### `JOB1 -- Compile`
 ```
-	Jenkins ( home page ) ==> New Item ==> job1-compile ==> Freestyle project ==> ok
-	insdie job parameters as below 
-	
-		Source Code Management --> Git --> Repository URL (https://github.com/lerndevops/samplejavaapp)
-		Build Triggers --> Poll SCM --> schedule (* * * * *)
-		Build --> (click on drop down) Invoke top-level Maven targets
-			Maven Version --> select value from drop down (ex: maven3.6) as confifure in Step12
-			Goals: compile
-	Apply & Save
+Jenkins ( home page ) ==> New Item ==> job1-compile ==> Freestyle project ==> ok
+insdie job parameters as below 
+
+	Source Code Management --> Git --> Repository URL (https://github.com/lerndevops/samplejavaapp)
+	Build Triggers --> Poll SCM --> schedule (* * * * *)
+	Build --> (click on drop down) Invoke top-level Maven targets
+		Maven Version --> select value from drop down (ex: maven3.6) as confifure in Step12
+		Goals: compile
+Apply & Save
 ```
 
 ### `JOB2 -- code review`
 ```
-	Jenkins ( home page ) ==> New Item ==> job2-codereview ==> Freestyle project ==> ok
-	insdie job parameters as below 
-	
-		Source Code Management --> Git --> Repository URL (https://github.com/lerndevops/samplejavaapp)
-		Build Triggers --> Build after other projects are built --> Projects to watch (job1-compile)
-		Build --> (click on drop down) Invoke top-level Maven targets
-			Maven Version --> select value from drop down (ex: maven3.6) as configured in Step12
-			Goals: -P metrics pmd:pmd
-		Post-build Actions --> [Depricated] Publish PMD analysis results --> PMD results (**/pmd.xml)
-	Apply & Save
+Jenkins ( home page ) ==> New Item ==> job2-codereview ==> Freestyle project ==> ok
+insdie job parameters as below 
+
+	Source Code Management --> Git --> Repository URL (https://github.com/lerndevops/samplejavaapp)
+	Build Triggers --> Build after other projects are built --> Projects to watch (job1-compile)
+	Build --> (click on drop down) Invoke top-level Maven targets
+		Maven Version --> select value from drop down (ex: maven3.6) as configured in Step12
+		Goals: -P metrics pmd:pmd
+	Post-build Actions --> [Depricated] Publish PMD analysis results --> PMD results (**/pmd.xml)
+Apply & Save
 ```
 
 ### `JOB3 -- UnitTest`
 ```
-	Jenkins ( home page ) ==> New Item ==> job3-unittest ==> Freestyle project ==> ok
-	insdie job parameters as below 
-	
-		Source Code Management --> Git --> Repository URL (https://github.com/lerndevops/samplejavaapp)
-		Build Triggers --> Build after other projects are built --> Projects to watch (job2-codereview)
-		Build --> (click on drop down) Invoke top-level Maven targets
-			Maven Version --> select value from drop down (ex: maven3.6) as configured in Step12
-			Goals: test
-		Post-build Actions --> [Depricated] Publish JUnit test results report --> Test report XMLs (target/surefire-reports/*.xml)
-	Apply & Save
+Jenkins ( home page ) ==> New Item ==> job3-unittest ==> Freestyle project ==> ok
+insdie job parameters as below 
+
+	Source Code Management --> Git --> Repository URL (https://github.com/lerndevops/samplejavaapp)
+	Build Triggers --> Build after other projects are built --> Projects to watch (job2-codereview)
+	Build --> (click on drop down) Invoke top-level Maven targets
+		Maven Version --> select value from drop down (ex: maven3.6) as configured in Step12
+		Goals: test
+	Post-build Actions --> [Depricated] Publish JUnit test results report --> Test report XMLs (target/surefire-reports/*.xml)
+Apply & Save
 ```
 
 ### `JOB4 -- package`
 ```
-	Jenkins ( home page ) ==> New Item ==> job4-package ==> Freestyle project ==> ok
-	insdie job parameters as below 
-	
-		Source Code Management --> Git --> Repository URL (https://github.com/lerndevops/samplejavaapp)
-		Build Triggers --> Build after other projects are built --> Projects to watch (job3-unittest)
-		Build Environment --> Use secret text(s) or file(s) --> Bindings --> (click on dropdown Add) Secret text 
-			Variable: DOCKER_HUB_PWD
-			Credential: Specific credentials: (click on dropdown) choose credential created in step11 
-			
-		Build --> (click on drop down) Invoke top-level Maven targets
-			Maven Version --> select value from drop down (ex: maven3.6) as configured in Step12
-			Goals: package
-		Build --> (click on dropdown) Execute Shell --> command (enter below in box)
-			cd $WORKSPACE
-			docker build -f Dockerfile -t lerndevops/samplejavaapp:$BUILD_NUMBER .  ## use your docker hub repo
-			docker login -u lerndevops -p $DOCKER_HUB_PWD  ## replace lerndevops with your docker hub username
-			docker push lerndevops/samplejavaapp:$BUILD_NUMBER
-	
-		Post-build Actions --> [Depricated] Publish JUnit test results report --> Test report XMLs (target/surefire-reports/*.xml)
-	Apply & Save
+Jenkins ( home page ) ==> New Item ==> job4-package ==> Freestyle project ==> ok
+insdie job parameters as below 
+
+	Source Code Management --> Git --> Repository URL (https://github.com/lerndevops/samplejavaapp)
+	Build Triggers --> Build after other projects are built --> Projects to watch (job3-unittest)
+	Build Environment --> Use secret text(s) or file(s) --> Bindings --> (click on dropdown Add) Secret text 
+		Variable: DOCKER_HUB_PWD
+		Credential: Specific credentials: (click on dropdown) choose credential created in step11 
+		
+	Build --> (click on drop down) Invoke top-level Maven targets
+		Maven Version --> select value from drop down (ex: maven3.6) as configured in Step12
+		Goals: package
+	Build --> (click on dropdown) Execute Shell --> command (enter below in box)
+		cd $WORKSPACE
+		docker build -f Dockerfile -t lerndevops/samplejavaapp:$BUILD_NUMBER .  ## use your docker hub repo
+		docker login -u lerndevops -p $DOCKER_HUB_PWD  ## replace lerndevops with your docker hub username
+		docker push lerndevops/samplejavaapp:$BUILD_NUMBER
+
+	Post-build Actions --> [Depricated] Publish JUnit test results report --> Test report XMLs (target/surefire-reports/*.xml)
+Apply & Save
 	
 	After running this JOB validate the Image is Uploaded to Docker Hub Sucessfully 
 ```

@@ -1,0 +1,12 @@
+index="_internal" sourcetype="splunkd_ui_access" | top file
+index=myindex  action=purchase  | highlight 
+index=myindex  action=purchase clientIp=1.1.1.1
+index=myindex  action=purchase | search clientIp=1.1.1.1
+index=myindex  action=purchase | stats count by ClientIP
+index=myindex  action=purchase | stats count by ClientIP 
+index=myindex | stats count by clientip | top count
+index=myindex | timechart count by clientip
+index=myindex | stats count by action
+index=myindex | table host source sourcetype clientIp action status
+index=myindex | table host source sourcetype clientIp action status | reaneme hst as datagenereator sourcetype as ecommerce | fields - source | dedup clientIp | sort action
+

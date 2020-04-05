@@ -258,10 +258,11 @@ insdie job parameters as below
 
 ### Step14 -- `Configure Build Pipeline View`
 
+```
 Jenkins ( home page ) ==> My Views ==> New View ==> View Name Enter "CICD-View" ==> Select "Build Pipeline View" ==> Click "Ok"
 	goto "Pipeline Flow" --> Upstream / downstream config 
 		Select Initial Job --> click on dropdown select "job1-compile" --> click "Ok"
-		
-	
-	
-	you shoud see lik
+```		
+#### you shoud see like below 
+
+![CICD-PIC](https://github.com/lerndevops/labs/blob/master/cicd-flow/CICD-Picture.PNG)

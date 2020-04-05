@@ -255,3 +255,13 @@ insdie job parameters as below
 	Apply & Save
 
 ```
+
+### Step14 -- `Configure Build Pipeline View`
+
+Jenkins ( home page ) ==> My Views ==> New View ==> View Name Enter "CICD-View" ==> Select "Build Pipeline View" ==> Click "Ok"
+	goto "Pipeline Flow" --> Upstream / downstream config 
+		Select Initial Job --> click on dropdown select "job1-compile" --> click "Ok"
+		
+	
+	
+	you shoud see lik

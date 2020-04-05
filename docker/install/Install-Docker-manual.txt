@@ -25,9 +25,6 @@ Install Docker on CentOS:
 	sudo systemctl start docker
 	sudo systemctl enable docker
 
-Add your user to the docker group, giving the user permission to run docker commands:
-	sudo usermod -aG docker cloud_user
-
 Test the installation by running a simple container:
 	docker run hello-world
 

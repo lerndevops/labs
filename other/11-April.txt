@@ -1,0 +1,175 @@
+    1  clear
+    2  /tmp/labs/git/installGit.sh 
+    3  sudo apt-get install software-properties-common
+    4  sudo add-apt-repository ppa:git-core/ppa -y
+    5  sudo apt-get update
+    6  sudo apt-get install git -y
+    7  clear
+    8  git --version 
+    9  cd /tmp
+   10  git clone https://github.com/lerndevops/edudemocode.git
+   11  git branch 
+   12  cd edudemocode/
+   13  git branch 
+   14  git branch -a 
+   15  git branch feat1
+   16  git branch 
+   17  git branch -d feat1
+   18  git checkout remotes/origin/feat1
+   19  git branch 
+   20  git branch feat1
+   21  git branch 
+   22  git branch -d feat1
+   23  git checkout feat1
+   24  git checkout 
+   25  git branch 
+   26  git remote -v 
+   27  cd ..
+   28  rm -r edudemocode/
+   29  ls -ltrh
+   30  cd 
+   31  ls -ltrh
+   32  clear
+   33  git --version 
+   34  ls -lth
+   35  git clone -b feat1 https://github.com/lerndevops/edudemocode.git
+   36  cd edudemocode/
+   37  ls -l
+   38  git branch 
+   39  git status 
+   40  cd ..
+   41  ls -ltrh
+   42  cd edudemocode/
+   43  ls -ltrh
+   44  ls -al 
+   45  git branch -a 
+   46  ls -l
+   47  touch feat1.java
+   48  touch feat1.html
+   49  git status 
+   50  git add .
+   51  git commit -m "feat1 code"
+   52  git cofig --global user.name lerndevops
+   53  git config --global user.name lerndevops
+   54  git config --global user.email lerndevops@gmail.com 
+   55  git log --oneline 
+   56  git push -u origin feat1
+   57  git branch -a 
+   58  git checkout remotes/origin/feat2
+   59  git branch -a 
+   60  git checkout feat2
+   61  git branch 
+   62  git checkout feat1
+   63  git branch 
+   64  git log --oneline 
+   65  git show feat1
+   66  git remote -v 
+   67  clear
+   68  git branch 
+   69  git log --oneline 
+   70  git checkout feat2
+   71  git branch 
+   72  ls -l
+   73  git merge feat1
+   74  ls -l
+   75  git branch 
+   76  git brach -D feat1
+   77  git branch -D feat1
+   78  git statu s
+   79  git branch 
+   80  ls -ltrh
+   81  git log --oneline 
+   82  git reset --hard 42bc40d
+   83  ls -l
+   84  git log --oneline 
+   85  git show 42bc40d
+   86  git reset --soft 46947b2
+   87  git log --oneline 
+   88  ls -l
+   89  git status 
+   90  git log --oneline 
+   91  git reset --hard babce05
+   92  git log --oneline 
+   93  git branch feat3
+   94  git branch 
+   95  git log --oneline 
+   96  git checkout feat3
+   97  git log --oneline 
+   98  touch 5.c
+   99  git add .
+  100  git commit -m "f3"
+  101  touch f.xml
+  102  git add .
+  103  git commit -m "f4"
+  104  git log --oneline 
+  105  git checkout feat2
+  106  git merge feat3
+  107  git log --oneline 
+  108  git reset --hard babce05
+  109  git log --oneline 
+  110  git checkout feat3
+  111  git log --oneline 
+  112  git checkout feat2 
+  113  touch test.html
+  114  git add .
+  115  git commit -m "d3"
+  116  git log --oneline 
+  117  git merge feat3
+  118  git log --oneline 
+  119  git branch 
+  120  git reset --hard babce05
+  121  git log --oneline 
+  122  touch g.html
+  123  git add .
+  124  git commit -m "d3"
+  125  git log --oneline 
+  126  git checkout feat3
+  127  git log --oneline 
+  128  git rebase feat2
+  129  git log --oneline 
+  130  git checkout feat2 
+  131  git merge feat3 
+  132  git log --oneline 
+  133  clear
+  134  cd 
+  135  clear
+  136  git --version 
+  137  sudo add-apt-repository ppa:openjdk-r/ppa
+  138  sudo apt-get update
+  139  sudo apt-get install -y openjdk-8-jdk
+  140  java --version 
+  141  java version 
+  142  java -version 
+  143  cd /usr/lib/jvm/
+  144  ls -l
+  145  cd java-8-openjdk-amd64/
+  146  ls -l
+  147  cd 
+  148  wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+  149  echo deb https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list
+  150  sudo apt-get update
+  151  sudo apt-get install jenkins
+  152  ps -ef|grep jenkins 
+  153  systemctl jenkins status 
+  154  systemctl status jenkins 
+  155  cd /tmp ; sudo wget http://apachemirror.wuchna.com/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+  156  cd /tmp ; sudo tar -xzf apache-maven-3.6.3-bin.tar.gz -C /opt
+  157  cd /opt/
+  158  ls -l
+  159  cd apache-maven-3.6.3/
+  160  ll
+  161  cd bin/
+  162  ./mvn --version 
+  163  c
+  164  cd /var/lib/jenkins/
+  165  ls -ltrh
+  166  clear
+  167  systemctl status jenkins 
+  168  service jenkins status 
+  169  clear
+  170  ps -ef|grep jenkins 
+  171  cd /var/lib/jenkins/secrets/
+  172  ls -l
+  173  cat initialAdminPassword
+  174  history 
+  175  history > 11-April.txt

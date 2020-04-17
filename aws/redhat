@@ -1,0 +1,12 @@
+
+ useradd devops # give ur username
+ passwd devops # give the password u want
+ vi /etc/ssh/sshd_config
+ # Permitrootlogin yes         ------- update it
+ # password authentication yes  ------- update it
+vi /etc/sudoers 
+ # update the user created under root name as root looks like.
+ ## Allow root to run any commands anywhere 
+root    ALL=(ALL)       ALL
+devops  ALL=(ALL)       ALL
+ service sshd restart

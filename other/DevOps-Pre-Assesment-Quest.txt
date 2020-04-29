@@ -1,0 +1,133 @@
+1) Software Development Life Cycle is Aimed to ? 
+
+	A) create a software
+	B) produce a high quality software (ans)
+	C) test the software 
+	D) Design a Software
+
+2) which one of below is not a SDLC Model ?
+
+	A) iterative model
+	D) Lean model
+	C) Spiral model
+	D) Capability Maturity model (ans)
+
+3) which one of the following is not stage of SDLC ?
+
+	A) Design
+	B) requirements 
+	C) analysis
+	D) Problem Identification (ans)
+
+4) Maintenance is the final phase in waterfall model
+
+	A) True  (ans)
+	B) False
+
+5) Agile Software Development model is based on
+
+	a) Incremental Development
+	b) Iterative Development
+	c) Linear Development
+	d) Both Incremental and Iterative Development (ans)
+
+6) DevOps is ?
+
+	A) Set of Practices
+	B) A culture 
+	C) both A & B
+	D) None of the above
+	
+7) which of the below layer is part of 3 tier application architecture
+
+	A) Presentation Layer
+	B) Buisiness Layer
+	C) Data Layer
+	D) All of the above (ans)
+
+8) virtual machines are software computers that are created using resources cpu,ram & disk on a physical computer
+
+	A) True (ans)
+	B) False
+
+9) A device that is responsible for communication between two hosts in a network.
+
+	a)	switch
+	b)	firewall
+	c)	router  
+	d)	both A & C (ans)
+	e)  both A & B
+
+10) Which of the below used to identify a process on a host?
+
+	a.	IP address
+	b.	logical address
+	c.	port number   (ans)
+	d.	none of the above
+
+11) which protocol does ping use ?
+
+	A. TCP
+	B. ICMP
+	C. BootP
+	D. ARP
+
+12) A Server is program that works on request & response model
+
+	A) True (ans)
+	B) False 
+
+13) which of the below protocol is used to connect to remote linux machine ?
+
+	a) RDP
+	b) SSL
+	c) TCP
+	d) ssh (ans)
+	
+14) which command is used to print the current working direcotry?
+
+	a) pwd   (ans)
+	b) echo $PWD
+	c) Both A and B
+	d) Only A
+
+15) Which command is used to list all the files in your current directory(including hidden)?
+
+	a) ls -l
+	b) ls -t
+	c) ls -a  (ans)
+	d) ls -i  
+	
+16) Which of the following command is used to count number of lines in a file?
+
+	a) wc -l  (ans)
+	b) wc -c
+	c) wc -w
+	d) None of these
+
+17) Suppose I am in /etc directory and I want to go to my home directory which command should I use?
+
+	a) cd
+	b) cd ~
+	c) Both A and B (ans)
+	d) none of these
+	
+18) which of the below protocol is used to connect to remote windows machine ?
+
+	a) UDP 
+	b) RDP (ans)
+	c) TCP
+	d) ssh 
+
+19) what is cloud computing ?
+
+	a) on-demand delivery of IT resources
+	b) pay-as-you-go model of IT resources 
+	c) both A & B (ans)
+	d) none of the above
+
+20) which of the below Services are offered by cloud computing ?
+	a) IAAS
+	B) PAAS
+	C) SAAS
+	D) all of the above (ans)

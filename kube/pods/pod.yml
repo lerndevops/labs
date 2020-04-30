@@ -4,6 +4,7 @@ metadata:
   name: tomcatpod
   labels:
     app: MyApp
+  namespace: dev
 spec:
   containers:
   - name: tomcat

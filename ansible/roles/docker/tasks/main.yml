@@ -1,0 +1,18 @@
+---
+# tasks file for docker
+
+- name: create directory 
+  file:
+    path: /tmp
+    state: directory
+- include_tasks: install_ubuntu.yml
+- copy: 
+    src: pord.txt
+    dest: /opt
+- script: test.sh
+  register: out
+- debug: 
+    msg: "{{ out.stdout_lines }}"
+- debug: 
+     msg: "the value of a,b are {{ a }},{{ b }} "
+

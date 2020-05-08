@@ -1,0 +1,5 @@
+- name: ubuntu task
+  shell: echo "ubuntu installing in progress"
+  register: abc
+- debug:
+    msg: "the output is: {{ abc.stdout_lines }}"

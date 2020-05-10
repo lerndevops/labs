@@ -1,0 +1,56 @@
+##!/bin/bash
+read -p "Enter a password" pass
+if test "$pass" = "jerry"
+then
+     echo "Password verified."
+else
+     echo "Access denied."	
+fi
+
+
+#!/bin/bash
+count=100
+if [ $count -eq 100 ]
+then
+  echo "Count is 100"
+fi
+
+#!/bin/bash
+count=99
+if [ $count -eq 100 ]
+then
+  echo "Count is 100"
+elif [ $count -gt 100 ]
+then
+  echo "Count is greater than 100"
+else
+  echo "Count is less than 100"
+fi
+
+
+#!/bin/sh
+INPUT_STRING=hello
+while [ "$INPUT_STRING" != "bye" ]
+do
+  echo "Please type something in (bye to quit)"
+  read INPUT_STRING
+  echo "You typed: $INPUT_STRING"
+done
+
+
+============================================
+
+Find commands 
+
+find . -name hosts
+find /home -name *.log
+
+find / -type f -empty
+
+find /tmp -type d -empty
+find . -type f -name "*.txt" -exec rm -f {} \;
+find / -size 50M
+find / -size +100M -exec rm -rf {} \;
+find / -mtime 50
+
+find /tmp -type f -name '*.jpg' -mtime +30 -exec rm {} \;

@@ -1,0 +1,224 @@
+for server in `awk '{print $1}' /tmp/text1.txt`
+do echo ${server} >> /tmp/abcd1;
+ping -c 1 ${server}
+if [[ "$?" -gt "0" ]];
+then echo ${server} >> /tmp/error_abcd1;
+else
+#ssh ${server} "uname -a ;ps -ef |grep java |wc -l ; echo ''" >> /tmp/abcd1 ;
+ssh ${server} "grep -i tcp.host.DEFAULT  /opt/introscope/wily/core/config/IntroscopeAgent.profile |grep -v '#' " >> /tmp/abcd1
+#ssh ${server} "cat /etc/fstab |grep WebSphere70b32 " >> /tmp/abcd1 ;
+echo "-------------------------------------------------------------------" >> /tmp/abcd1
+fi
+done
+
+
+======================================================================================================================================================
+
+file="./servers"
+while read -r line
+do
+server=`echo $line | awk '{print $2}'`
+#System=`echo $line | awk '{print $3}'`
+#hostname=`echo $line | awk '{print $1}'`
+#Env=`echo $line | awk '{print $4}'`
+        ping -c 1 ${server}
+        if [[ "$?" -gt "0" ]]; then
+            echo ${hostname} ${server} ${System} >> /tmp/error_wfn;
+        else
+#           ssh -n ${server} "if [ -d /home/wasprofile/dmgr/bin ];then  echo ${line} DMGR ; fi" >> /tmp/DMGRs.txt
+#            scp chkmnt.sh cmdbadm@${server}:/home/cmdbadm/
+            echo $line >> /tmp/wfn.txt
+            echo "" >> /tmp/wfn.txt
+            ssh -n ${server} "uptime ; echo " "" >> /tmp/wfn.txt
+            echo "===================================================================================" >> /tmp/wfn.txt
+        fi
+done <"$file"
+
+
+
+=====================================================================================================================================================
+#!/bin/sh
+
+WEBSERVERROOT=/opt/apache
+PORTALWEBROOT=/opt/portal
+
+case $1 in
+stop)
+        echo "Stopping apache web server Daemon..."
+        killall httpd
+        killall htcacheclean
+        sleep 2
+        ;;
+
+start)
+        ## Stop the service and regardless of whether it was
+        ## running or not, start it again.
+        $0 stop
+
+        echo "Starting apache web server Daemon..."
+        cd /opt/portal
+        ./restartPortal.sh
+        cd $OLDPWD
+        ;;
+
+restart)
+        ## Stop the service and regardless of whether it was
+        ## running or not, start it again.
+        $0 stop
+        $0 start
+        ;;
+*)
+        echo "Usage: $0 {start|stop|restart}"
+        ;;
+esac
+
+
+
+
+====================================================================================================================
+
+#!/bin/bash
+
+#Set script home
+WLP_INSTALL_DIR=/app/bin/WebSphere85/wlp
+WLP_USER_DIR=/app/libertyprofile
+JAVA_HOME=/app/bin/java
+ProcessName=wlp
+
+PROFILE_HOME=${WLP_USER_DIR}/servers
+PROFILE_DIR=${PROFILE_HOME}
+mkdir -p /tmp/wasstatus
+LF_START=/tmp/wasstatus/${ProcessName}_start.log
+LF_STOP=/tmp/wasstatus/${ProcessName}_stop.log
+LF_STATUS=/tmp/wasstatus/${ProcessName}_status.log
+
+RETVAL=0
+
+# source function library
+
+usage ()
+{
+   echo "Usage: wlpd {start|stop|recycle|status}"
+   RETVAL=0
+}
+
+displaystatus ()
+{
+   echo " "
+   echo "Kick off status activity:"
+   echo "===================================================================="
+
+   for entry in `ls -d ${PROFILE_DIR}/*`
+   do
+       echo ""
+       echo "process $entry"
+
+       if [ -f ${entry}/bootstrap.properties ]; then
+
+          https=( `cat ${entry}/bootstrap.properties | grep 'default.http.port' | tr "=" " " ` )
+          activepid=`netstat -anp | grep ${https[1]} | grep '\sLISTEN\s' | sed 's/\(^.*\)LISTEN\s\+\(.*\)\/java/\2/'`
+          if [ -z $activepid ]; then
+             echo "$entry instance is in down state"
+           else
+             echo "$entry instance is in up state"
+          fi
+       else
+          echo "$entry is not libert profile instances - SKip"
+          RETVAL=0
+       fi
+   done
+}
+
+start ()
+{
+   echo " "
+   echo "Kick off start activity:"
+   echo "===================================================================="
+
+   for entry in `find ${PROFILE_DIR} -mindepth 1 -maxdepth 1 -type d -not -name ".*"`
+   do
+       echo ""
+       echo "process $entry"
+
+       if [ -f ${entry}/bootstrap.properties ]; then
+              ${entry}/bin/startServer.sh
+       else
+          echo "$entry is not libert profile instances - SKip"
+          RETVAL=0
+       fi
+   done
+}
+
+stop ()
+{
+
+   echo " "
+   echo "Kick off stop activity:"
+   echo "===================================================================="
+   for entry in `find ${PROFILE_DIR} -mindepth 1 -maxdepth 1 -type d -not -name ".*"`
+   do
+       echo "process $entry"
+
+       if [ -f ${entry}/bootstrap.properties ]; then
+              ${entry}/bin/stopServer.sh
+       else
+          echo "$entry is not libert profile instances - SKip"
+          RETVAL=0
+       fi
+   done
+
+}
+
+recycle ()
+{
+   stop
+   sleep 5
+   start
+}
+
+case "$1" in
+        start)    start;;
+        stop)     stop;;
+        status)   displaystatus;;
+        recycle)  recycle;;
+        *)        usage;;
+esac
+
+exit $RETVAL
+
+===================================================================================================================================================
+
+#!/bin/bash
+
+#---------------------------------------------------------------------------------------------------
+# Purpose of this script is to purge (delete) dumps like heap, core, javacore, Snap
+#---------------------------------------------------------------------------------------------------
+
+DIRECTORY=/home/wasprofile
+if [ -d "$DIRECTORY" ]; then
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name heapdump.*.phd -exec rm -f {} \;
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name core.*.dmp -exec rm -f {} \;
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name javacore.*.txt -exec rm -f {} \;
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name Snap.*.trc -exec rm -f {} \;
+fi
+
+DIRECTORY=/home/wasext
+if [ -d "$DIRECTORY" ]; then
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name heapdump.*.phd -exec rm -f {} \;
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name core.*.dmp -exec rm -f {} \;
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name javacore.*.txt -exec rm -f {} \;
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name Snap.*.trc -exec rm -f {} \;
+fi
+
+DIRECTORY=/tmp
+if [ -d "$DIRECTORY" ]; then
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name heapdump.*.phd -exec rm -f {} \;
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name core.*.dmp -exec rm -f {} \;
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name javacore.*.txt -exec rm -f {} \;
+   find -L $DIRECTORY -maxdepth 3 -mtime +7 -type f -name Snap.*.trc -exec rm -f {} \;
+fi
+
+
+===================================================================================================================================================
+
+

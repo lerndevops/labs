@@ -7,7 +7,9 @@
       copy:
         src: /tmp/demo.txt
         dest: /tmp
-#### create a folder or files for learning
+
+#### create a folder or files
+
     - name: Create a new file
       file:
         path: /tmp/newfolder

@@ -1,0 +1,233 @@
+    1  sudo apt-get install software-properties-common
+    2  sudo add-apt-repository ppa:git-core/ppa -y
+    3  sudo apt-get update
+    4  sudo apt-get install git -y
+    5  clear
+    6  git --version 
+    7  git config --global user.name lerndevops
+    8  git config --gloabl user.email lerndevops@gmail.com
+    9  git config --global user.email lerndevops@gmail.com
+   10  git config --list 
+   11  mkdir myproject
+   12  cd myproject/
+   13  ls -l
+   14  git init 
+   15  git status 
+   16  cd ..
+   17  git status 
+   18  cd myproject/
+   19  ls -l
+   20  clear
+   21  ls -l
+   22  touch abc.java
+   23  ls -l
+   24  git status 
+   25  git add abc.java
+   26  git status 
+   27  git commit -m "m1"
+   28  git status 
+   29  git logs 
+   30  git log
+   31  clear
+   32  ls -l
+   33  touch 3.c 5.xml 8.java
+   34  ls -l
+   35  git status 
+   36  git add . 
+   37  git status 
+   38  vi abc.java 
+   39  git status 
+   40  git add .
+   41  git status 
+   42  git commit -m "m2"
+   43  git status 
+   44  git log
+   45  clear
+   46  ls -l
+   47  git rm 5.xml
+   48  git add .
+   49  git commit -m "remove 5.xml"
+   50  ls -l
+   51  git status 
+   52  git log
+   53  git show f1656f9447bb9e07114d185e64a42c5af651ee12
+   54  clear
+   55  git show 520a9bb7e7dd8bb0802724520164d3d1632efac0
+   56  ls -l
+   57  clear
+   58  ls -l
+   59  touch .gitignore
+   60  vi .gitignore 
+   61  git status 
+   62  git add .
+   63  git commit -m "adding .gitignore"
+   64  git status 
+   65  touch naresh.info
+   66  git status 
+   67  touch new.log
+   68  git status 
+   69  ls -l
+   70  vi naresh.info 
+   71  git status 
+   72  ls -al
+   73  cat .gitignore
+   74  vi .gitignore 
+   75  git status 
+   76  mkdir test
+   77  ls -l
+   78  cd test/
+   79  ls -l
+   80  touch new.java
+   81  touch 4.xml
+   82  cd ..
+   83  ls -ltrh
+   84  git status 
+   85  clear
+   86  cd myproject/
+   87  ls -ltrh
+   88  git status 
+   89  git add .
+   90  git status 
+   91  git commit -m "some info" 
+   92  git log 
+   93  clear
+   94  git log
+   95  git log --oneline 
+   96  git log --help 
+   97  clear
+   98  git log --oneline
+   99  git tag -a "v1.2" f262f96 -m "creating alias for f262f96"
+  100  git log --oneline
+  101  git tag -a "v1.3" 9076b52 -m "creating alias for f262f96"
+  102  git log --oneline
+  103  git log 
+  104  git log --oneline
+  105  git log 
+  106  clear
+  107  cd myproject/
+  108  git status 
+  109  ls -l
+  110  git remote -v
+  111  git remote add origin https://github.com/lerndevops/myproject.git
+  112  git remote -v
+  113  git push -u origin master
+  114  ls -l
+  115  touc t.java
+  116  touch t.java
+  117  git status 
+  118  git add .
+  119  git commit -m "added t.java"
+  120  git log --oneline 
+  121  ls -l
+  122  git push -u origin master
+  123  export TMOUT=0
+  124  cd myproject/
+  125  ls -ltrh
+  126  cd ..
+  127  ls -ltrh
+  128  rm -r myproject/
+  129  ls -l
+  130  git --version 
+  131  git clone https://github.com/lerndevops/myproject
+  132  ls -l
+  133  cd myproject/
+  134  ls -ltrh
+  135  git log --oneline 
+  136  ls -al
+  137  cd ..
+  138  ls -ltrh
+  139  clear
+  140  cd myproject/
+  141  cd ..
+  142  ls -ltrh
+  143  mv myproject myproject_dev1
+  144  cd myproject_dev1/
+  145  ls -l
+  146  clear
+  147  ls -ltrh
+  148  git status 
+  149  touch dev1.java
+  150  git status 
+  151  clear
+  152  git add .
+  153  git commit -m "dev commit"
+  154  git push -u origin master
+  155  ls -l
+  156  clear
+  157  cd /tmp
+  158  ls -l
+  159  export TMOUT=0
+  160  cd 
+  161  git clone https://github.com/lerndevops/myproject
+  162  sl -l
+  163  ls -l
+  164  mv myproject myproject_dev2
+  165  cd myproject_dev2/
+  166  ls -ltrh
+  167  clear
+  168  ls -l
+  169  git fetch 
+  170  ls -l
+  171  git pull 
+  172  ls -l
+  173  git fetch 
+  174  git remote -v
+  175  clear
+  176  clear
+  177  cd myproject_dev1/
+  178  ls -l
+  179  git remote -v 
+  180  ls -l
+  181  git log --oneline 
+  182  git tag -a "v1.2" 9076b52 -m "alias for 9076b52"
+  183  git tag -a "v1.5" 4bbd3c9 -m "alias for 4bbd3c9"
+  184  git log --oneline
+  185  git push -u origin master 
+  186  git push -u origin master --tags
+  187  cd myproject_dev2/
+  188  clear
+  189  git log --oneline
+  190  git pull 
+  191  git log --oneline 
+  192  clear
+  193  cd ..
+  194  git clone https://github.com/lerndevops/eechukwu.github.io
+  195  ls -l
+  196  cd eechukwu.github.io/
+  197  ls -l
+  198  touch naresh.txt
+  199  git add .
+  200  git commit -m "naresh"
+  201  git push -u origin master
+  202  ls -ltrh
+  203  git remote -v 
+  204  git remote add eechkwu https://github.com/eechukwu/eechukwu.github.io
+  205  git remote -v 
+  206  git pull eechkwu
+  207  cd ..
+  208  ls -ltrh
+  209  cd myproject_dev1
+  210  ls -lrh
+  211  clear
+  212  git log --oneline 
+  213  git status 
+  214  ls -l
+  215  git reset --hard c117a52
+  216  git log --oneline 
+  217  ls -l
+  218  git status 
+  219  git push -u origin master 
+  220  git pull 
+  221  git log --oneline 
+  222  git reset --soft c117a52
+  223  ls -l
+  224  git status 
+  225  git restore --staged dev1.java t.java
+  226  git status 
+  227  touch newwwww.java
+  228  git add newwwww.java 
+  229  git status 
+  230  git commit -m "newwww.java"
+  231  git status 
+  232  history 
+  233  history > git-history.txt

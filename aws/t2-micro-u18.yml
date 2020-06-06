@@ -8,7 +8,7 @@
         wait: yes
         group: mysecgroup
         count: "{{ count }}"
-        vpc_subnet_id: subnet-930a04fb
+        vpc_subnet_id: subnet-81211cfb 
         assign_public_ip: yes
         region: us-east-2
       register: out

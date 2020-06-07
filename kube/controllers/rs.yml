@@ -1,36 +1,37 @@
-apiVersion: apps/v1
 kind: ReplicaSet
+apiVersion: apps/v1
 metadata:
-  name: my-rs 
-  labels:
-    tier: frontend
+    name: myrs
 spec:
-  replicas: 3
+  replicas: 4
   selector:
-    matchLabels:
-      tier: frontend
+     matchLabels:
+       app: web
+       env: dev
   template:
     metadata:
+      name: mypod
       labels:
-        tier: frontend
+        app: web
+        env: dev
     spec:
       containers:
-      - name: apache
-        image: httpd
-        ports:
-          - containerPort: 80
+        - name: mycont
+          image: lerndevops/samplepyapp:v1
+          ports:
+           - containerPort: 3000
 
 ---
 
-apiVersion: apps/v1
-kind: Service
-metadata:
-  name: frontend-svc
+kind: Service 
+apiVersion: v1
+metadata: 
+  name: mysvc
 spec:
   type: NodePort
+  ports: 
+    - port: 3000
+      nodePort: 30005
   selector:
-    tier: frontend
-  ports:
-  - protocol: TCP
-    port: 80
-#    nodePort: 32105
+     app: web
+     env: dev

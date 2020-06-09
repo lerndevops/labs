@@ -25,7 +25,7 @@ Install Maven  ( on Jenkins machine )
 
 Set JAVA_HOME & MAVEN_HOME as environment variables on Jenkins machine
 
-	sudo echo "MAVEN_HOME=\"/opt/apache-maven-3.6.2\"" >> /etc/profile
+	sudo echo "MAVEN_HOME=\"/opt/apache-maven-3.6.3\"" >> /etc/profile
 	sudo echo "JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64\"" >> /etc/profile 
 	sudo echo "PATH=\$JAVA_HOME/bin:\$MAVEN_HOME/bin:\$PATH" >> /etc/profile
 	source /etc/profile

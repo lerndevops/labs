@@ -3,6 +3,7 @@
 kubectl -n default delete service/kubernetes-dashboard
 kubectl -n default delete deployment.apps/kubernetes-dashboard
 kubectl -n default delete service/dashboard-metrics-scraper
+kubectl -n default delete deployment.apps/kubernetes-metrics-scraper
 kubectl -n default delete deployment.apps/dashboard-metrics-scraper
 kubectl -n default delete configmap/kubernetes-dashboard-settings
 kubectl -n default delete secret/kubernetes-dashboard-csrf

@@ -25,7 +25,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
+  namespace: default 
 
 ---
 
@@ -35,7 +35,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
+  namespace: default 
 spec:
   type: NodePort
   ports:
@@ -51,7 +51,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard-certs
-  namespace: kubernetes-dashboard
+  namespace: default 
 type: Opaque
 
 ---
@@ -62,7 +62,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard-csrf
-  namespace: kubernetes-dashboard
+  namespace: default
 type: Opaque
 data:
   csrf: ""
@@ -75,7 +75,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard-key-holder
-  namespace: kubernetes-dashboard
+  namespace: default
 type: Opaque
 
 ---
@@ -86,7 +86,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard-settings
-  namespace: kubernetes-dashboard
+  namespace: default
 
 ---
 
@@ -96,7 +96,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
+  namespace: default
 rules:
   # Allow Dashboard to get, update and delete Dashboard exclusive secrets.
   - apiGroups: [""]
@@ -140,7 +140,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
+  namespace: default
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -148,7 +148,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
-    namespace: kubernetes-dashboard
+    namespace: default
 
 ---
 
@@ -160,12 +160,11 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-#  name: kubernetes-dashboard
   name: cluster-admin
 subjects:
   - kind: ServiceAccount
     name: kubernetes-dashboard
-    namespace: kubernetes-dashboard
+    namespace: default 
 
 ---
 
@@ -175,7 +174,7 @@ metadata:
   labels:
     k8s-app: kubernetes-dashboard
   name: kubernetes-dashboard
-  namespace: kubernetes-dashboard
+  namespace: default
 spec:
   replicas: 1
   revisionHistoryLimit: 10
@@ -196,12 +195,13 @@ spec:
               protocol: TCP
           args:
             - --auto-generate-certificates
-              #            - --enable-skip-login
+            - --enable-skip-login
+            - --bind-address=0.0.0.0
               #            - --disable-settings-authorizer
-              #            - --insecure-bind-address=0.0.0.0
+              #- --insecure-bind-address=0.0.0.0
               #            - --insecure-port=9090
               #            - --enable-insecure-login
-            - --namespace=kubernetes-dashboard
+            - --namespace=default
             # Uncomment the following line to manually specify Kubernetes API server Host
             # If not specified, Dashboard will attempt to auto discover the API server and connect
             # to it. Uncomment only if the default does not work.
@@ -239,7 +239,7 @@ metadata:
   labels:
     k8s-app: kubernetes-metrics-scraper
   name: dashboard-metrics-scraper
-  namespace: kubernetes-dashboard
+  namespace: default
 spec:
   ports:
     - port: 8000
@@ -255,7 +255,7 @@ metadata:
   labels:
     k8s-app: kubernetes-metrics-scraper
   name: kubernetes-metrics-scraper
-  namespace: kubernetes-dashboard
+  namespace: default
 spec:
   replicas: 1
   revisionHistoryLimit: 10

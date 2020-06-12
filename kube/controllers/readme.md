@@ -1,7 +1,8 @@
-Lab:
+# Lab:
 
-ReplicaSets:
+### ReplicaSets:
 
+```
 create a manifest file with Kind ReplicaSet & use kubectl to create the object in k8s API Server.
 
 kubectl create -f rs-ex1.yml                # create replica set
@@ -17,11 +18,11 @@ kubectl scale --replicas=x rs <rsname>      # Scale up/down replica set
 kubectl expose rs <rsname> --port=<external> --target-port=<internal> # expose rs as service & assign port on the cluster
 kubectl expose rs <rsname> --port=<external> --type=NodePort # expose rs as service & assign port on the Node
 kubectl delete rs <rsname>                  # delete rs & pod under it
+```
 
-========================================================================================================================
+### Deployments:
 
-Deployments:
-
+```
 create a manifest file with Kind ReplicaSet & use kubectl to create the object in k8s API Server.
 
 kubectl create -f deployment-ex1.yml --record      # create deployment
@@ -42,3 +43,4 @@ kubectl rollout history deploy <deployname> --revision=2   # see the details of 
 kubectl rollout status deploy <deployname>       # get status of rollout 
 kubectl rollout undo deploy <deployname>         # rollback to the previous revision
 kubectl rollout undo deploy <deployname>  --revision=2     # rollback to a specific revision
+```

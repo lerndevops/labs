@@ -12,6 +12,8 @@
     src: /opt/apache-tomcat-8.5.53 
     path: /opt/tomcat 
     state: link
+    owner: tomcat
+    group: tomcat
 
 - name: Change ownership of Tomcat installation
   file: 

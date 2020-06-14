@@ -1,0 +1,4 @@
+hostname: {{ ansible_hostname }}
+hostip: {{ ansible_default_ipv4.address }}
+dbhostname: {{ dbhost }}
+dbport: {{ dbport }}

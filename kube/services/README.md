@@ -1,3 +1,5 @@
-## What is Service 
+## What is Service in kubernetes ?
 
-> Service: A Kubernetes Service that identifies a set of Pods using label selectors. Unless mentioned otherwise, Services are assumed to have virtual IPs only routable within the cluster network.
+> In Kubernetes Service that identifies a set of Pods using label selectors.
+
+> Services are assumed to have virtual IPs only routable within the cluster network.

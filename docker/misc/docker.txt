@@ -1,0 +1,175 @@
+    1  clear
+    2  /tmp/labs/docker/install/installDocker.sh
+    3  clear
+    4  docker -v 
+    5  docker pull lerndevops/sampleapp
+    6  docker pull lerndevops/sampleapp:v1
+    7  clear
+    8  docker pull nginx 
+    9  docker pull tomcat
+   10  clear
+   11  docker images 
+   12  clear
+   13  docker images 
+   14  docker pull alpine
+   15  docker ps 
+   16  docker network ls
+   17  clear
+   18  docker images 
+   19  docker ps 
+   20  docker run -d -P nginx 
+   21  docker ps 
+   22  clear
+   23  sudo curl -L https://github.com/docker/compose/releases/download/1.23.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+   24  sudo chmod +x /usr/local/bin/docker-compose
+   25  docker-compose -v 
+   26  clear
+   27  vi compose.yaml
+   28  docker-compose -f compose.yaml up -d
+   29  docker ps 
+   30  more compose.yaml 
+   31  docker-compose -f compose.yaml up --scale web=4 -d
+   32  docker ps 
+   33  docker-compose -f compose.yaml up --scale web=6 -d
+   34  docker ps 
+   35  docker-compose -f compose.yaml up --scale web=3 -d
+   36  docker ps 
+   37  docker rm -f 30515394da19
+   38  docker-compose -f compose.yaml down 
+   39  docker ps 
+   40  docker rm -f 293ff5c36d68
+   41  more compose.yaml 
+   42  vi compose.yaml 
+   43  clear
+   44  docker-compose -f compose.yaml up --scale web=2 --scale app=4 -d 
+   45  docker ps 
+   46  more compose.yaml 
+   47  vi compose.yaml 
+   48  docker ps 
+   49  more compose.yaml 
+   50  docker ps 
+   51  clear
+   52  docker -v 
+   53  docker info 
+   54  clear
+   55  docker swarm init 
+   56  clear
+   57  docker node ls
+   58  clear
+   59  docker service create --name mysvc --replicas 6 -p 9080:80 nginx
+   60  docker service ls
+   61  clear
+   62  docker service ps mysvc
+   63  clear
+   64  docker ps 
+   65  clear
+   66  docker imags 
+   67  docker images
+   68  docker ps 
+   69  docker-compose -f compose.yaml down
+   70  docker ps 
+   71  clear
+   72  docker service ls
+   73  docker ps 
+   74  clear
+   75  docker service scale mysvc=8
+   76  docker service ls
+   77  docker service scale mysvc=4
+   78  docker service ls 
+   79  docker service rm mysvc 
+   80  docker service  ls
+   81  docker ps 
+   82  clear
+   83  git clone https://github.com/lerndevops/labs
+   84  cd labs/docker/swarm/
+   85  ls -ltrh
+   86  vi compose2.yml
+   87  docker stack deploy -c compose2.yml mystack 
+   88  docker service ls
+   89  docker service ps mystack_web
+   90  docker service ps mystack_web.1
+   91  docker stack ls
+   92  clear
+   93  docker stack ls
+   94  docker stack rm mystack 
+   95  docker stack ls
+   96  docker service ls
+   97  clear
+   98  docker node ls
+   99  docker node inspect ip-172-31-19-69
+  100  docker node update ip-172-31-19-69 --label-add role=app
+  101  docker node inspect ip-172-31-19-69
+  102  docker node update ip-172-31-24-122 --label-add role=db
+  103  docker node inspect ip-172-31-24-122
+  104  cd spring-boot-mongo-example/
+  105  ls -ltrh
+  106  vi docker-compose.yml
+  107  docker stack deploy -c docker-compose.yml myapp
+  108  cd 
+  109  docker service  ls
+  110  docker service ps myapp_springbootapp
+  111  docker service ps myapp_mongo
+  112  docker ps 
+  113  clear
+  114  docker node update ip-172-31-24-122 --label-add env=prod
+  115  docker service ls
+  116  docker stack ls
+  117  docker stack rm myapp
+  118  clear
+  119  docker service create --name myapp --replicas 5 -p 3000:3000 lerndevops/samplepyapp:v1
+  120  docker ps 
+  121  docker service ls
+  122  docker ps 
+  123  clear
+  124  docker volume create portainer_data
+  125  docker run -d -p 9000:9000 -p 8000:8000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+  126  docker ps 
+  127  docker service ls
+  128  docker service rm myapp mysvcc
+  129  docker service rm myapp mysvccc
+  130  docker ps 
+  131  docker rm -f f6 dc
+  132  docker ps 
+  133  clear
+  134  ifconfig 
+  135  clear
+  136  docker network ls
+  137  docker run -d --name cont1 alpine sleep 3600
+  138  docker ps 
+  139  docker inspect 01e6e6930afd
+  140  ifconfig | grep -A 10 docker0
+  141  docker run -d --name cont2 alpine sleep 3600
+  142  docker ps 
+  143  docker inspect 1f4387f473dd
+  144  docker ps 
+  145  docker exec 01e6e6930afd hostname -i
+  146  docker exec 1f4387f473dd hostname -i
+  147  docker exec 1f4387f473dd ping 172.17.0.2
+  148  docker exec 01e6e6930afd ping 172.17.0.3
+  149  clear
+  150  docker network ls
+  151  docker network create mynet --driver bridge
+  152  docker network ls
+  153  ifcofig 
+  154  ifconfig 
+  155  clear
+  156  docker run -d --name cont3 --net=mynet alpine sleep 3600
+  157  docker ps 
+  158  docker inspect a0bd06719383
+  159  docker ps 
+  160  docker exec cont3 ping cont1
+  161  docker exec cont3 ping 172.17.0.2
+  162  clear
+  163  docker network ls
+  164  clear
+  165  docker network ls
+  166  docker network create myoverlay --driver overlay
+  167  docker network ls
+  168  docker service create --name mysvc --network=myoverlay --replicas 4 alpine sleep 3600
+  169  docker 
+  170  docker ps 
+  171  docker exec 5323db0e2a8a hostname -i
+  172  docker exec 452eb1b2743c hostname -i
+  173  history 
+  174  clear
+  175  history > docker.txt

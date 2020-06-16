@@ -1,17 +1,17 @@
 ## deploy dashboard
 ```
-   kubectl apply -f dashboard-v2-insecure.yml
+   kubectl apply -f dashboard-insecure.yml
 ```
 ### validate
 ```
    ensure dashboard deployment is available & pod in running state
 
-       kubectl get deploy -n kubernetes-dashboard
-       kubectl get pods -n kubernetes-dashboard
+       kubectl get deploy 
+       kubectl get pods 
 ```
 ### Access UI
 ```
-   kubectl get svc -n kubernetes-dashboard ( note port number ex: 30605)
+   kubectl get svc ( note port number ex: 30605)
    
    open the broser and hit -- http://ip:port  (if deployed in aws use publicip)
       ex: http://3.14.249.66:30605/

@@ -1,6 +1,5 @@
 ---
-- hosts: all 
+- hosts: localhost 
   become: yes
-  become_method: sudo
   roles:
     - tomcat

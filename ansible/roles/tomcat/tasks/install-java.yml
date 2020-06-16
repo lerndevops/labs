@@ -1,0 +1,11 @@
+- name: Install Java 1.8 Ubuntu
+  apt:
+    name: openjdk-8-jdk
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Install Java 1.8 RedHat
+  yum: 
+    name: java-1.8.0-openjdk
+    state: present
+  when: ansible_os_family == 'RedHat'

@@ -1,36 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: myapp-deployment
-  labels:
-    app: myapp
+  name: kubeserve
 spec:
   replicas: 5
+  minReadySeconds: 20 # wait for 10 sec before pod is ready going to next
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1  # take down 1 pod at a time
+      maxSurge: 1        # bring one at a time
   selector:
     matchLabels:
-      app: myapp
+      app: kubeserve
   template:
     metadata:
+      name: kubeserve
       labels:
-        app: myapp
+        app: kubeserve
     spec:
       containers:
-      - name: myapp-cont
-        image: lerndevops/samplepyapp:v1
-        ports:
-        - containerPort: 3000
+      - image: leaddevops/kubeserve:v1
+        name: app
 
 ---
-
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
-  name: myapp-svc
+   name: kubeserve-svc
 spec:
   type: NodePort
-  selector:
-    app: myapp
   ports:
-  - protocol: TCP
-    port: 3000
-#    nodePort: 32105
+    - port: 80
+      protocol: TCP
+      targetPort: 80
+  selector: 
+    app: kubeserve

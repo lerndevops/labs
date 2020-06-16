@@ -51,10 +51,8 @@
       shell: git clone https://github.com/lerndevops/labs.git
       args:
         chdir: /tmp
-    - name: clone git repo
-      shell: git clone https://github.com/lerndevops/kube.git
-      args:
-        chdir: /tmp
+    - name: install kube
+      shell: chmod -R 755 /tmp/labs ; /tmp/labs/kube/install/install-k8s-ubuntu.sh 
     - name: create user
       shell: chmod -R 755 /tmp/labs/* ; /tmp/labs/aws/setup-aws-user.sh 
       register: outt

@@ -1,0 +1,45 @@
+- name: Download Tomcat
+  #  get_url: url=http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.53/bin/apache-tomcat-8.5.53.tar.gz dest=/opt/apache-tomcat-8.5.53.tar.gz
+  copy:
+    src: apache-tomcat-8.5.53.tar.gz
+    dest: /tmp
+
+- name: Extract archive
+  shell: /bin/tar xvf /tmp/apache-tomcat-8.5.53.tar.gz -C /opt
+
+- name: create Symlink
+  file: 
+    src: /opt/apache-tomcat-8.5.53 
+    path: /opt/tomcat 
+    owner: tomcat
+    group: tomcat
+    state: link
+
+- name: Change ownership of Tomcat installation
+  file: 
+    path: /opt/tomcat/ 
+    owner: tomcat 
+    group: tomcat 
+    mode: 0755 
+    state: directory 
+    recurse: yes
+
+- name: Install Tomcat init script
+  copy: 
+    src: tomcat-initscript.sh 
+    dest: /etc/init.d/tomcatd 
+    mode: 0755
+
+- name: enable service
+  shell: update-rc.d tomcatd defaults 95
+
+- name: Configure Tomcat users
+  template: 
+    src: tomcat-users.xml 
+    dest: /opt/tomcat/conf/
+  notify: restart tomcat
+
+- name: setup app directory
+  file: 
+    path: /app
+    state: directory

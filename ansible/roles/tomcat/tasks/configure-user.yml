@@ -1,0 +1,9 @@
+- name: add group "tomcat"
+  group:
+    name: tomcat
+
+- name: add user "tomcat"
+  user:
+    name: tomcat
+    group: tomcat
+    home: /usr/share/tomcat

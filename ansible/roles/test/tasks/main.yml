@@ -1,0 +1,62 @@
+---
+- name: Install Java 1.8
+  apt: 
+    name: openjdk-8-jdk 
+    state: present
+
+- name: add group "tomcat"
+  group: 
+    name: tomcat
+
+- name: add user "tomcat"
+  user: 
+    name: tomcat 
+    group: tomcat 
+    home: /usr/share/tomcat 
+    createhome: no
+  become: True
+  become_method: sudo
+
+- name: Download Tomcat
+  #  get_url: url=http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.53/bin/apache-tomcat-8.5.53.tar.gz dest=/opt/apache-tomcat-8.5.53.tar.gz
+  copy: 
+    src: apache-tomcat-8.5.53.tar.gz 
+    dest: /opt
+
+- name: Extract archive
+  command: chdir=/usr/share /bin/tar xvf /opt/apache-tomcat-8.5.53.tar.gz -C /opt/ creates=/opt/apache-tomcat-8.5.53
+
+- name: Symlink install directory
+  file: src=/opt/apache-tomcat-8.5.53 path=/usr/share/tomcat state=link
+
+- name: Change ownership of Tomcat installation
+  file: path=/usr/share/tomcat/ owner=tomcat group=tomcat mode=0755 state=directory recurse=yes
+
+- name: Install Tomcat init script
+  copy: src=tomcat-initscript.sh dest=/etc/init.d/tomcatd mode=0755
+
+- name: enable service
+  shell: update-rc.d tomcatd defaults 95 
+
+- name: Configure Tomcat server
+  template: src=server.xml dest=/usr/share/tomcat/conf/
+  notify: restart tomcat
+
+- name: Configure Tomcat users
+  template: src=tomcat-users.xml dest=/usr/share/tomcat/conf/
+  notify: restart tomcat
+
+- name: Deploy Applicaiton
+  copy:
+    src: sampleapp.war
+    dest: /usr/share/tomcat/webapps
+
+- name: Start Tomcat
+  service: name=tomcatd state=restarted
+
+- name: wait for tomcat to start
+  wait_for: port={{http_port}}
+
+#- name: Start Tomcat
+#  command: "nohup /usr/share/tomcat/bin/startup.sh"
+#  tags: starttom

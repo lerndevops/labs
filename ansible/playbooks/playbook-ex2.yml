@@ -8,12 +8,9 @@
       register: abc
     - debug:
          msg: "{{ abc.stdout_lines }}"
-#### execute a normal shell command 
-    - name : execute a command
-      command: echo " executing a command"
 #### create a files
     - name: restart a service 
-      shell: touch "{{ item }}"
-      loop: 
-        - "naresh.txt"
-        - "new.java"
+      shell: echo "`hostname`"
+      register: xyz
+    - debug: 
+         msg: "value of xyz is: {{ xyz.stdout_lines }}"

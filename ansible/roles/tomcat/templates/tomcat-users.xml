@@ -31,6 +31,7 @@
 -->
 
   <user username="{{ admin_username }}" password="{{ admin_password }}" roles="manager-gui" />
+  <user username="{{ user1 }}" password="{{ user1_pwd }}" roles="manager-status" />
 
 <!--
   <role rolename="tomcat"/>

@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mongodb
+  name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongodb
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mongodb
+    spec:
+      containers:
+      - image: lerndevops/mongo
+        name: mongo
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: mongo
+spec:
+   type: ClusterIP
+   ports:
+    - port: 27017
+   selector:
+     app: mongodb
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myapp
+  name: myapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - image: lerndevops/springboot-mongo-app:latest
+        name: springboot-mongo-app
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-svc
+spec:
+  type: NodePort
+  ports:
+   - port: 8080
+  selector:
+    app: myapp

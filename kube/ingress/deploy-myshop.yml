@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myshop-fashion-ms 
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fashion
+  template:
+    metadata:
+      name: fashion
+      labels:
+        app: fashion
+    spec:
+      containers:
+        - name: fashion
+          image: lerndevops/myshop:fashion-ms
+          ports: 
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myshop-fashion-svc
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: fashion
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myshop-electronics-ms
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: electronics
+  template:
+    metadata:
+      name: electronics
+      labels:
+        app: electronics
+    spec:
+      containers:
+        - name: electronics
+          image: lerndevops/myshop:electronics-ms
+          ports:
+            - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: myshop-electronics-svc
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: electronics
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myshop-travel-ms
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: travel
+  template:
+    metadata:
+      name: travel
+      labels:
+        app: travel
+    spec:
+      containers:
+        - name: travel
+          image: lerndevops/myshop:travel-ms
+          ports:
+            - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myshop-travel-svc
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: travel

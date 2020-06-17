@@ -23,7 +23,7 @@ kubectl delete rs <rsname>                  # delete rs & pod under it
 ### Deployments:
 
 ```
-create a manifest file with Kind ReplicaSet & use kubectl to create the object in k8s API Server.
+create a manifest file with Kind Deployment & use kubectl to create the object in k8s API Server.
 
 kubectl create -f deployment-ex1.yml --record      # create deployment
 kubectl apply -f deployment-ex1.yml  --record      # update the deployment 

@@ -16,6 +16,9 @@ services:
     image: postgres:9.4
     volumes:
       - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: "db"
+      POSTGRES_HOST_AUTH_METHOD: "trust"  
     networks:
       - backend
     deploy:

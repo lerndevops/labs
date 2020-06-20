@@ -1,16 +1,14 @@
 pre steps on both Master & Agent
 
-		configure hostsnames in /etc/hosts file on both instances
+	configure hostsnames in /etc/hosts file on both instances
 
-		on master node 
+	on master node 
 		vi /etc/hosts
 			<master ip> puppet
-			<node ip> puppetagent
 			
-		on agent server
+	on agent server
 		vi /etc/hosts
 			<master ip> puppet
-			<node ip> puppetagent
 			
 		put hostname of the master node as "puppet" because by default the agents try to contact this name.
 
@@ -24,10 +22,10 @@ Master Setup:
 		By default, Puppet Server is configured to use 2 GB of RAM. You can customize this setting based on how much free memory the master server has and how many agent nodes it will manage.
 		To customize it, open /etc/default/puppetserver.
 
-		JAVA_ARGS="-Xms2g -Xmx3g -XX:MaxPermSize=256m"
+		JAVA_ARGS="-Xms512m -Xmx512m -XX:MaxPermSize=256m"
 
-		When we start Puppet Server, it will use port 8140 to communicate, so we'll ensure it's open:
-		sudo ufw allow 8140
+		FYI Only: When we start Puppet Server, it will use port 8140 to communicate, so we'll ensure it's open:
+
 
 		systemctl start puppetserver
 		systemctl status puppetserver

@@ -89,6 +89,7 @@ install all these from Jenkins UI )
   	3) Junit
   	4) build with parameters
   	5) BuildPipeline
+	6) Parameterised Trigger Remote builds
 ```
 
 ### Step11 -- `Create Credentials (Setup these from Jenkins UI)`

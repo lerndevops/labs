@@ -58,7 +58,7 @@ Install SonarQube-runner ( on Jenkins machine )
 
 ======================================================================================================
 
-Job5-package: post build action 
+Job5-package:  build action --> select sonar runner execution
 
 	sonar        : 	sonar.projectKey=sampleapp
 					sonar.ProjectName=sampleapp

@@ -99,3 +99,34 @@
 ```
 kubeadm token create --print-join-command --ttl=0
 ```
+
+## FYI Only: Reconstructing the Join Command for Kubeadm
+
+```
+skeleton of a kubeadm join command for a control plane node:
+
+kubeadm join <endpoint-ip-or-dns>:<port> \
+--token <valid-bootstrap-token> \
+--discovery-token-ca-cert-hash <ca-cert-sha256-hash> \
+--control-plane \
+--certificate-key <certificate-key>
+```
+
+```
+skeleton of a kubeadm join command for a worker node:
+
+kubeadm join <endpoint-ip-or-dns>:<port> \
+--token <valid-bootstrap-token> \
+--discovery-token-ca-cert-hash <ca-cert-sha256-hash> \
+```  
+
+```
+get the controleplane IP:PORT: kubectl cluster-info
+
+list exsiting tokens: kubeadm token list
+
+Create kubeadm bootstrap token: kubeadm token create
+
+find ca-cert-hash with openssl:
+   openssl x509 -in /etc/kubernetes/pki/ca.crt -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256
+```

@@ -231,3 +231,399 @@
   231  git status 
   232  history 
   233  history > git-history.txt
+===========================================================================
+
+    1  git --version
+    2  mkdir mycode
+    3  ls -l
+    4  cd mycode/
+    5  ls -l
+    6  pwd
+    7  git init
+    8  ls -l
+    9  git status
+   10  git config --global user.name lerndevops
+   11  git config --global user.email lerndevops@gmail.com
+   12  git config --list
+   13  ls -l
+   14  touch new.java
+   15  ls -l
+   16  git status
+   17  git add new.java
+   18  git status
+   19  git commit -m "new.java created"
+   20  git log
+   21  ls -ltrh
+   22  clear
+   23  ls -l
+   24  touch 4.java hello.c new.xml
+   25  ls -l
+   26  git status
+   27  git add .
+   28  git status
+   29  git commit -m "second commit"
+   30  git status
+   31  git log
+   32  ls -l
+   33  vi new.java
+   34  git status
+   35  ls -l
+   36  rm new.xml
+   37  git status
+   38  git add .
+   39  git status
+   40  ls -l
+   41  vi hello.c
+   42  git status
+   43  git add .
+   44  git status
+   45  git commit -m "third commit"
+   46  git log
+   47  git show d874f1d16d9fc8ee7f859f91d56baef83964f41c
+   48  git log
+   49  git diff ffe1b346 d874f1d16d
+   50  ls -l
+   51  git status
+   52  touch naresh.java
+   53  git status
+   54  git add .
+   55  git status
+   56  git restore --staged naresh.java
+   57  git status
+   58  git log
+   59  git show ffe1b346ff921f2cf22e4e72f6ee321908b5d1c0
+   60  clear
+   61  ls -l
+   62  git status
+   63  git add .
+   64  git commit -m "new"
+   65  git status
+   66  touch .gitignore
+   67  ls -l
+   68  ls -al
+   69  git status
+   70  vi .gitignore
+   71  git status
+   72  git add .
+   73  git commit -m "added gitignore"
+   74  cat .gitignore
+   75  touch naresh.info
+   76  git status
+   77  touch sachn.log sai.log
+   78  ls -l
+   79  git status
+   80  mkdir test
+   81  ls -l
+   82  cd test/
+   83  touch abc.java
+   84  touch new.xml
+   85  cd ..
+   86  ls -l
+   87  git status
+   88  touch 888.xml
+   89  git status
+   90  git log
+   91  git log --oneline
+   92  git tag -a v1.5 -m "version 1.5"
+   93  git log --oneline
+   94  git tag -a v1.0 ffe1b34 -m "version 1.0"
+   95  git log --oneline
+   96  git show v1.0
+   97  clear
+   98  ls -l
+   99  git remote -v
+  100  git remote add origin https://github.com/lerndevops/mycode.git
+  101  git remote -v
+  102  git push -u origin master
+  103  git log --oneline
+  104  git push -u origin master --tags
+  105  history
+  106  cd ..
+  107  git status
+  108  ls -ltrh
+  109  rm -r mycode/
+  110  ls -l
+  111  git --version
+  112  git clone https://github.com/lerndevops/mycode.git
+  113  ls -l
+  114  cd mycode/
+  115  ls -ltrh
+  116  git remote -v
+  117  git log --oneline
+  118  cat hello.c
+  119  git fetch
+  120  git log --oneline
+  121  git pull
+  122  cat hello.c
+  123  history
+  124  git fetch
+  125  spool
+  126  history > git-history.txt
+  127  ls -ltrh
+  128  vi git-history.txt
+  129  clear
+  130  cd ..
+  131  ls -ltrh
+  132  rm -r mycode/
+  133  clear
+  134  git --version
+  135  git config --list
+  136  mkdir myrepo
+  137  cd myrepo/
+  138  git init
+  139  ls -l
+  140  git status
+  141  touch new.java
+  142  ls -l
+  143  git status
+  144  git add new.java
+  145  ls -l
+  146  git status
+  147  git commit -m "created new.java"
+  148  git log
+  149  clear
+  150  touch 5.c naresh.java
+  151  ls -l
+  152  git status
+  153  vi new.java
+  154  git status
+  155  git add .
+  156  git status
+  157  git commit -m "second commit"
+  158  git log
+  159  touch 6.xml
+  160  ls -l
+  161  rm 5.c
+  162  vi new.java
+  163  git status
+  164  git add .
+  165  git status
+  166  ls -l
+  167  vi naresh.java
+  168  git status
+  169  git add naresh.java
+  170  git status
+  171  git commit -m "third commit"
+  172  git log
+  173  git show 8d61ea6eeede5a92173f6f115a071d9354dd9105
+  174  git show -p new.java
+  175  touch .gitignore
+  176  ls -l
+  177  ls -al
+  178  vi .gitignore
+  179  git status
+  180  git add .
+  181  git commit -m "added gitignore"
+  182  cat .gitignore
+  183  git status
+  184  touch naresh.info
+  185  git status
+  186  ls -l
+  187  touch a.log n.log
+  188  ls -l
+  189  git status
+  190  mkdir test
+  191  ls -l
+  192  cd test/
+  193  ls -l
+  194  touch new.java abc.xml y.html
+  195  ls -l
+  196  cd ..
+  197  git status
+  198  clear
+  199  git remote -v
+  200  git remote add origin https://github.com/lerndevops/myrepo.git
+  201  git remote -v
+  202  git push -u origin master
+  203  ls -l
+  204  cat .gitignore
+  205  git log
+  206  clear
+  207  cd ..
+  208  ls -ltrh
+  209  rm -r myrepo/
+  210  ls -l
+  211  git clone https://github.com/lerndevops/myrepo
+  212  ls -l
+  213  cd myrepo/
+  214  ls -l
+  215  git log
+  216  git log
+  217  git fetch
+  218  git log
+  219  git pull
+  220  git status
+  221  git log
+  222  cd ..
+  223  ls -ltrh
+  224  git clone https://github.com/PythonLabSKJ/PracticeSet
+  225  ls -l
+  226  cd PracticeSet/
+  227  ls -l
+  228  touch Ques4.py
+  229  ls -l
+  230  git status
+  231  git add .
+  232  git commit -m "new change"
+  233  ls -lthr
+  234  git log
+  235  git remote -v
+  236  cd ..
+  237  rm -r PracticeSet/
+  238  git clone https://github.com/lerndevops/PracticeSet
+  239  ls -l
+  240  cd PracticeSet/
+  241  ls -l
+  242  touch Ques3.py
+  243  ls -l
+  244  git add .
+  245  git commit -m "new change"
+  246  git log
+  247  git remote -v
+  248  git push -u origin master
+  249  su - ubuntu
+  250  clear
+  251  ls -l
+  252  rm -r PracticeSet/
+  253  ls -ltrh
+  254  cd myrepo/
+  255  ls -ltrh
+  256  clear
+  257  git clone https://github.com/lerndevops/mydir.git
+  258  cd mydir/
+  259  ls -ltrh
+  260  touch naresh.java
+  261  git add ..
+  262  git add .
+  263  git commit -m "naresh change"
+  264  git status
+  265  ls -l
+  266  git log
+  267  more .gitignore
+  268  touch abc.xml
+  269  git status
+  270  git add .
+  271  git commit -m "naresh change"
+  272  git push -u origin master
+  273  cd ..
+  274  ls -ltrh
+  275  git clone https://github.com/sivanesan1404/mydir
+  276  cd /tmp
+  277  git clone https://github.com/sivanesan1404/mydir
+  278  cd mydir/
+  279  ls -ltrh
+  280  git remote -v
+  281  git remote add naresh https://github.com/lerndevops/mydir
+  282  git remote -v
+  283  git pull origin
+  284  git push -u naresh master
+  285  git remote -v
+  286  clear
+  287  cd
+  288  ls -l
+  289  cd mydir/
+  290  cd ..
+  291  cd myrepo/
+  292  ls -l
+  293  clear
+  294  ls -l
+  295  touch new.html
+  296  git status
+  297  git add new.html
+  298  git status
+  299  git commit -m "new.thml"
+  300  git log
+  301  git status
+  302  git log --oneline
+  303  git status
+  304  git reset --soft 9babff3
+  305  git log --oneline
+  306  git status
+  307  git restore --staged new.html
+  308  git status
+  309  clear
+  310  git status
+  311  git add .
+  312  git status
+  313  git commit -m "new.thml"
+  314  git log --oneline
+  315  ls -l
+  316  git reset --hard 9babff3
+  317  ls -l
+  318  git status
+  319  clear
+  320  git branch
+  321  git brnach
+  322  clear
+  323  git branch
+  324  ls -l
+  325  git log --oneline
+  326  cd ..
+  327  clear
+  328  mkdir testrepo
+  329  cd testrepo/
+  330  ls -ltrh
+  331  git init
+  332  touch 1.java 2.java
+  333  git add .
+  334  git commit -m "m1"
+  335  git log --oneline
+  336  touch 3.java 4.java
+  337  git add .
+  338  git commit -m "m2"
+  339  git log --online
+  340  git log --oneline
+  341  git remote add origin https://github.com/lerndevops/testrepo.git
+  342  git push -u origin master
+  343  git pull
+  344  git branch
+  345  ls -l
+  346  git log --oneline
+  347  git branch featxy
+  348  git branch
+  349  git checkout featxy
+  350  git branch
+  351  ls -l
+  352  git log --oneline
+  353  touch featx.java
+  354  git add .
+  355  git commit -m "f1"
+  356  touch featy.java
+  357  git add .
+  358  git commit -m "f2"
+  359  git log --oneline
+  360  git push -u origin featxy
+  361  clear
+  362  git branch
+  363  git log --oneline
+  364  git checkout master
+  365  git log --online
+  366  git log --oneline
+  367  git merge featxy
+  368  git log --oneline
+  369  git reset --hard 1ff8c84
+  370  git log --oneline
+  371  touch defect.java
+  372  git add .
+  373  git commit -m "d1"
+  374  git log --oneline
+  375  git checkout feat
+  376  git checkout featxy
+  377  git log --oneline
+  378  git chekcout master
+  379  git checkout master
+  380  git merge featxy
+  381  git log --oneline
+  382  git reset --hard 1ff8c84
+  383  touch defect.java
+  384  git add .
+  385  git commit -m "d1"
+  386  git checkout featxy
+  387  git log --oneline
+  388  git rebase master
+  389  git log --oneline
+  390  git checkout master
+  391  git merger featxy
+  392  git merge featxy
+  393  git log --oneline
+  394  history

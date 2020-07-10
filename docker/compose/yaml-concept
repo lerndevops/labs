@@ -1,0 +1,25 @@
+yaml -- data serialization 
+indentation -- spaces 
+
+strings 
+
+car: bmw
+name: narseh
+class: devops
+
+dictionary / map
+
+car:
+  name: bmw
+  color: red
+  engine: 3L
+
+array / list
+
+cars:
+  - bmw:
+      name: mycar
+      color: white
+      engine: 2.5L
+  - audi
+  - RR

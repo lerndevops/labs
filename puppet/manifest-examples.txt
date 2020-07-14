@@ -1,3 +1,13 @@
+puppet manifest need to be placed on below location by default. 
+
+on master node
+
+/etc/puppetlabs/code/environments/production/manifests
+
+site.pp is default manifest name can be use. 
+
+=======================================================================================
+
 Syntax to Write puppet resources inside manifests. 
 
 resourcetype{'title':

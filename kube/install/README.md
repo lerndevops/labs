@@ -18,13 +18,14 @@
 	
 ### Step2: `On Master only:`
 
-    sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+    sudo kubeadm init --ignore-preflight-errors=all
 	
     sudo mkdir -p $HOME/.kube
     sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-    kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml
+    ## Weave
+    kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" 
 	
     kubectl get nodes
     kubectl get all --all-namespaces
@@ -74,13 +75,14 @@
 
 ### Step2: `On Master only:`
 
-    sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+    sudo kubeadm init --ignore-preflight-errors=all
 
     sudo mkdir -p $HOME/.kube
     sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-    kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml
+    ## Weave Pod Network
+    kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" 
 
     kubectl get nodes
     kubectl get all --all-namespaces

@@ -3,13 +3,13 @@ kind: Deployment
 metadata:
   name: kubeserve
 spec:
-  replicas: 5
-  minReadySeconds: 20 # wait for 10 sec before pod is ready going to next
+  replicas: 8
+  minReadySeconds: 45 # wait for 45 sec before pod is ready going to next
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1  # take down 1 pod at a time
-      maxSurge: 1        # bring one at a time
+      maxSurge: 2        # max number of pods to run for the deployment
   selector:
     matchLabels:
       app: kubeserve
@@ -20,9 +20,9 @@ spec:
         app: kubeserve
     spec:
       containers:
-      - image: leaddevops/kubeserve:v1
-        name: app
-
+       - name: app
+         image: leaddevops/kubeserve:v1
+        
 ---
 kind: Service
 apiVersion: v1
@@ -33,6 +33,5 @@ spec:
   ports:
     - port: 80
       protocol: TCP
-      targetPort: 80
   selector: 
     app: kubeserve

@@ -7,13 +7,11 @@ spec:
   selector:
      matchLabels:
        app: web
-       env: dev
   template:
     metadata:
       name: mypod
       labels:
         app: web
-        env: dev
     spec:
       containers:
         - name: mycont
@@ -34,4 +32,3 @@ spec:
       nodePort: 30005
   selector:
      app: web
-     env: dev

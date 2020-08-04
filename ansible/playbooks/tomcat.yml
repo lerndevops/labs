@@ -19,7 +19,7 @@
       group: tomcat 
       createhome: no
    - name: Download Tomcat
-       get_url: url=https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.tar.gz dest=/opt/apache-tomcat-8.5.40.tar.gz
+     get_url: url=https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.tar.gz dest=/opt/apache-tomcat-8.5.40.tar.gz
      #copy: 
      # src: /tmp/apache-tomcat-8.5.40.tar.gz 
      # dest: /opt

@@ -19,15 +19,15 @@
       group: tomcat 
       createhome: no
    - name: Download Tomcat
-      #  get_url: url=http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.53/bin/apache-tomcat-8.5.53.tar.gz dest=/opt/apache-tomcat-8.5.53.tar.gz
-     copy: 
-      src: /tmp/apache-tomcat-8.5.53.tar.gz 
-      dest: /opt
+       get_url: url=https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.tar.gz dest=/opt/apache-tomcat-8.5.40.tar.gz
+     #copy: 
+     # src: /tmp/apache-tomcat-8.5.40.tar.gz 
+     # dest: /opt
    - name: Extract archive
-     shell: /bin/tar xvf /opt/apache-tomcat-8.5.53.tar.gz -C /opt/ 
+     shell: /bin/tar xvf /opt/apache-tomcat-8.5.40.tar.gz -C /opt/ 
    - name: create symlink
      file: 
-       src: /opt/apache-tomcat-8.5.53
+       src: /opt/apache-tomcat-8.5.40
        path: /opt/tomcat
        state: link
    - name: Change ownership of Tomcat installation
@@ -38,17 +38,17 @@
        mode: 0755 
        state: directory 
        recurse: yes
-   - name: Install Tomcat init script
-     copy: 
-       src: /tmp/tomcat-initscript.sh 
-       dest: /etc/init.d/tomcatd 
-       mode: 0755
-   - name: enable service
-     shell: update-rc.d tomcatd defaults 95 
-   - name: Start Tomcat
-     service: 
-       name: tomcatd 
-       state: restarted
+   #- name: Install Tomcat init script
+   #  copy: 
+   #    src: /tmp/tomcat-initscript.sh 
+   #    dest: /etc/init.d/tomcatd 
+   #    mode: 0755
+   #- name: enable service
+   #  shell: update-rc.d tomcatd defaults 95 
+   #- name: Start Tomcat
+   #  service: 
+   #    name: tomcatd 
+   #    state: restarted
    - name: Start Tomcat
      command: "nohup /opt/tomcat/bin/startup.sh"
    - name: print variables

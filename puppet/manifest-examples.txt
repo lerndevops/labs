@@ -202,15 +202,11 @@ mkdir tomcat/{fies, templates}
 /opt/puppetlabs/bin/puppet generate module <author-modulename>
 /opt/puppetlabs/bin/puppet generate module naresh-tomcat
 
-class tomcat {
+cd tomcat/manifests
 
-include setup_user
+touch setup-user.pp
 
-}
-
-setup-user.pp
-
-calss setup_user {
+calss tomcat::setup_user {
 
 	group { 'tomcat':
 		name => 'tomcat',
@@ -225,4 +221,12 @@ calss setup_user {
 		shell => '/bin/bash',
 	}
 	
+}
+
+vi init.pp
+
+class tomcat {
+
+  class {'tomcat::setup_user':}
+
 }

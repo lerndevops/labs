@@ -1,10 +1,6 @@
 ---
-- hosts: all 
+- hosts:  ubuntu
   become: yes
-  vars: 
-     a: 15
-     abc: 34
-     xyz: 67
   tasks:
    - name: Install Java 1.8
      apt: 
@@ -19,17 +15,20 @@
       group: tomcat 
       createhome: no
    - name: Download Tomcat
-     get_url: url=https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.tar.gz dest=/opt/apache-tomcat-8.5.40.tar.gz
-     #copy: 
-     # src: /tmp/apache-tomcat-8.5.40.tar.gz 
-     # dest: /opt
+     get_url: 
+       url: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.tar.gz 
+       dest: /tmp/apache-tomcat-8.5.40.tar.gz
    - name: Extract archive
-     shell: /bin/tar xvf /opt/apache-tomcat-8.5.40.tar.gz -C /opt/ 
+     unarchive: 
+        src: /tmp/apache-tomcat-8.5.40.tar.gz 
+        dest: /opt
+        remote_src: yes
    - name: create symlink
      file: 
        src: /opt/apache-tomcat-8.5.40
        path: /opt/tomcat
        state: link
+
    - name: Change ownership of Tomcat installation
      file: 
        path: /opt/tomcat 
@@ -38,19 +37,29 @@
        mode: 0755 
        state: directory 
        recurse: yes
-   #- name: Install Tomcat init script
-   #  copy: 
-   #    src: /tmp/tomcat-initscript.sh 
-   #    dest: /etc/init.d/tomcatd 
-   #    mode: 0755
-   #- name: enable service
-   #  shell: update-rc.d tomcatd defaults 95 
-   #- name: Start Tomcat
-   #  service: 
-   #    name: tomcatd 
-   #    state: restarted
-   - name: Start Tomcat
-     command: "nohup /opt/tomcat/bin/startup.sh"
-   - name: print variables
-     debug: 
-       msg: "values of a,abc,xyz are: {{ a }},{{ abc }},{{ xyz }}"
+
+   - name: create tomcat.service file
+     file:
+      path: /etc/systemd/system/tomcat.service
+      state: touch
+   - name: create tomcat service
+     blockinfile:
+       path: /etc/systemd/system/tomcat.service
+       block: |
+         [Unit]
+         Description=Tomcat - instance %i
+         After=syslog.target network.target
+         [Service]
+         Type=forking
+         User=tomcat
+         Group=tomcat
+         Environment="CATALINA_HOME=/opt/tomcat/"
+         ExecStart=/opt/tomcat/bin/startup.sh
+         ExecStop=/opt/tomcat/bin/shutdown.sh
+         [Install]
+         WantedBy=multi-user.target
+   - name: enable & start tomcat service
+     systemd:
+        name: tomcat
+        state: started
+        enabled: yes

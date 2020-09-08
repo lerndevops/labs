@@ -204,7 +204,7 @@ mkdir tomcat/{fies, templates}
 
 cd tomcat/manifests
 
-touch setup-user.pp
+vi setup_user.pp
 
 calss tomcat::setup_user {
 

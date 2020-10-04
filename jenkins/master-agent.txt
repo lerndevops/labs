@@ -1,4 +1,4 @@
-Jenkins Master Slave configuration Setup
+Jenkins Master agent configuration Setup
 
 on Jenkins UI ( master )
 
@@ -27,7 +27,7 @@ on Jenkins UI ( master )
 		
 ======================================================================================
 
-on slave machine 
+on agent machine 
 
 	login to the machine & switch to root user
 	mkdir -p /home/jenkinslave

@@ -163,3 +163,22 @@
   163  git push -u origin featxy
   164  clear
   165  history
+
+
+  167  git branch
+  168  git branch newbranch
+  169  git branch
+  170  ls -l
+  171  git checkout newbranch
+  172  git branch
+  173  ls -l
+  174  touch newcode.txt
+  175  git add .
+  176  git commit -m "newcode"
+  177  git branch
+  178  ls -l
+  179  git checkout featxy
+  180  ls -l
+  181  git merge newbranch
+  182  ls -l
+  183  history

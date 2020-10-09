@@ -1,0 +1,134 @@
+master node history 
+
+  188  clear
+  189  hostname -i
+  190  vi /etc/hosts
+  191  curl -O https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+  192  dpkg -i puppetlabs-release-pc1-xenial.deb
+  193  apt-get update
+  194  apt-get install puppetserver
+  195  clear
+  196  cd /opt/puppetlabs/
+  197  ls -l
+  198  cd
+  199  free -m
+  200  systemctl start puppetserver
+  201  journalctl -xu puppetserver.service
+  202  clear
+  203  vi /etc/default/puppetserver
+  204  systemctl daemon-reload
+  205  systemctl start puppetserver
+  206  systemctl status puppetserver
+  207  vi /etc/default/puppetserver
+  208  clear
+  209  cd /opt/puppetlabs/
+  210  ls -l
+  211  cd bin/
+  212  ls -l
+  213  ./puppet cert list
+  214  ./puppet cert sign ip-172-31-27-41.us-east-2.compute.internal
+  215  ./puppet cert sign --all
+  216  ./puppet cert list
+  217  clear
+  218  cd
+  219  cd /etc/puppetlabs/code/environments/production/
+  220  ls -l
+  221  cd manifests/
+  222  ls -l
+  223  vi site.pp
+  224  cat site.pp
+  225  ls -l
+  226  vi site.pp
+  227  cat site.pp
+  228  vi site.pp
+  229  cd /var/log/puppetlabs/
+  230  ls -l
+  231  cd /etc/puppetlabs/code/environments/production/manifests
+  232  lear
+  233  clear
+  234  ls -l
+  235  vi site.pp
+  236  cat site.pp
+  237  cd ..
+  238  ls -l
+  239  clear
+  240  ls -l
+  241  cd modules/
+  242  ls -l
+  243  /opt/puppetlabs/bin/puppet module generate naresh-tomcat
+  244  ls -l
+  245  cd tomcat/
+  246  ls -l
+  247  cd manifests/
+  248  ls -l
+  249  vi setup-user.pp
+  250  mv setup-user.pp setup_user.pp
+  251  ls -l
+  252  vi setup-user.pp
+  253  vi setup_user.pp
+  254  ls -l
+  255  vi init.pp
+  256  cd ..
+  257  cd manifests/
+  258  ls -l
+  259  vi site.pp
+  260  history
+
+node1 history 
+
+    1  clear
+    2  vi /etc/hosts
+    3  wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+    4  dpkg -i puppetlabs-release-pc1-xenial.deb
+    5  apt-get update
+    6  apt-get install puppet-agent
+    7  clear
+    8  systemctl start puppet
+    9  systemctl status puppet
+   10  cd /opt/puppetlabs/bin/
+   11  ./puppet agent --test
+   12  ps -ef|grep nginx
+   13  ./puppet agent --test
+   14  clear
+   15  ./puppet agent --test
+   16  ll /tmp
+   17  ./puppet agent --test
+   18  history
+
+node2 history 
+
+    1  clear
+    2  vi /etc/hosts
+    3  wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+    4  dpkg -i puppetlabs-release-pc1-xenial.deb
+    5  apt-get update
+    6  apt-get install puppet-agent
+    7  clear
+    8  cd /opt/puppetlabs/
+    9  ls -l
+   10  systemctl start puppet
+   11  systemctl status puppet
+   12  ls -l
+   13  cat /etc/hosts
+   14  clear
+   15  ps -ef|grep nginx
+   16  cd bin/
+   17  ./puppet agent --test
+   18  ll /tmp
+   19  clear
+   20  cd /etc/puppetlabs/
+   21  ls -l
+   22  cd puppet/
+   23  ls -l
+   24  vi puppet.conf
+   25  systemctl restart puppet
+   26  java -version
+   27  cd /opt/puppetlabs/bin/
+   28  ./puppet agent --test
+   29  java -version
+   30  ps -ef|grep nginx
+   31  clear
+   32  id tomcat
+   33  ./puppet agent --test
+   34  id tomcat
+   35  history

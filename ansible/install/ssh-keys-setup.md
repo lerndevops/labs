@@ -1,32 +1,31 @@
 ### create a user on all machines ( controller & all targets )
 
-	useradd ansible -m -d /home/ansible -s /bin/bash
+	useradd naresh -m -d /home/naresh -s /bin/bash
 
 ### add user to sudoers for root previliges  on all machines ( all targets )
 
-	echo -e 'ansible  ALL=(ALL)  NOPASSWD:  ALL' > /etc/sudoers.d/ansible
+	echo -e 'naresh  ALL=(ALL)  NOPASSWD:  ALL' > /etc/sudoers.d/naresh
 
 ### genereate ssh keys for above user on contrller machine 
 
 ```
-	1) switch to user ( su - ansible )
+	1) switch to user ( su - naresh )
 	2) run "ssh-keygen" command as user ( this will genereate ssh keys for the user ) 
 ```
-
+```
+        on ansible controller machine
+		cd /home/naresh/.ssh 
+		cat id_rsa.pub (copy the content)
+```
 ### copy user ssh keys from ansible contrller to all target hosts
 
 ```
-	1) on ansible controller machine
-		cd /home/ansible/.ssh 
-		cat id_rsa.pub (copy the content)
-```
-```
-	2) on all taget machines
-		   swith to the user ( su - ansible )
-		   mkdir -p /home/ansible/.ssh
-		   touch /home/ansible/.ssh/authorized_keys
-		   chmod 600 /home/ansible/.ssh/authorized_keys
-		   vi /home/ansible/.ssh/authorized_keys  (enter the copied contet of id_rsa.pub from controller & save the file)
+	1) on all target machines
+		   swith to the user ( su - naresh )
+		   mkdir -p /home/naresh/.ssh
+		   touch /home/naresh/.ssh/authorized_keys
+		   chmod -R 700 /home/naresh/.ssh
+		   vi /home/naresh/.ssh/authorized_keys  (enter the copied contet of id_rsa.pub from controller & save the file)
 ```	
 	
 

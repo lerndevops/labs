@@ -45,7 +45,7 @@ apt-cache madison kubelet | head | awk '{print $1,$2,$3}'
 echo "=================================="
 apt-cache madison kubectl | head | awk '{print $1,$2,$3}'
 echo " "
-kubever="1.17.4-00"
+kubever="1.18.6-00"
 echo "Installing v1.17.4-00 Version for kubeadm,kubelet,kubectl"
 sudo apt-get install -y kubeadm=$kubever kubelet=$kubever kubectl=$kubever
 if [ $? -eq 0 ];then

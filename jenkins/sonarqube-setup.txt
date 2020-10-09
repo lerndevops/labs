@@ -60,12 +60,12 @@ Install SonarQube-runner ( on Jenkins machine )
 
 Job5-package:  build action --> select sonar runner execution
 
-	sonar        : 	sonar.projectKey=sampleapp
-					sonar.ProjectName=sampleapp
-					sonar.sources=src/main/java/
-					sonar.java.binaries=target/classes/
-					sonar.language=java
-					sonar.java.source=1.8
+sonar.projectKey=sampleapp
+sonar.ProjectName=sampleapp
+sonar.sources=src/main/java/
+sonar.java.binaries=target/classes/
+sonar.language=java
+sonar.java.source=1.8
 
 
 

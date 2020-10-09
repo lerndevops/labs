@@ -1,0 +1,5 @@
+service jenkins stop 
+apt-get purge jenkins 
+apt autoremove
+cd /var/lib
+rm -rf jenkins/

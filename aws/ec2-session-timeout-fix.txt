@@ -1,0 +1,8 @@
+if you are facing timout issues once logged into ec2 instances try below. 
+
+on ec2 terminal, 
+
+        echo "ClientAliveInterval 240" >> /etc/ssh/sshd_config
+        service sshd restart
+
+        logout & login back

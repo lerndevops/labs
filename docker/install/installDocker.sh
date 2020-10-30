@@ -1,8 +1,11 @@
 #!/bin/bash
 
 install_ubuntu() {
-    ## Remove any pre installed docker packages : 
-    sudo apt-get remove docker docker-engine docker.io containerd runc
+    ## Remove any pre installed docker packages :
+    sudo service docker stop 
+    sudo apt-get remove -y docker-ce docker-engine docker.io containerd runc
+    sudo apt-get purge -y docker-ce docker-ce-cli containerd.io
+    sudo apt -y autoremove
     cd /var/lib
     rm -r docker
     rm `which docker-compose`

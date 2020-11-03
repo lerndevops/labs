@@ -53,8 +53,12 @@
         chdir: /tmp
     - name: create user
       shell: chmod -R 755 /tmp/labs/* ; /tmp/labs/aws/setup-user.sh
-      register: outt
+      register: usr 
     - debug:
-        var: outt
-#    - name: remove git
-#      command: apt remove -y git
+        var: usr
+    - name: install docker,kubeadm,kubelet,kubectl
+      shell: chmod -R 755 /tmp/labs/* ; /tmp/labs/kube/install/install-k8s-ubuntu.sh
+      register: kube
+    - debug:
+        var: kube
+

@@ -8,7 +8,7 @@
         wait: yes
         group: mysecgroup 
         count: "{{ count }}" 
-        vpc_subnet_id: subnet-930a04fb
+        vpc_subnet_id: subnet-81211cfb 
         assign_public_ip: yes
         region: us-east-2
       register: out
@@ -51,8 +51,8 @@
       shell: git clone https://github.com/lerndevops/labs.git
       args:
         chdir: /tmp
-    - name: install kube
-      shell: chmod -R 755 /tmp/labs ; /tmp/labs/kube/install/install-k8s-ubuntu.sh 
+        #- name: install kube
+        #shell: chmod -R 755 /tmp/labs ; /tmp/labs/kube/install/install-k8s-ubuntu.sh 
     - name: create user
       shell: chmod -R 755 /tmp/labs/* ; /tmp/labs/aws/setup-aws-user.sh 
       register: outt

@@ -23,13 +23,17 @@
         ansible_python_interpreter: /usr/bin/python3
       with_items: "{{out.instances}}"
 
-    - wait_for:
-        host: "{{ item.public_ip }}"
-        port: 22
-        delay: 30 
-        timeout: 320
-        state: started
-      with_items: "{{ out.instances }}"
+    - name: wait for ssh
+      shell: sleep 60
+      delegate_to: 127.0.0.1
+
+      #- wait_for:
+      #  host: "{{ item.public_ip }}"
+      #  port: 22
+      #  delay: 30
+      #  timeout: 320
+      #  state: started
+      #with_items: "{{ out.instances[0] }}"
 
     - copy:
         content: "{% for host in groups.myservers %}{{ hostvars[host].inventory_hostname }}\n{% endfor %}"

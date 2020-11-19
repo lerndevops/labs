@@ -1,0 +1,28 @@
+- name: Create GCP Instance
+  hosts: localhost
+  tasks:
+    - name: create a GCP instance
+      gcp_compute_instance:
+       name: test
+       zone: us-central1-a
+       project: devops-262910
+       auth_kind: serviceaccount
+       service_account_file: "/aws/gcp-ansible-sa.json"
+       state: present
+       machine_type: g1-small
+       disks:
+        - initialize_params:
+             disk_name: test
+             disk_size_gb: 10
+             source_image: "projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20200807" 
+          auto_delete: 'true'
+          boot: 'true'
+       network_interfaces:
+        - access_configs:
+           - name: External NAT
+             type: ONE_TO_ONE_NAT
+      register: a
+    - name: debug
+      debug: 
+        var: a.networkInterfaces[0].accessConfigs[0].natIP
+      when: a.changed

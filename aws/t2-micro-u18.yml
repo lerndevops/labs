@@ -26,7 +26,7 @@
     - wait_for:
         host: "{{ item.public_ip }}"
         port: 22
-        delay: 30
+        delay: 30 
         timeout: 320
         state: started
       with_items: "{{ out.instances }}"
@@ -52,7 +52,7 @@
       args:
         chdir: /tmp
     - name: create user
-      shell: chmod -R 755 /tmp/labs/* ; /tmp/labs/aws/setup-aws-user.sh
+      shell: chmod -R 755 /tmp/labs/* ; /tmp/labs/aws/setup-user.sh
       register: outt
     - debug:
         var: outt

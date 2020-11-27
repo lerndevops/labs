@@ -4,7 +4,7 @@ Install JAVA
 	sudo apt-get update
 	sudo apt-get install -y openjdk-8-jdk
 	
-	## to install jdk 11 use below (choose to install either jdk 8 or 11 - both are not required )
+	### to install jdk 11 use below (choose to install either jdk 8 or 11 - both are not required )
 	
 	sudo apt-get install -y openjdk-11-jdk
 

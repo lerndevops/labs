@@ -1,7 +1,7 @@
 Install Plugins required for CI Pipeline
 
 	Manage Jenkins --> manage plugins -- Available -- search & install the below
-		pmd -- install without restart
+		Warning NG -- install without restart
 		cobertura -- install without restart
 		Build Pipeline Plugin  -- install without restart
 

@@ -8,7 +8,7 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 1  # take down 1 pod at a time
+      maxUnavailable: 1  
       maxSurge: 2        # max number of pods to run for the deployment
   selector:
     matchLabels:

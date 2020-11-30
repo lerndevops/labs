@@ -28,7 +28,8 @@ metadata:
 spec:
   type: NodePort
   ports: 
-    - port: 3000
-      nodePort: 30005
+   - port: 80
+     targetPort: 3000
+     nodePort: 30005
   selector:
      app: web

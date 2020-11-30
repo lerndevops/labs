@@ -28,7 +28,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-service
+  name: nginx-svc
 spec:
   type: ClusterIP  ## this is default if we do not type in service definition
   selector:

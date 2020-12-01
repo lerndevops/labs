@@ -1,5 +1,6 @@
 Install Git on --- Ubuntu OS
 
+sudo su -
 sudo apt-get install software-properties-common
 sudo add-apt-repository ppa:git-core/ppa -y
 sudo apt-get update

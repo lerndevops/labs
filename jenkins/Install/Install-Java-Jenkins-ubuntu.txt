@@ -10,12 +10,11 @@ Install JAVA
 
 Install Jenkins
 
-    wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+        wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
 	echo deb https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list
 	sudo apt-get update
 	sudo apt-get install jenkins
-	sudo systemctl start jenkins
-	sudo systemctl stop/status jenkins
+
 
 Install Maven  ( on Jenkins machine )
 
@@ -31,3 +30,6 @@ Set JAVA_HOME & MAVEN_HOME as environment variables on Jenkins machine
 	sudo echo "JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64\"" >> /etc/profile 
 	sudo echo "PATH=\$JAVA_HOME/bin:\$MAVEN_HOME/bin:\$PATH" >> /etc/profile
 	source /etc/profile
+	
+	sudo systemctl start jenkins
+	sudo systemctl stop/status jenkins

@@ -1,0 +1,17 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: green-v2-deploy
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: green
+  template:
+    metadata:
+      labels:
+        app: green
+    spec:
+      containers:
+       - name: app
+         image: leaddevops/kubeserve:v2

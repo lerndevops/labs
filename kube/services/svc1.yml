@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: svc1
+spec:
+  type: ClusterIP  ## virtual Loadbalncer that forwards the request into mutiple backend pods
+  selector:
+    role: db
+  ports:
+    - port: 80   # Virtual LB port, you can define any port of your choice
+      targetPort: 3000   ## port number inside container

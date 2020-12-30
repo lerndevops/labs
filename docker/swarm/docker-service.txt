@@ -7,7 +7,7 @@ how to create a service in docker swarm
 
    docker service create --name mysvc --replicas 4 -p 9080:8080 tomcat
    docker service ls
-   docker service mysvc ps
+   docker service ps mysvc
    docker service inspect mysvc
    docker service inspect --pretty mysvc
    docker service rm mysvc 

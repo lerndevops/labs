@@ -1,0 +1,16 @@
+---
+ - hosts: aws
+   become: yes
+   tasks:
+     - name : execute a shell
+       shell: touch /tmp/ravi
+#       register: abc
+#     - debug:
+#         msg: "{{ abc.stdout_lines }}"
+#     - name : execute a command
+#       command: echo " executing a command" 
+
+     
+
+
+

@@ -1,0 +1,7 @@
+- hosts: aws
+  tasks:
+    - shell: ls /tmp
+      register: out
+
+    - debug:
+        msg: "{{out.stdout_lines}}"

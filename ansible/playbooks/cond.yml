@@ -1,0 +1,13 @@
+---
+ - hosts: aws
+   become: yes
+   tasks:
+     - name: install a webserver 
+       yum:
+        name: httpd
+        state: latest 
+       when: ansible_distribution == 'RedHat'
+     - name: start the service
+       service:
+         name: httpd
+         state: started

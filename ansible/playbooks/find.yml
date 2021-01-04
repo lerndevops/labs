@@ -1,0 +1,14 @@
+- hosts: aws
+  become: yes
+  tasks:
+    - name: find the files
+      find:
+        paths: '/opt'
+        patterns: "*.log"
+      register: out
+
+    - name: remove the files
+      file:
+        path: "{{item.path}}"
+        state: absent
+      with_items: "{{out.files}}"

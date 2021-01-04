@@ -1,0 +1,13 @@
+- hosts: aws
+  become: yes
+  tasks:
+  - name: Check that the file exists
+    stat:
+      path: /tmp/file.txt
+    register: stat_result
+
+  - name: Create the file, if it doesnt exist already
+    file:
+      path: /tmp/file.txt
+      state: touch
+    when: stat_result.stat.exists == False

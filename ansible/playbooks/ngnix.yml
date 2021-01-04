@@ -1,0 +1,19 @@
+---
+- hosts: aws
+  become: Yes
+  tasks:
+    - name: Installs nginx web server
+      yum: name=httpd state=installed update_cache=true
+      notify:
+        - start nginx
+#    - name: Remove index.html for host
+#      file:
+#        path: /usr/share/nginx/html/index.html
+#        state: absent
+     # when: php|success
+#    - name: Upload default index.html for host
+#      copy: src=index.html dest=/usr/share/nginx/html mode=0644 
+  handlers:
+    - name: start nginx
+      service: name=httpd state=started
+

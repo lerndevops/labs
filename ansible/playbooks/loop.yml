@@ -1,0 +1,10 @@
+- hosts: aws
+  tasks: 
+    - name: Run a loop
+      debug:
+        msg: "{{item}}"
+      with_items:
+        - one
+        - two
+        - three
+        - Four

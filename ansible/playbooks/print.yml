@@ -1,0 +1,6 @@
+---
+ - hosts: aws
+   tasks:
+     - name: printing a message
+       debug:
+         msg: "Hello Devops People "

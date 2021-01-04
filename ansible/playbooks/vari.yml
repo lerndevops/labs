@@ -1,0 +1,8 @@
+- hosts: aws
+  vars:
+    PACKAGE:  ClassPackage
+    x: GM    
+  tasks:
+    - debug:
+#        msg: "the value of PACKAGE = {{PACKAGE}}"
+        msg: "the value of x = {{x}}"

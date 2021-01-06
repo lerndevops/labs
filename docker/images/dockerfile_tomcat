@@ -2,12 +2,12 @@ FROM ubuntu:18.04
 
 RUN apt-get -y update 
 RUN apt-get -y install openjdk-8-jdk wget
-RUN mkdir /usr/local/tomcat
-RUN wget http://apachemirror.wuchna.com/tomcat/tomcat-8/v8.5.54/bin/apache-tomcat-8.5.54.tar.gz -O /tmp/tomcat.tar.gz
-RUN cd /tmp&& tar xvfz tomcat.tar.gz
-RUN cp -Rv /tmp/apache-tomcat-8.5.54/* /usr/local/tomcat/
 
-COPY sampleapp.war /usr/local/tomcat/webapps/
+RUN wget https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.55/bin/apache-tomcat-8.5.55.tar.gz -O /tmp/tomcat.tar.gz
+RUN cd /tmp && tar xvfz tomcat.tar.gz
+RUN mv /tmp/apache-tomcat-8.5.55 /opt/tomcat
+
+COPY sampleapp.war /opt/tomcat/webapps/
 
 EXPOSE 8080
-CMD /usr/local/tomcat/bin/catalina.sh run
+CMD /opt/tomcat/bin/catalina.sh run

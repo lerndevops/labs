@@ -1,5 +1,5 @@
-- name: Download Tomcat
-  #  get_url: url=http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.53/bin/apache-tomcat-8.5.53.tar.gz dest=/opt/apache-tomcat-8.5.53.tar.gz
+- name: copy Tomcat tar file
+  # get_url: url http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.53/bin/apache-tomcat-8.5.53.tar.gzdest=/opt/apache-tomcat-8.5.53.tar.gz
   copy:
     src: apache-tomcat-8.5.53.tar.gz
     dest: /tmp
@@ -8,38 +8,49 @@
   shell: /bin/tar xvf /tmp/apache-tomcat-8.5.53.tar.gz -C /opt
 
 - name: create Symlink
-  file: 
-    src: /opt/apache-tomcat-8.5.53 
-    path: /opt/tomcat 
+  file:
+    src: /opt/apache-tomcat-8.5.53
+    path: /opt/tomcat
     owner: tomcat
     group: tomcat
     state: link
 
 - name: Change ownership of Tomcat installation
-  file: 
-    path: /opt/tomcat/ 
-    owner: tomcat 
-    group: tomcat 
-    mode: 0755 
-    state: directory 
+  file:
+    path: /opt/tomcat/
+    owner: tomcat
+    group: tomcat
+    mode: 0755
+    state: directory
     recurse: yes
 
-- name: Install Tomcat init script
-  copy: 
-    src: tomcat-initscript.sh 
-    dest: /etc/init.d/tomcatd 
-    mode: 0755
+- name: create tomcat.service file
+  file:
+    path: /etc/systemd/system/tomcat.service
+    state: touch
 
-- name: enable service
-  shell: update-rc.d tomcatd defaults 95
-
-- name: Configure Tomcat users
-  template: 
-    src: tomcat-users.xml 
-    dest: /opt/tomcat/conf/
-  notify: restart tomcat
-
+- name: create tomcat service
+  blockinfile:
+    path: /etc/systemd/system/tomcat.service
+    block: |
+      [Unit]
+      Description=Tomcat - instance %i
+      After=syslog.target network.target
+      [Service]
+      Type=forking
+      User=tomcat
+      Group=tomcat
+      Environment="CATALINA_HOME=/opt/tomcat/"
+      ExecStart=/opt/tomcat/bin/startup.sh
+      ExecStop=/opt/tomcat/bin/shutdown.sh
+      [Install]
+      WantedBy=multi-user.target
+- name: enable & start tomcat service
+  systemd:
+    name: tomcat
+    state: started
+    enabled: yes
 - name: setup app directory
-  file: 
+  file:
     path: /app
     state: directory

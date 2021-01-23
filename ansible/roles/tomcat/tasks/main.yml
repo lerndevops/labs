@@ -2,7 +2,7 @@
   file:
    path: /tmp/newtoday.txt
    state: touch
-
+   
 - name: config users
   include_tasks: configure-user.yml
   when: action == "install"
@@ -19,7 +19,6 @@
   include_tasks: uninstall-tomcat.yml
   when: action == "uninstall"
 
-
 - name: understand defaults dir
   debug:
      msg: "this variable is from defaults dir: {{ dvar }}"
@@ -32,4 +31,3 @@
   template:
     src: app.props
     dest: /app
-

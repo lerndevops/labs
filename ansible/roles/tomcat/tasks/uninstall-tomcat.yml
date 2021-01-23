@@ -1,0 +1,21 @@
+- name: stop tomcat process
+  systemd:
+    name: tomcat
+    state: stopped
+    enabled: no
+- name: remove tomcat symlink
+  file:
+    path: /opt/tomcat
+    state: absent
+- name: remove tomcat
+  file:
+    path: /opt/apache-tomcat-8.5.40
+    state: absent
+- name: remove user "tomcat"
+  user:
+    name: tomcat
+    state: absent
+- name: remove group tomcat
+  group:
+    name: tomcat
+    state: absent

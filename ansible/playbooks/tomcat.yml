@@ -70,3 +70,10 @@
         name: tomcat
         state: started
         enabled: yes
+        
+   - name: validate tomcat is running
+     shell: service tomcat status
+     register: tstatus
+
+   - debug:
+       var: tstatus.stdout_lines

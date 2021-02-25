@@ -18,7 +18,7 @@ Maven Configuration in Jenkins console
 	
 	Manage Jenkins --> Global Tool Configuration --> Maven --> Add Maven
 		Name: maven3.6 ( can be any string )
-		MAVEN_HOME: /path/to/mavenhome ( /opt/apache-maven-3.6.0 )
+		MAVEN_HOME: /path/to/mavenhome ( /opt/apache-maven-3.6.3 )
 		
 =============================================================================================================
 

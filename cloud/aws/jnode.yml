@@ -1,8 +1,9 @@
-- name: Create EC2 Instance
-  hosts: localhost
+- hosts: localhost
+  gather_facts: no
   tasks:
-    - ec2:
-        key_name: devops
+    - name: Create EC2 Instances
+      ec2:
+        key_name: du-devops
         instance_type: t2.micro
         image: ami-05c1fa8df71875112 
         wait: yes
@@ -12,57 +13,46 @@
         assign_public_ip: yes
         region: us-east-2
       register: out
-   
-    - debug:
-        msg: "{{out}}"
-    - add_host:
+    - name: Name ec2 instances 
+      ec2_tag:
+         resource: "{{item.id}}"
+         tags:
+           Name: "ju{{item.ami_launch_index}}"
+      loop: "{{out.instances}}"
+    - name: create in memory Inventory 
+      add_host:
         hostname: "{{item.public_ip}}"
         groupname: myservers
         ansible_user: ubuntu
-        ansible_ssh_private_key_file: /aws/devops.pem
+        ansible_ssh_private_key_file: /Users/nareshwar/aws/du-devops.pem
         ansible_python_interpreter: /usr/bin/python3
-      with_items: "{{out.instances}}"
-
-    - name: wait for ssh
+      loop: "{{out.instances}}"
+    - name: wait 60 Sec for ssh 
       shell: sleep 60
-      delegate_to: 127.0.0.1
-
-      #- wait_for:
-      #  host: "{{ item.public_ip }}"
-      #  port: 22
-      #  delay: 30
-      #  timeout: 320
-      #  state: started
-      #with_items: "{{ out.instances[0] }}"
-
-    - copy:
+    - name: Create file with Public IPs
+      copy:
         content: "{% for host in groups.myservers %}{{ hostvars[host].inventory_hostname }}\n{% endfor %}"
         dest: /tmp/uinventory
       delegate_to: localhost
 
-- name: setup user
+- name: setup user on newly created instances
   hosts: myservers
+  gather_facts: no
   become: yes
   tasks:
     - name: install git & python
       package:
         name: "{{ item }}"
         state: present
-      with_items:
-          - git
-#          - python
+      loop: ['git']
     - name: clone git repo
       shell: git clone https://github.com/lerndevops/labs.git
       args:
         chdir: /tmp
     - name: create user
-      shell: chmod -R 755 /tmp/labs/* ; /tmp/labs/aws/setup-user.sh
-      register: usr 
-    - debug:
-        var: usr
-    - name: install docker,kubeadm,kubelet,kubectl
-      shell: chmod -R 755 /tmp/labs/* ; /tmp/labs/kube/install/install-k8s-ubuntu.sh
-      register: kube
-    - debug:
-        var: kube
-
+      shell: chmod -R 755 /tmp/labs/* ; /tmp/labs/cloud/setup-user.sh
+      register: outt
+    - name: setup hostname
+      shell: echo jnode > /etc/hostname
+    - name: reboot instances
+      reboot:

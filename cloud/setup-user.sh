@@ -105,8 +105,8 @@ update_conf()
 
 ############### MAIN ###################
 
-USER="devops"
-GROUP="devops"
+USER="vaibhav"
+GROUP="vaibhav"
 passw="today@1234"
 
 if [ -f /etc/os-release ];then

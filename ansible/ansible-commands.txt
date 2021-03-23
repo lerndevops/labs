@@ -1,0 +1,97 @@
+DAY1 Notes
+
+   39  sudo apt-add-repository --yes --update ppa:ansible/ansible
+   40  sudo apt-get install ansible
+   41  ansible --version
+   42  clear
+   43  ls -l
+   44  cat hosts
+   45  clear
+   46  ls -l
+   47  rm  hosts
+   48  mv hosts.dpkg-old hosts
+   49  rm ansible.cfg.dpkg-old
+   50  ls -l
+   51  clear
+   52  ls -l
+   53  cat hosts
+   54  ansible all -m ping -u devops --ask-pass
+   55  vi ansible.cfg
+   56  clear
+   57  ansible all -m ping -u devops --ask-pass
+   58  clear
+   59  vi hosts
+   60  ansible all -m ping -u devops --ask-pass
+   61  vi hosts
+   62  clear
+   63  ansible all -m ping -u devops --ask-pass
+   64  clear
+   65  ls -l
+   66  cat hosts
+   67  vi hosts
+   68  ansible qa -m ping -u devops --ask-pass
+   69  ansible dev -m ping -u devops --ask-pass
+   70  ansible dev,qa -m ping -u devops --ask-pass
+   71  ansible dev,qa -m ping -u devops --ask-pass --limit rnode1
+   72  cat hosts
+   73  history
+   74  ansible qa -m ping -u devops --ask-pass --limit rnode1
+   75  ansible qa -m ping -u devops --ask-pass --limit rnode1,rnode2
+   76  ls -l
+   77  cd /home/devops/
+   78  ls -l
+   79  cp /etc/ansible/hosts .
+   80  ls -l
+   81  rm /etc/ansible/hosts
+   82  ls -l
+   83  ansible qa -m ping -u devops --ask-pass --limit rnode1,rnode2
+   84  vi /etc/ansible/ansible.cfg
+   85  clear
+   86  ansible qa -i /home/devops/hosts -m ping -u devops --ask-pass --limit rnode1,rnode2
+   87  ls -l
+   88  mv hosts myinv
+   89  ls -l
+   90  ansible qa -i /home/devops/myinv -m ping -u devops --ask-pass
+   91  ls -l
+   92  history
+   93  clear
+   94  df -h /
+   95  ansible qa -i /home/devops/myinv -m shell -a "df -h / ; hostname" -u devops -k
+   96  cat myinv
+   97  clear
+   98  ansible qa -i /home/devops/myinv -m shell -a "free -m" -u devops -k
+   99  ansible qa -i /home/devops/myinv -m shell -a "touch /tmp/naresh.tx ; ls -l /tmp" -u devops -k
+  100  clear
+  101  ansible dev -i /home/devops/myinv -m shell -a "touch /tmp/naresh.tx ; ls -l /tmp" -u devops -k
+  102  clear
+  103  ansible qa -i /home/devops/myinv -m copy -a "src=hello.txt dest=/tmp" -u devops -k
+  104  ls -l
+  105  touch hello.txt
+  106  ls -l
+  107  ansible qa -i /home/devops/myinv -m copy -a "src=hello.txt dest=/tmp" -u devops -k
+  108  clear
+  109  ansible qa -i /home/devops/myinv -m file -a "path=/tmp/devops state=directory" -u devops -k
+  110  clear
+  111  history
+  112  ansible qa --inventory /home/devops/myinv -m file -a "path=/tmp/devops state=directory" -u devops -k
+  113  clear
+  114  history
+  115  clear
+  116  history
+  117  clear
+  118  ansible-doc -l
+  119  clear
+  120  ansible-doc -l | wc -l
+  121  ansible-doc -l | grep google
+  122  ansible-doc -l | grep gcp
+  123  ansible-doc -l | grep aws
+  124  clear
+  125  ansible-doc -l | grep copy
+  126  ansible-doc copy
+  127  history
+  128  clear
+  129  cd
+  130  clear
+  131  ansible qa -i /home/devops/myinv -m setup -u devops -k --limit rnode1
+  132  clear
+  133  ansible-doc setup

@@ -12,7 +12,7 @@ spec:
       labels:
         app: nagiosxi
     spec:
-      nodeName: node1
+      #nodeName: node01
       containers:
        - name: app
          image: lerndevops/nagios:xi5.5.6

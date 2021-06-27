@@ -1,0 +1,16 @@
+Metrics from Prometheus:
+=======================
+
+kubelet_running_pod_count
+kubelet_running_container_count
+kubelet_http_requests_total
+kube_replicaset_status_replicas
+kube_replicaset_created
+kube_pod_labels
+kube_namespace_status_phase
+kube_endpoint_info
+kube_deployment_status_replicas
+apiserver_request_total
+
+
+Import the dashboard: 6417, for pod : 11141, 11663

@@ -10,7 +10,7 @@
 
 > Infrastructure as code, or IaC, has gained a lot of momentum over the years because it helps solve several problems that trobeled infrastructure management in the past. 
 
-## IaC enables 
+## IaC enabels 
 
 * `Reproducible Environments:` 
     * By using code to generate infrastructure, the same environment can be created over and over. 

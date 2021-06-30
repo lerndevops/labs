@@ -1,0 +1,19 @@
+Step1: (assuming linux OS)
+======
+1.	Download the appropriate Terraform binary package for the provided lab server VM (Linux 64-bit) using the wget command:
+
+wget -c https://releases.hashicorp.com/terraform/1.0.0/terraform_1.0.0_linux_amd64.zip
+
+2.	Unzip the downloaded file:
+
+unzip terraform*.zip
+
+3.	Place the Terraform binary in the PATH of the VM operating system so the binary is accessible system-wide to all users:
+
+sudo mv terraform /usr/sbin/
+
+
+Verify : 
+======
+1. terraform version
+

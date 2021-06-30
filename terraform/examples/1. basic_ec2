@@ -26,7 +26,8 @@ resource "aws_instance" "test-instances" {
 }
 
 
-
+#export TF_LOG=TRACE
 #terraform init
 #terraform plan
 #terraform apply
+#terraform destroy --auto-approve

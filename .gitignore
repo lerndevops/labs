@@ -3,3 +3,6 @@
 **/*.log
 ppts/
 class-notes/
+.DS_store
+*.pptx
+*.ppt

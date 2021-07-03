@@ -1,0 +1,23 @@
+Assuming Ubuntu, if amazon linux, aws cli will be there by default. 
+
+apt-get update 
+apt install python-pip
+
+ 
+pip install awscli 
+pip install boto
+
+ aws --version
+
+ 
+ Now create user in aws IAM
+ =============================
+ 
+1.  Go to IAM, create user and pwd
+ 
+2.  enable programatic access
+ 
+3.  assign an existing policy of Admin Access
+ 
+4. Note down the Credentials
+ 

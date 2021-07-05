@@ -1,11 +1,14 @@
 ## AWS Setup for Terraform
 
-    * Need an AWS Account ( can be free tier )
-    * Create an IAM Admin User 
+> prerequisites 
+
+* Need an AWS Account ( can be free tier )
+
+* Create an IAM Admin User 
 
 ## AWS Setup creds (access key & Secret Key)
 
-> there are multiple ways we can provide the credentials with which we get authenticated to AWS APIs using the IAM User
+> `there are multiple ways we can provide the credentials with which we get authenticated to AWS APIs using the IAM User`
 
 * ***provide in main terrform configuration file along with resource configuration***
 ```

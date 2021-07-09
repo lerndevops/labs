@@ -9,3 +9,4 @@ class-notes/
 .terraform*
 terrafrom.state
 terraform.state.backup
+**/IaC

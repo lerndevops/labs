@@ -1,0 +1,72 @@
+## kubectl create configmap devdbconfig --from-literal=dbhost=10.25.14.16 --from-literal=dbport=1521
+## kubectl create configmap proddbconfig --from-literal=dbhost=proddb.com --from-literal=dbport=1521
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+   name: devdbconfig
+data:
+  dbhost: mydb
+  dbport: "1521"
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: devpod
+  labels:
+    app: web
+spec:
+  volumes:
+    - name: cm-vol
+      configMap:
+         name: devdbconfig
+  containers:
+    - name: cont1
+      image: tomcat
+      ports:
+        - containerPort: 8080
+      volumeMounts:
+         - name: cm-vol
+           mountPath: /opt/dbconfig
+
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: devpod1
+  labels:
+    app: web
+spec:
+  containers:
+    - name: cont1
+      image: tomcat
+      ports:
+        - containerPort: 8080
+      envFrom:
+       - configMapRef:
+           name: devdbconfig
+---
+
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mypod
+  labels:
+    app: myapp
+spec:
+  containers:
+    - name: cont1
+      image: tomcat
+      ports:
+        - containerPort: 8080
+      env:
+        - name: mydbhost
+          valueFrom:
+            configMapKeyRef:
+               name: devdbconfig
+               key: dbhost
+        - name: mydbport
+          valueFrom:
+            configMapKeyRef:
+               name: devdbconfig
+               key: dbport

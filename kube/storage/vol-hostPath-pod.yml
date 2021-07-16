@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath-vol-pod1
+spec:
+  containers:
+   - name: test-container
+     image: tomcat
+     volumeMounts:
+      - name: hostpath-volume
+        mountPath: /usr/local/tomcat/logs
+  volumes:
+   - name: hostpath-volume
+     hostPath:
+       path: /tmp/logs     # directory location on host
+       type: Directory  # this field is optional

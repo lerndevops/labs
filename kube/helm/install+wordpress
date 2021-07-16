@@ -1,0 +1,57 @@
+Install and Configure Helm
+Run the wget command with the tar file provided for the lab to install Helm.
+
+$ wget https://get.helm.sh/helm-v3.5.0-linux-amd64.tar.gz
+Run the ls command to ensure the tar file is included.
+
+$ ls
+Run the tar -xzf and ls -l commands to extract and view the file and the related linux-amd64 folder.
+
+$ tar -xzf helm-v3.5.0-linux-amd64.tar.gz
+$ ls -l
+Run the ls -l command to view the linux-amd64 folder. The helm executable binary is located in this folder.
+
+$ ls -l ./linux-amd64/
+Run the mv command to move the helm executable to the /usr/local/bin/ directory.
+
+$ sudo mv ./linux-amd64/helm /usr/local/bin/
+
+Run the ls -l command on the /usr/local/bin/ directory to ensure the helm binary is still owned by cloud_user and can still be run.
+
+$ ls -l /usr/local/bin/
+Run the helm version command to ensure Helm is available on the path. This shows the version of Helm that is currently installed.
+
+$ helm version
+Run the helm repo add command with the repo provided for the lab, and make sure the repository is named stable.
+
+$ helm repo add stable https://charts.helm.sh/stable
+Run the helm repo update command to verify the repository is up-to-date.
+
+$ helm repo update
+Create a Helm Release
+Run the helm install test command for wordpress to create a test release.
+
+$ helm install test stable/wordpress
+Run the helm list command to show the release details.
+
+$ helm list
+Run the kubcetl get po command to verify the release resources were created.
+
+$ kubectl get po
+Run the kiubectl get svc command to view the release's services.
+
+$ kubectl get service
+Verify the Release and Clean Up
+Run the helm uninstall or the helm delete command with the release name.
+
+$ helm uninstall test
+
+OR
+
+$ helm delete test
+After uninstalling or deleting the test release, run the kubectl get po command to confirm there are no resources in the default namespace.
+
+$ kubectl get po
+Run the kubectl get svc command to verify that Kubernetes is now the only service.
+
+$ kubectl get svc

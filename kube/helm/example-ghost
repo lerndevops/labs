@@ -1,0 +1,30 @@
+HELM INSTALL:
+===========
+
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
+
+EXAMPLE CHART:
+==============
+
+
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+  helm repo update
+ helm show readme stable/ghost
+ vi ghost-values.yaml
+
+ghostHost: "ghost.example.com"
+ghostEmail: "email@example.com"
+ghostUsername: "admin"
+ghostPassword: "mySecurePassword123!!"
+mariadb.mariadbRootPassword: "secretpassword"
+
+
+
+
+ helm install --values=ghost-values.yaml stable/ghost --generate-name
+  helm ls
+  
+helm status  ghost-1587275738
+ kubectl get pods

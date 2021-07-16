@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myvolumes-pod
+spec:
+  containers:
+  - image: centos
+    imagePullPolicy: IfNotPresent
+    name: myvolumes-container-1
+    command: ['sh', '-c', 'echo The Bench Container 1 is Running ; sleep 3600']
+    volumeMounts:
+    - mountPath: /demo1
+      name: demo-volume
+
+  - image: ubuntu  
+    imagePullPolicy: IfNotPresent
+    name: myvolumes-container-2
+    command: ['/bin/bash', '-c', 'echo The Bench Container 2 is Running ; sleep 3600']
+    volumeMounts:
+    - mountPath: /demo2
+      name: demo-volume
+
+  - image: alpine
+    imagePullPolicy: IfNotPresent
+    name: myvolumes-container-3
+    command: ['sh', '-c', 'echo The Bench Container 3 is Running ; sleep 3600']    
+    volumeMounts:
+    - mountPath: /demo3
+      name: demo-volume
+
+  volumes:
+  - name: demo-volume
+    emptyDir: {}

@@ -1,0 +1,16 @@
+kubectl create configmap nginx-html --from-file=index.html
+kubectl create configmap nginx-env --from-env-file=db.props
+
+kubectl create configmap game-config-env-file \
+       --from-env-file=configure-pod-container/configmap/game-env-file.properties
+
+## create configmap from leteral values
+	kubectl create configmap special-config --from-literal=special.how=very --from-literal=special.type=charm
+	
+## create configmap using multiple files
+	kubectl create configmap my-cofigmap-2 --from-file=/path/to/dir/db.prop --from-file=/path/to/dir/ui.properties
+	
+# Create the local directory
+	mkdir -p /app/configmap
+	touch db.props ui.props
+	kubectl create configmap my-app-config --from-file=/app/configmap/

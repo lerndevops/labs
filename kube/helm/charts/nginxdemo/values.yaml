@@ -1,0 +1,12 @@
+nginximage: nginx
+
+replicas: 3
+
+ports:
+  containerport: 80
+  serviceport: 80
+
+deploymentlabels:
+  app: frontend
+
+servicetype: NodePort

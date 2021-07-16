@@ -1,0 +1,21 @@
+kind: Pod     ## kubectl api-resources
+apiVersion: v1   ## kubectl explain <kind> pod 
+metadata:
+  name: mypod
+  labels: 
+    app: web
+spec:
+  nodeName: node2
+  containers: 
+    - name: cont1
+      image: nginx
+      ports:
+        - containerPort: 80
+      volumeMounts:
+       - name: nfs-vol
+         mountPath: "/data"
+  volumes: 
+    - name: nfs-vol
+      nfs:
+       server: 10.128.15.215
+       path: /mnt/sharedfolder

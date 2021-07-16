@@ -1,0 +1,12 @@
+# Use GKE
+helm repo add bitnami https://charts.bitnami.com/bitnami
+ helm install my-release bitnami/jenkins
+helm list
+#Wait for 2 mins to see Jenkins UP
+kubectl get deploy
+kubectl get pods
+kubectl get svc
+
+kubectl edit svc my-release-jenkins # edit type as NodePort
+kubectl get svc
+#check the NodePort and access the app with Node IP

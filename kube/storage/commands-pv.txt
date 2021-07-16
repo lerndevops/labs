@@ -1,0 +1,4 @@
+storage PV
+
+make PV available from Released state 
+kubectl patch pv my-pv -p '{"spec":{"claimRef": null}}'

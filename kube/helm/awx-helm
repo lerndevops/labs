@@ -1,0 +1,19 @@
+# works with GKE
+
+helm search hub awx
+ helm pull hub adwerx/awx
+helm pull https://hub.helm.sh/charts/adwerx/awx
+helm install  https://hub.helm.sh/charts/adwerx/awx
+ helm install adwerx/awx
+helm list
+ helm repo add adwerx https://adwerx.github.io/charts
+helm list
+helm install adwerx/awx
+helm install adwerx/awx --version 2.2.1
+helm install adwerx/awx --version 2.2.1 --generate-name
+helm list
+kubectl get pods
+kubectl get svc
+
+# edit the service awx-1587279178 with type NodePort
+kubectl get svc # note the NodePort and access the app with Node IP

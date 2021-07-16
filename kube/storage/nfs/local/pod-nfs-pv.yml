@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-nfs-pod 
+  labels:
+    name: nginx-nfs-pod
+spec:
+  containers:
+    - name: nginx-nfs-pod
+      image: nginx 
+      ports:
+        - name: web
+          containerPort: 80
+      volumeMounts:
+        - name: nfsvol 
+          mountPath: /usr/share/nginx/html 
+  volumes:
+    - name: nfsvol
+      persistentVolumeClaim:
+        claimName: nfs-pvc 

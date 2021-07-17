@@ -8,12 +8,13 @@ chmod 755 /usr/local/bin/terraform
 terraform --version
 
 **mkdir terraform**
+
 vi main.tf
 vi service.tf
 
 
-terraform init
-terraform plan
-terraform apply
+#terraform init
+#terraform plan
+#terraform apply
 
 **kubectl get all** 

@@ -32,3 +32,21 @@
     * IaC further improves the situation by allowing developers to use infrastructure modules to create identical environments at any point in the application development lifecycle. 
     * The infrastructure modules could be created by operations and shared with developers freeing developers from having to learn another skill.
 
+
+
+
+## How Terraform, providers and modules work
+
+Terraform provisions, updates, and destroys infrastructure resources such as physical machines, VMs, network switches, containers, and more.
+
+## Configurations
+ code written for Terraform, using the human-readable HashiCorp Configuration Language (HCL) to describe the desired state of infrastructure resources.
+
+## Providers 
+The plugins that Terraform uses to manage those resources. Every supported service or infrastructure platform has a provider that defines which resources are available and performs API calls to manage those resources.
+
+## Modules 
+Reusable Terraform configurations that can be called and configured by other configurations. Most modules manage a few closely related resources from a single provider.
+
+## The Terraform Registry
+makes it easy to use any provider or module. To use a provider or module from this registry, just add it to your configuration; when you run `terraform init`, Terraform will automatically download everything it needs.

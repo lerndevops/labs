@@ -5,7 +5,7 @@
 > Download the appropriate Terraform binary package for the provided lab server VM (Linux 64-bit) using the wget command:
 
 ```
-cd /tmp ; wget -c https://releases.hashicorp.com/terraform/1.0.1/terraform_1.0.1_linux_amd64.zip`
+cd /tmp ; wget -c https://releases.hashicorp.com/terraform/1.0.1/terraform_1.0.1_linux_amd64.zip
 ```
 
 ### Step2: 

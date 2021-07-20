@@ -19,7 +19,11 @@ vi service.tf
 
 
 #terraform init
+
 #terraform plan
+
 #terraform apply
+
+#terraform destroy
 
 **kubectl get all** 

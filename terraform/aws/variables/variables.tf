@@ -1,6 +1,6 @@
 
 variable "cust_ip" {
-  default = "10.1.1.1/16"
+  default = "10.1.0.0/16"
 }
 
 variable "instancetype" {

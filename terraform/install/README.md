@@ -13,7 +13,7 @@ cd /tmp ; wget -c https://releases.hashicorp.com/terraform/1.0.1/terraform_1.0.1
 > Unzip the downloaded file
 
 ```
-apt update ; apt install –y unzip     --  on Ubuntu / Debian Systems
+apt update ; apt-get install -y unzip     --  on Ubuntu / Debian Systems
 yum update ; yum install –y unzip     --  on RHEL/Centos/Fedora 
 
 unzip /tmp/terraform*.zip

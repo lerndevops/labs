@@ -8,6 +8,11 @@ Install JAVA
 	
 	sudo apt-get install -y openjdk-11-jdk
 
+Install Maven  ( on Jenkins machine )
+
+	cd /tmp ; sudo wget https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz
+	cd /tmp ; sudo tar -xzf apache-maven-3.8.1-bin.tar.gz -C  /opt/
+
 Install Jenkins
 
         wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
@@ -16,10 +21,6 @@ Install Jenkins
 	sudo apt-get install jenkins
 
 
-Install Maven  ( on Jenkins machine )
-
-	cd /tmp ; sudo wget https://downloads.apache.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz
-	cd /tmp ; sudo tar -xzf apache-maven-3.8.1-bin.tar.gz -C  /opt/
 
 
 =============================================================================

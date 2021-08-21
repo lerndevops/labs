@@ -13,4 +13,4 @@ kube_deployment_status_replicas
 apiserver_request_total
 
 
-Import the dashboard: 6417, for pod : 11141, 11663
+Import the dashboard: 6417, for pod : 11141, 11663, 315

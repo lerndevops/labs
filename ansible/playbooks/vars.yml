@@ -1,0 +1,14 @@
+- name: play1
+  hosts: web
+  vars:
+    name: naresh
+    abc: 45
+  tasks:
+    - debug:  # is a module that will help you with print a message & also helps you to print the value of a variable just like echo in linux
+        msg: "hi there"
+    - debug:
+        var: name
+    - shell: sleep
+      ignore_errors: yes
+    - debug:
+        msg: "the value of abc is: {{ abc }}"

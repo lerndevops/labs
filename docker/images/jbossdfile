@@ -6,7 +6,7 @@ RUN chmod 755 /opt/jboss
 
 RUN yum -y install java-11-openjdk-devel && yum clean all 
 ADD wildfly-24.0.1.Final.tar.gz /opt/jboss 
-RUN /opt/jboss/wildfly-24.0.1.Final /opt/jboss/wildfly
+RUN mv /opt/jboss/wildfly-24.0.1.Final /opt/jboss/wildfly
 
 ENV JBOSS_HOME /opt/jboss/wildfly
 RUN chown -R jboss:jboss ${JBOSS_HOME}

@@ -1,0 +1,22 @@
+Jenkins Email Configuration 
+
+Manage Jenkins --> Configure System --> Extended E-mail Notification
+
+	SMTP server: smtp.gmail.com  (click on Advanced for below options)
+	Use SMTP Authentication (select this option)
+		username: <your gmail user>
+		password: < your gmail password>
+	Use SSL (select the check box)
+	SMTP port: 465
+	
+	at the bottom: click on "Default Triggers" button
+	check the Always option
+
+
+===================================================================================
+
+in any Jenkins Job -- configure a post build action
+
+Editable Email Notification
+provide recepient list & save the job & run the job
+	

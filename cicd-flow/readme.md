@@ -84,7 +84,7 @@
 ```
 install all these from Jenkins UI )
   Manage Jenkins --> manage plugins -- Available -- search & install the below
-  	1) PMD
+  	1) warnings NG
   	2) cobertura
   	3) Junit
   	4) build with parameters

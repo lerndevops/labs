@@ -1,6 +1,6 @@
 ## deploy dashboard
 ```
-   kubectl apply -f dashboard-insecure.yml
+   kubectl apply -f dashboard-insecure-v2.4.0.yml
 ```
 ### validate
 ```

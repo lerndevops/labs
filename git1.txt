@@ -1,0 +1,12 @@
+git --version
+
+mkdir folder
+git init
+
+git config --global help.autocorrect 1
+git config --global code.editor "vim"
+
+
+
+git config --global user.name "leaddevops"
+git config --global user.email "leaddevops@gmail.com"

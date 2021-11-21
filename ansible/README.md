@@ -1,4 +1,4 @@
-## Things to know before working with ansible
+## Things to know before working with ansible.
 
 1) ansible is agentless ( means, we do not need to run any agent on remote servers for communication )
 

@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: my-pvc
 spec:
-  storageClassName: standard
+  volumeName: mypv
   accessModes:
     - ReadWriteOnce
   resources:

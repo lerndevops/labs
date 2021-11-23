@@ -3,14 +3,14 @@ kind: PersistentVolume
 metadata:
   name: my-pv
 spec:
-  storageClassName: standard
-  persistentVolumeReclaimPolicy: Recycle ## Retain / Delete
-  capacity:
-    storage: 1000Mi
-  accessModes:
-    - ReadWriteOnce
   hostPath:
     path: /tmp/pvdata
+  capacity:
+    storage: 2Gi
+  persistentVolumeReclaimPolicy: Recycle ## Retain / Delete
+  accessModes:
+    - ReadWriteOnce
+
 
 # Class: A PV can have a class, which is specified by setting the storageClassName attribute to the name of a StorageClass. A PV of a particular class can only be bound to PVCs requesting that class.
 # A PV with no storageClassName has no class and can only be bound to PVCs that request no particular class

@@ -2,9 +2,10 @@ Install Plugins required for CI Pipeline
 
 	Manage Jenkins --> manage plugins -- Available -- search & install the below
 		Warning NG -- install without restart
+		pmd -- Install without restart
 		cobertura -- install without restart
 		Build Pipeline Plugin  -- install without restart
-
+		Blue Ocean Editior --install without restart
 			
 =================================================================================================================
 
@@ -28,11 +29,12 @@ CI ( continuous Integration )
 
 Jenkins Job      : maven goal           : post build action 
                 
+job1-compile	 : compile              : NA
+
+job2-codereview	 : -P metrics pmd:pmd   : **/pmd.xml ( publish pmd analysis results )
                  
-job1-codereview	 : -P metrics pmd:pmd   : **/pmd.xml ( publish pmd analysis results )
+job3-unittest    : test                 : target/surefire-reports/*.xml
                  
-job2-unittest    : test                 : target/surefire-reports/*.xml
+job4-codecoverage : cobertura:cobertura -Dcobertura.report.format=xml  : target/site/cobertura/coverage.xml ( publish cobertura coverage report )
                  
-job3-codecoverage : cobertura:cobertura -Dcobertura.report.format=xml  : target/site/cobertura/coverage.xml ( publish cobertura coverage report )
-                 
-job4-package     : package              : NA
+job5-package     : package              : NA

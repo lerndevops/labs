@@ -54,3 +54,6 @@
   file:
     path: /app
     state: directory
+- name: restart services
+  command: "echo restarting tomcat services"
+  notify: restart tomcat

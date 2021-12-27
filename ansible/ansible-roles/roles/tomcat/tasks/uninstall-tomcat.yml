@@ -9,7 +9,7 @@
     state: absent
 - name: remove tomcat
   file:
-    path: /opt/apache-tomcat-8.5.40
+    path: /opt/apache-tomcat-8.5.53
     state: absent
 - name: remove user "tomcat"
   user:

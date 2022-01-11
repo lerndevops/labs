@@ -9,9 +9,8 @@ Cent OS
 
 Ubuntu
 -------
-	cd /tmp ; wget -O splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=splunk&filename=splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&wget=true'
-	
-	dpkg -i /tmp/splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb
+        cd /tmp && wget https://download.splunk.com/products/splunk/releases/7.1.1/linux/splunk-7.1.1-8f0ead9ec3db-linux-2.6-amd64.deb
+        dpkg -i splunk-7.1.1-8f0ead9ec3db-linux-2.6-amd64.deb
 	/opt/splunk/bin/splunk start --accept-license  ( enter username & password )
 
 ============================================================================================================
@@ -26,9 +25,8 @@ Cent OS
 
 Ubuntu
 --------
-	cd /tmp ; wget -O splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=universalforwarder&filename=splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&wget=true'
-
-	dpkg -i /tmp/splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb
+        cd /tmp && wget -O splunkforwarder-7.1.10-4d9ba64e2c47-linux-2.6-amd64.deb 'https://download.splunk.com/products/universalforwarder/releases/7.1.10/linux/splunkforwarder-7.1.10-4d9ba64e2c47-linux-2.6-amd64.deb'
+        dpkg -i /tmp/splunkforwarder-7.1.10-4d9ba64e2c47-linux-2.6-amd64.deb
 	/opt/splunkforwarder/bin/splunk start --accept-license ( enter username & password )
 ============================================================================================================ 
 

@@ -1,34 +1,19 @@
-## Install Terraform CLI on Linux OS 
-
-### Step1: 
-
-> Download the appropriate Terraform binary package for the provided lab server VM (Linux 64-bit) using the wget command:
+## Install Terraform CLI on Ubuntu/Debian Linux OS 
 
 ```
-cd /tmp ; wget -c https://releases.hashicorp.com/terraform/1.0.1/terraform_1.0.1_linux_amd64.zip
+sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get install terraform
+
+Verify  :  terraform version
 ```
 
-### Step2: 
-
-> Unzip the downloaded file
+## Install Terraform CLI on CentOS/RHEL Linux OS 
 
 ```
-apt update ; apt-get install -y unzip     --  on Ubuntu / Debian Systems
-yum update ; yum install –y unzip     --  on RHEL/Centos/Fedora 
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+sudo yum -y install terraform
 
-unzip /tmp/terraform*.zip
-
+Verify  :  terraform version
 ```
-
-### Step3:	
-
-> Place the Terraform binary in the PATH of the VM operating system so the binary is accessible system-wide to all users:
-
-```
-sudo mv /tmp/terraform /usr/local/bin
-```
-
-### Step4: 
-
-> Verify  :  terraform version
-

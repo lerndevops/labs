@@ -205,7 +205,7 @@ spec:
               name: tmp-volume
           livenessProbe:
             httpGet:
-              scheme: HTTPS
+              scheme: HTTP
               path: /
               port: 9090
             initialDelaySeconds: 30

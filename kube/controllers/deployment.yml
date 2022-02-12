@@ -2,8 +2,9 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: kubeserve
+  namespace: default
 spec:
-  replicas: 5
+  replicas: 10
   minReadySeconds: 45 # wait for 45 sec before going to deploy next pod
   strategy:
     type: RollingUpdate
@@ -15,19 +16,22 @@ spec:
       app: kubeserve
   template:
     metadata:
-      name: kubeserve
       labels:
         app: kubeserve
     spec:
       containers:
        - name: app
          image: leaddevops/kubeserve:v1
+         ports:
+           - name: http 
+             containerPort: 80
         
 ---
 kind: Service
 apiVersion: v1
 metadata:
    name: kubeserve-svc
+   namespace: default
 spec:
   type: NodePort
   ports:

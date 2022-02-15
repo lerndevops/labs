@@ -30,6 +30,7 @@ sudo echo deb https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/s
 sudo apt-get update
 sudo apt-get install jenkins
 ```
+## `Below are Just FYI Only` 
 
 ##### Set JAVA_HOME & MAVEN_HOME as environment variables on Jenkins machine
 ```

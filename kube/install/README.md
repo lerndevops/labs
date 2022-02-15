@@ -12,7 +12,7 @@
     sudo apt-get update ; clear
     sudo apt-get install -y docker-ce
     
-    sudo cd /etc/docker ; sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/kube/install/daemon.json
+    sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/kube/install/daemon.json -P /etc/docker
     sudo service docker restart
     sudo service docker status
     

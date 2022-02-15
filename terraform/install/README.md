@@ -1,4 +1,13 @@
-## Install Terraform CLI on Ubuntu/Debian Linux OS 
+# Install Using Script
+```
+sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installTerraform.sh -P /tmp
+sudo chmod 755 /tmp/installTerraform.sh
+sudo bash /tmp/installTerraform.sh
+```
+
+# Manual Installation Steps
+
+### Install Terraform CLI on Ubuntu/Debian Linux OS 
 
 ```
 sudo curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -8,7 +17,7 @@ sudo apt-get update && sudo apt-get install terraform
 Verify  :  terraform version
 ```
 
-## Install Terraform CLI on CentOS/RHEL Linux OS 
+### Install Terraform CLI on CentOS/RHEL Linux OS 
 
 ```
 sudo yum install -y yum-utils

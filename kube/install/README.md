@@ -7,24 +7,20 @@
     sudo apt-get update
     sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
 
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
     sudo apt-get update ; clear
     sudo apt-get install -y docker-ce
     
-    sudo vi /etc/docker/daemon.json
-    
-	{
-    	"exec-opts": ["native.cgroupdriver=systemd"]
-	}
-    
+    sudo cd /etc/docker ; sudo wget https://raw.githubusercontent.com/lerndevops/educka/master/install/daemon.json
     sudo service docker restart
+    sudo service docker status
     
-
+    
     ### INSTALL KUBEADM,KUBELET,KUBECTL
     
-    echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+    sudo echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    sudo curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
     sudo apt-get update ; clear
     sudo apt-get install -y kubelet kubeadm kubectl	
 	
@@ -36,8 +32,11 @@
     sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-    ## Weave
-    kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" 
+    ## install networking driver -- Weave/flannel/canal/calico etc... 
+
+    ## below installs weave networking driver 
+    
+    sudo kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" 
 	
     kubectl get nodes
     kubectl get all --all-namespaces

@@ -14,7 +14,7 @@ if [ $osname == "ubuntu" ];then
   sudo apt-get install -y software-properties-common
   sudo apt-add-repository --yes --update ppa:git-core/ppa
   sudo apt-get update
-  sudo apt-get install -y ansible
+  sudo apt-get install -y git
   echo "`git --version | head -1` installed Successfully"
   
 elif [ $osname == "amzn" ]; then

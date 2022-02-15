@@ -5,9 +5,9 @@ install_ubuntu() {
    if [ $? -eq 0 ];then
       #### Remove any pre installed docker packages  
       sudo service docker stop
-      sudo apt-mark unhold docker-ce kubectl kubeadm kubelet
+      sudo apt-mark unhold docker-ce
       sudo apt-get remove -y docker docker-ce docker-ce-cli docker.io containerd runc kubeadm kubectl kubelet
-      sudo cd /var/lib
+      cd /var/lib
       sudo rm -r docker
    else
       echo "docker not installed.. continue to install"
@@ -25,7 +25,7 @@ install_ubuntu() {
 
    if [ $? -eq 0 ];then
       echo "docker-ce is successfully installed"
-      sudo apt-mark hold docker-ce docker-ce-cli
+      sudo apt-mark hold docker-ce
       sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/kube/install/daemon.json -P /etc/docker
       sudo service docker restart ; clear
    else
@@ -77,7 +77,7 @@ install_centos() {
     repo_gpgcheck=1
     gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
     exclude=kubelet kubeadm kubectl
-    EOF
+EOF
   
     # Set SELinux in permissive mode (effectively disabling it)
     sudo setenforce 0

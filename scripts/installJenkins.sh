@@ -41,8 +41,6 @@ install_centos() {
 #echo "PATH=\$JAVA_HOME/bin:\$MAVEN_HOME/bin:\$PATH" >> /etc/profile
 #source /etc/profile  ## to reload the configuration
 
-exit
-
 ################ MAIN ###################
 
 if [ -f /etc/os-release ];then

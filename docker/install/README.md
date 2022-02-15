@@ -1,5 +1,14 @@
-Install Docker on Ubuntu:
+# Install Using Script
+```
+sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installDocker.sh -P /tmp
+sudo chmod 755 /tmp/installDocker.sh
+sudo bash /tmp/installDocker.sh
+```
 
+# Manual Install Steps
+
+## Install Docker on Ubuntu:
+```
 	sudo su -
 	sudo apt-get remove docker docker-engine docker.io containerd runc
 	sudo apt-get update
@@ -9,15 +18,15 @@ Install Docker on Ubuntu:
 	sudo apt-get update
 	sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
-Test the installation by running a simple container:
-        docker run hello-world
+        Test the installation by running a simple container:
+            docker run hello-world
 
 	## FYI Only ## Check Available Version for Install"
 	apt-cache madison docker-ce | awk '{print $3}'
+```
 
-
-=========================================================================
-
+### Install Docker on CentOS/Fedora/amznLinux
+```
 Install Docker on CentOS:
 
 	sudo yum install -y device-mapper-persistent-data lvm2
@@ -28,16 +37,10 @@ Install Docker on CentOS:
 
 Test the installation by running a simple container:
 	docker run hello-world
+```
 
-===========================================================================
-
+# Add your user to the docker group
+```
 Add your user to the docker group, giving the user permission to run docker commands:
         sudo usermod -aG docker cloud_user
-
-===========================================================================
-
-Install docker-compose
-
-sudo curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
+```

@@ -1,4 +1,4 @@
-# Install Jenkins Using Script
+# Install Java & Jenkins Using Script
 ```
 sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installJenkins.sh -P /tmp
 sudo chmod 755 /tmp/installJenkins.sh

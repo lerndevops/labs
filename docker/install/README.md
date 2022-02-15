@@ -7,7 +7,7 @@ sudo bash /tmp/installDocker.sh
 
 # Manual Installation Steps
 
-## Install Docker on Ubuntu:
+### Install Docker on Ubuntu:
 ```
 sudo su -
 sudo apt-get remove docker docker-engine docker.io containerd runc
@@ -27,7 +27,7 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 	apt-cache madison docker-ce | awk '{print $3}'
 ```
 
-## Install Docker on CentOS/Fedora/amznLinux
+### Install Docker on CentOS/Fedora/amznLinux
 ```
 sudo yum install -y device-mapper-persistent-data lvm2
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo

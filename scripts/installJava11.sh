@@ -20,14 +20,14 @@ elif [ $osname == "amzn" ]; then
   clear
   sudo yum install -y yum-utils
   sudo yum update
-  sudo yum install java-1.11.0-openjdk-devel
+  sudo yum install java-11-openjdk-devel
 
 elif [ $osname == "centos" ];then
 
   clear
   sudo yum install -y yum-utils
   sudo yum update
-  sudo yum install java-1.11.0-openjdk-devel
+  sudo yum install java-11-openjdk-devel
 
 fi
 

@@ -4,7 +4,7 @@
 ```
 touch abc.txt -- creates a empty file 
 ls -l -- lists the contents in current directory
-
+```
 ```
 VI Editor 
 
@@ -24,6 +24,7 @@ vi abc.txt -- creates & opens the file in read only mode if the file is not exis
 ```
 cat abc.txt -- writes the content of file into terminal & exits 
 ```
+
 ```
 more abc.txt -- writes the content of file on terminal page by page ( to move to next page need to hit space bar on keyboard )
 ```
@@ -37,4 +38,3 @@ less abc.txt -- open the file on terminal & can be read line by line (use arrows
 ```
 rm abc.txt -- to remove a file 
 ```
-

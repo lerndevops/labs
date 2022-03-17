@@ -2,7 +2,12 @@
 
 ## direcotry operation 
 
-```pwd -- displays prsent working direcotry```
+```
+pwd -- displays prsent working direcotry
+
+nareshwar@mbpro ~ % pwd
+/Users/nareshwar
+```
 
 ```mkdir testdir  --- create a directory``` 
 

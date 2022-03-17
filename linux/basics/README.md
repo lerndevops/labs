@@ -2,14 +2,21 @@
 
 ## direcotry operation 
 
-`pwd -- displays prsent working direcotry`
-`mkdir testdir  --- create a directory` 
-`cd testdir -- change direcotry`
-`ls -- list contents of current directory`
-`ls -l -- list contents of current dirctory with detailed output`
-`ll -- list contents of current directory with detailed output`
-`cd .. -- to come out of a directory` 
-`rm -r testdir -- to remove a directory`
+```pwd -- displays prsent working direcotry```
+
+```mkdir testdir  --- create a directory``` 
+
+```cd testdir -- change direcotry```
+
+```ls -- list contents of current directory```
+
+```ls -l -- list contents of current dirctory with detailed output```
+
+```ll -- list contents of current directory with detailed output```
+
+```cd .. -- to come out of a directory``` 
+
+```rm -r testdir -- to remove a directory```
 	
 
 file operations 

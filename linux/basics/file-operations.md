@@ -22,7 +22,7 @@ vi abc.txt -- creates & opens the file in read only mode if the file is not exis
 
 	press ':q!' on keyboard -- to come out of the file forcefully without saving
 
-  ## note: vi is an file editor, you can use any editor you like by installing it on your machine )
+  ## note: vi is a file editor, you can use any editor you like by installing it on your machine
 ```
 
 ### check / view the file contents 
@@ -32,12 +32,14 @@ cat abc.txt -- writes the content of file into terminal & exits
 ```
 
 ```
-more abc.txt -- writes the content of file on terminal page by page ( to move to next page need to hit space bar on keyboard )
+more abc.txt -- writes the content of file on terminal page by page 
+
+##to move to next page need to hit space bar on keyboard 
 ```
 ```
 less abc.txt -- open the file on terminal & can be read line by line (use arrows to scroll up & down) 		  
 	               
-   to 	comeout need to press 'q' on the key board
+## to comeout need to press 'q' on the key board
 ```
 
 ### remove the file(s)

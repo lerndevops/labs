@@ -47,7 +47,9 @@
 
 > Every file, apart from the root , must have a parent and thus it should be possible to trace the ultimate parentage of a file to a root.
 
-* `Root` – it is the starting directory for Unix OS. Denoted by / Etc – contains all configuration files of Unix OS.
+* `Root` – it is the starting directory for Unix OS. Denoted by / 
+
+* `Etc` – contains all configuration files of Unix OS.
 
 * `Dev` – contains all device files like drivers.
     * A device file or special file is an interface for a device driver that appears in a file system as if it were an ordinary file. There are also special device files in MS-DOS and Microsoft Windows. They allow software to interact with a device driver using standard input/output system calls, which simplifies many tasks and unifies user-space I/O mechanisms. Device files often provide simple interfaces to peripheral devices, such as printers.

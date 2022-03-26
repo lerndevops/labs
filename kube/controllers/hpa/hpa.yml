@@ -20,7 +20,7 @@ spec:
           image: nginx:latest
           resources:
             limits:
-              cpu: 20m ## 10% of 1 core on your system
+              cpu: 20m ## 20% of 1 core on your system
 
 ---
 

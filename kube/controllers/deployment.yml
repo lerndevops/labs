@@ -2,7 +2,6 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: kubeserve
-  namespace: default
 spec:
   replicas: 10
   minReadySeconds: 45 # wait for 45 sec before going to deploy next pod

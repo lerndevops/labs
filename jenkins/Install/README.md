@@ -20,8 +20,8 @@ sudo apt-get install -y openjdk-8-jdk
 ```
 ### Install Maven  ( on Jenkins machine )
 ```
-cd /tmp ; sudo wget https://dlcdn.apache.org/maven/maven-3/3.8.4/binaries/apache-maven-3.8.4-bin.tar.gz
-cd /tmp ; sudo tar -xzf apache-maven-3.8.4-bin.tar.gz -C  /opt/
+cd /tmp ; sudo wget https://dlcdn.apache.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz
+cd /tmp ; sudo tar -xzf apache-maven-3.8.5-bin.tar.gz -C  /opt/
 ````
 ### Install Jenkins
 ```

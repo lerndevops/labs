@@ -64,7 +64,8 @@ nareshwar@mbpro ~ % ls -l $HOME/.ssh
 ```
 nareshwar@mbpro ~ % cat $HOME/.ssh/id_rsa.pub
 
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDs6nZRA2f6SrdnQYc519TfZq0icaKGszUbZP/G5OAC83hL1LpijyYkw+pNvjkTePcm0Yfpj2IY8L8iJe+zwm41VeBYtrDSYocae1nKlSofWdf2UNaOEJYyXhMK1TNGALXMtoj6d0fCbEIcF4+6QapciiH3kCZ3eyRJAXS4oud9ucDAZv+WxqeWmYspbMvIcWHEl3yBxg+K5yVIJ5AkG4SPC5REYMz9oJf50y0bhHpFZTbwx3ijIkhtaZT8MIRsRFhAoQscQ2aNsaIqTCsNAwwGTMkZBcLG7j6xrISqEIAvUi9r+bZLhrIkV2KmUMMxDmLBYRogeMvT6QHknC+ZDKmGXTUd84a8WkW32WUzxXgzglr1VMxzSq+UKgffVAgK7vd6k+/DQ0t9FmRUP1cONt1jERuDpHRDeDndF//lqJJ9JmQRnzCuv4aWd6eAgWDT2QwGQrOc9jCyjRYguobRFDs3+KOCxLjyP2xX6TwyFABkRZ29EmnX0Guc2mc= nareshwar@mbpro.local
+# take the output of above command & copy to notepad 
 ```
+
 
 

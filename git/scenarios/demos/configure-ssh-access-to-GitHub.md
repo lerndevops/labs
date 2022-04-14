@@ -68,4 +68,17 @@ nareshwar@mbpro ~ % cat $HOME/.ssh/id_rsa.pub
 ```
 ![ssh-key](https://github.com/lerndevops/labs/blob/master/static/git/ssh-key.png)
 
+##### Goto Your GitHub Account --> Configure SSH-KEYS as below
 
+
+
+
+
+
+
+git clone git@github.com:lerndevops/project007.git
+cd project007
+git remote -v
+echo "hello" > 5.xml
+git commit -am "mod 5.xml"
+git push -u origin main 

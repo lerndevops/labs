@@ -70,15 +70,19 @@ nareshwar@mbpro ~ % cat $HOME/.ssh/id_rsa.pub
 
 ##### Goto Your GitHub Account --> Configure SSH-KEYS as below
 
+![deploy-ssh-keys](https://github.com/lerndevops/labs/blob/master/static/git/github-deploy-ssh-keys.png)
 
+##### copy github project ssh url 
 
+![ssh-url](https://github.com/lerndevops/labs/blob/master/static/git/github-project-ssh-url.png)
 
+##### From Your `Git Bash` OR `Mac` OR `Linux` Terminal 
 
-
-
-git clone git@github.com:lerndevops/project007.git
-cd project007
-git remote -v
-echo "hello" > 5.xml
-git commit -am "mod 5.xml"
-git push -u origin main 
+```
+git clone git@github.com:lerndevops/project007.git -- clone project with ssh url 
+cd project007                                      -- get inside the project folder 
+git remote -v                                      -- check the remote url configured as ssh url 
+echo "hello" > 5.xml                               -- modify any file 
+git commit -am "mod 5.xml"                         -- add & commit file in local 
+git push -u origin main                            -- push to remote github / it shouldn't ask any credentials 
+```

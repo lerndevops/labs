@@ -66,6 +66,6 @@ nareshwar@mbpro ~ % cat $HOME/.ssh/id_rsa.pub
 
 # take the output of above command & copy to notepad 
 ```
-
+![ssh-key](https://github.com/lerndevops/labs/blob/master/static/git/ssh-key.png)
 
 

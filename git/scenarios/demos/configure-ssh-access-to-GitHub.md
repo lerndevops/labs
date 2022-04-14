@@ -68,7 +68,7 @@ nareshwar@mbpro ~ % cat $HOME/.ssh/id_rsa.pub
 ```
 ![ssh-key](https://github.com/lerndevops/labs/blob/master/static/git/ssh-key.png)
 
-##### Goto Your GitHub Account --> Configure SSH-KEYS as below
+##### Goto Your GitHub Account --> Settings --> Configure SSH-KEYS as below
 
 ![deploy-ssh-keys](https://github.com/lerndevops/labs/blob/master/static/git/github-deploy-ssh-keys.png)
 

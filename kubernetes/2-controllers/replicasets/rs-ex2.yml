@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: samplers
+  labels:
+    app: sampleapp
+    tier: frontend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        tier: frontend
+    spec:
+      containers:
+      - name: test
+        image: lerndevops/samplepyapp:v2
+        ports:
+         - containerPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: samplesvc
+  labels:
+    app: frontend
+spec:
+  type: NodePort
+  ports:
+  - port: 3000  
+ #   nodePort: 30001 #expose , if dont give takes default
+    protocol: TCP
+  selector:
+    tier: frontend

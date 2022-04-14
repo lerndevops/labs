@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend
+  labels:
+    app: sampleapp
+    tier: frontend
+spec:
+  replicas: 3
+  selector:
+    matchExpressions:
+      - {key: tier, operator: In, values: [frontend, test, backend]}
+      - {key: env, operator: NotIn, values: [production]}
+  template:
+    metadata:
+      labels:
+        tier: frontend
+        env: dev
+    spec:
+      containers:
+      - name: apache
+        image: httpd
+        ports:
+         - containerPort: 80

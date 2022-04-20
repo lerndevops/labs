@@ -55,7 +55,54 @@ host_key_checking = False
 	continue next and finish the setup. 
 ```
 
-## Step7 -- `configure Jenkins with Docker` 
+## Step7 -- `Install reqired Plugins (Install from Jenkins UI)`
+```
+install all these from Jenkins UI 
+
+  Manage Jenkins --> manage plugins -- Available -- search & install the below
+  	1) warnings NG
+  	2) cobertura
+  	3) Junit
+  	4) Build Pipeline
+  	5) Docker Piepeline
+```
+
+## Step8 -- `Create Credentials (Setup from Jenkins UI)`
+
+```
+  Manage Jenkins -->  Manage Credentials ==> Stores scoped to Jenkins - global ==> Add Credentials 
+	--> kind: username with password 
+	--> scope: Global
+	--> username: <enter your docker hub id>
+	--> password: <enter your docker hub password> 
+	--> ID: DOCKER_HUB_LOGIN 
+	--> Description: DOCKER_HUB_LOGIN
+```
+## Step9 -- `Configure JAVA - MAVEN - Git (Setup from Jenkins UI)`
+
+```
+Java configuration in Jenkins console 
+	
+	Manage Jenkins --> Global Tool Configuration --> JDK --> Add JDK
+		Name: myjava ( can be any string )
+		JAVA_HOME: /path/to/javahome ( ex: /usr/lib/jvm/java-8-openjdk-amd64 )
+```
+```
+Maven Configuration in Jenkins console
+	
+	Manage Jenkins --> Global Tool Configuration --> Maven --> Add Maven
+		Name: maven3.6 ( can be any string )
+		MAVEN_HOME: /path/to/mavenhome ( ex: /opt/apache-maven-3.6.5 )
+```
+```
+Git Configuration in Jenkins console
+	
+	Manage Jenkins --> Global Tool Configuration --> Git --> Add Git
+		Name: git ( can be any string )
+		MAVEN_HOME: /path/to/githome ( ex: /usr/bin/git )
+```
+
+## Step10 -- `configure Jenkins with Docker - from Jenkin Server CLI` 
 
 > by default Jenkins process runs with Jenkins User, which mean any jenkins Jobs we run from jenkins console will be running jenkins user on Jenkins machine
 
@@ -81,7 +128,7 @@ host_key_checking = False
 
 ##### if the above commands execute without any error then we configured jenkins user properly 
 
-## Step8 -- `Setup Deployment Environments`
+## Step11 -- `Setup Deployment Environments`
 
 > **setup atleast one docker swarm / kubernetes cluster**
 
@@ -89,7 +136,7 @@ host_key_checking = False
   create two VMs for QA, Install the required toos & setup the kubernetes cluster, one master - one worker node
 ```
 
-## Step9 -- `Setup Ansible Inventory on Jenkins machine`
+## Step12 -- `Setup Ansible Inventory on Jenkins machine using CLI`
 
 ```
    vi /tmp/inv 
@@ -100,53 +147,6 @@ host_key_checking = False
    // look at the sample inventory file under https://raw.githubusercontent.com/lerndevops/PetClinic/master/deploy/inv 
    
    Note: ensure to put only manager IPs in inventory file -- DO NOT PUT NODE IPs
-```
-
-## Step10 -- `Install reqired Plugins (Install these from Jenkins UI)`
-```
-install all these from Jenkins UI 
-
-  Manage Jenkins --> manage plugins -- Available -- search & install the below
-  	1) warnings NG
-  	2) cobertura
-  	3) Junit
-  	4) BuildPipeline
-  	5) DockerPiepeline
-```
-
-## Step11 -- `Create Credentials (Setup these from Jenkins UI)`
-
-```
-  Jenkins ( main/home page ) ==> Credentials ==> global ==> Add Credentials 
-	--> kind: username and password 
-	--> scope: Global
-	--> username: 
-	--> Secret: <enter your docker hub password> 
-	--> ID: DOCKER_HUB_LOGIN 
-	--> Description: DOCKER_HUB_LOGIN
-```
-## Step12 -- `Configure JAVA - MAVEN - Git (Setup these from Jenkins UI)`
-
-```
-Java configuration in Jenkins console 
-	
-	Manage Jenkins --> Global Tool Configuration --> JDK --> Add JDK
-		Name: myjava ( can be any string )
-		JAVA_HOME: /path/to/javahome ( ex: /usr/lib/jvm/java-8-openjdk-amd64 )
-```
-```
-Maven Configuration in Jenkins console
-	
-	Manage Jenkins --> Global Tool Configuration --> Maven --> Add Maven
-		Name: maven3.6 ( can be any string )
-		MAVEN_HOME: /path/to/mavenhome ( ex: /opt/apache-maven-3.6.5 )
-```
-```
-Git Configuration in Jenkins console
-	
-	Manage Jenkins --> Global Tool Configuration --> Git --> Add Git
-		Name: git ( can be any string )
-		MAVEN_HOME: /path/to/githome ( ex: /usr/bin/git )
 ```
 
 ## Step 13: Now Let's start creating CICD Pipeline

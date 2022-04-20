@@ -43,7 +43,19 @@ vi /etc/ansible/ansible.cfg
 host_key_checking = False
 ```
 
-## Step6 -- `configure Jenkins with Docker` 
+## Step6 -- `Login to Jenkins UI`
+
+> **hit `http://IP:8080` in browser   ## incase of cloud please use Public IP ensure the Port is allowed to access**
+
+```
+	enter `initialAdminPassword` the page to login ( cat /var/lib/jenkins/secrets/initialAdminPassword )
+
+	click on `Install Suggested Plugins`
+	
+	continue next and finish the setup. 
+```
+
+## Step7 -- `configure Jenkins with Docker` 
 
 > by default Jenkins process runs with Jenkins User, which mean any jenkins Jobs we run from jenkins console will be running jenkins user on Jenkins machine
 
@@ -69,15 +81,15 @@ host_key_checking = False
 
 ##### if the above commands execute without any error then we configured jenkins user properly 
 
-## Step7 -- `Setup Deployment Environments`
+## Step8 -- `Setup Deployment Environments`
 
 > **setup atleast one docker swarm / kubernetes cluster**
 
 ```
-       create two VMs for QA, Install the required toos & setup the kubernetes cluster, one master - one worker node
+  create two VMs for QA, Install the required toos & setup the kubernetes cluster, one master - one worker node
 ```
 
-## Step8 -- `Setup Ansible Inventory on Jenkins machine`
+## Step9 -- `Setup Ansible Inventory on Jenkins machine`
 
 ```
    vi /tmp/inv 
@@ -88,18 +100,6 @@ host_key_checking = False
    // look at the sample inventory file under https://raw.githubusercontent.com/lerndevops/PetClinic/master/deploy/inv 
    
    Note: ensure to put only manager IPs in inventory file -- DO NOT PUT NODE IPs
-```
-
-## Step9 -- `Login to Jenkins UI`
-
-> **hit `http://IP:8080` in browser   ## incase of cloud please use Public IP ensure the Port is allowed to access**
-
-```
-	enter `initialAdminPassword` the page to login ( cat /var/lib/jenkins/secrets/initialAdminPassword )
-
-	click on `Install Suggested Plugins`
-	
-	continue next and finish the setup. 
 ```
 
 ## Step10 -- `Install reqired Plugins (Install these from Jenkins UI)`

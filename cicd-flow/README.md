@@ -168,8 +168,11 @@ Git Configuration in Jenkins console
 -->  SCM (drop down): Git
 -->  Repositories --> Repositories URL --> https://github.com/lerndevops/PetClinic
 -->  leave the other values Default for this Demo
--->  Script Path: cicd.gvy
+-->  Script Path: cicd.gvy 
+	--> Note: Script is already availabe at https://github.com/lerndevops/PetClinic/blob/master/cicd.gvy
 -->  Click on Save 
 -->  Build Now from left Menu 
 
 ```
+
+![CICD-JPAC](https://github.com/lerndevops/labs/blob/master/cicd-flow/CICD-JPAC.png)

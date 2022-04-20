@@ -19,7 +19,7 @@ sudo bash /tmp/installJenkins.sh
 ```
 sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installMaven.sh -P /tmp
 sudo chmod 755 /tmp/installMaven.sh
-sudo bash /tmp/installJenkins.sh
+sudo bash /tmp/installMaven.sh
 ```
 
 ## Step4 -- `Install Docker`

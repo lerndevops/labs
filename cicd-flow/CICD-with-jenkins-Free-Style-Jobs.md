@@ -266,7 +266,7 @@ Jenkins ( home page ) ==> My Views ==> New View ==> View Name Enter "CICD-View" 
 ```		
 #### you shoud see like below 
 
-![CICD-PIC](https://github.com/lerndevops/labs/blob/master/cicd-flow/CICD-Free-Style-Jobs.PNG)
+![CICD-PIC](https://github.com/lerndevops/labs/blob/master/cicd-flow/CICD-Free-Style-Jobs.png)
 
 ### Step15 -- `Run The Pipeline & Validate`
 

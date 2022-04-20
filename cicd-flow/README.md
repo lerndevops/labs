@@ -29,11 +29,18 @@ sudo chmod 755 /tmp/installDocker.sh
 sudo bash /tmp/installDocker.sh
 ```
 
-## Step5 -- `Install Ansible: follow instruction from link below`
+## Step5 -- `Install Ansible`
 ```
 sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installAnsible.sh -P /tmp
 sudo chmod 755 /tmp/installAnsible.sh
 sudo bash /tmp/installAnsible.sh
+
+# modify the ansible config file to ensure disable host key checking 
+
+vi /etc/ansible/ansible.cfg 
+
+# uncomment this to disable SSH key host checking
+host_key_checking = False
 ```
 
 ## Step6 -- `configure Jenkins with Docker` 
@@ -82,3 +89,64 @@ sudo bash /tmp/installAnsible.sh
    
    Note: ensure to put only manager IPs in inventory file -- DO NOT PUT NODE IPs
 ```
+
+## Step9 -- `Login to Jenkins UI`
+
+> **hit `http://IP:8080` in browser   ## incase of cloud please use Public IP ensure the Port is allowed to access**
+
+```
+	enter `initialAdminPassword` the page to login ( cat /var/lib/jenkins/secrets/initialAdminPassword )
+
+	click on `Install Suggested Plugins`
+	
+	continue next and finish the setup. 
+```
+
+## Step10 -- `Install reqired Plugins (Install these from Jenkins UI)`
+```
+install all these from Jenkins UI 
+
+  Manage Jenkins --> manage plugins -- Available -- search & install the below
+  	1) warnings NG
+  	2) cobertura
+  	3) Junit
+  	4) BuildPipeline
+  	5) DockerPiepeline
+```
+
+## Step11 -- `Create Credentials (Setup these from Jenkins UI)`
+
+```
+  Jenkins ( main/home page ) ==> Credentials ==> global ==> Add Credentials 
+	--> kind: username and password 
+	--> scope: Global
+	--> username: 
+	--> Secret: <enter your docker hub password> 
+	--> ID: DOCKER_HUB_LOGIN 
+	--> Description: DOCKER_HUB_LOGIN
+```
+## Step12 -- `Configure JAVA - MAVEN - Git (Setup these from Jenkins UI)`
+
+```
+Java configuration in Jenkins console 
+	
+	Manage Jenkins --> Global Tool Configuration --> JDK --> Add JDK
+		Name: myjava ( can be any string )
+		JAVA_HOME: /path/to/javahome ( ex: /usr/lib/jvm/java-8-openjdk-amd64 )
+```
+```
+Maven Configuration in Jenkins console
+	
+	Manage Jenkins --> Global Tool Configuration --> Maven --> Add Maven
+		Name: maven3.6 ( can be any string )
+		MAVEN_HOME: /path/to/mavenhome ( ex: /opt/apache-maven-3.6.5 )
+```
+```
+Git Configuration in Jenkins console
+	
+	Manage Jenkins --> Global Tool Configuration --> Git --> Add Git
+		Name: git ( can be any string )
+		MAVEN_HOME: /path/to/githome ( ex: /usr/bin/git )
+```
+
+## Step 13: Now Let's start creating CICD Pipeline

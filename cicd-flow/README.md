@@ -149,28 +149,27 @@ Git Configuration in Jenkins console
    Note: ensure to put only manager IPs in inventory file -- DO NOT PUT NODE IPs
 ```
 
-## Step 13: Now Let's start creating CICD Pipeline
+## Step 13: Now Let's start creating CICD Pipeline Using Pipeline As Code Script
 
-> **`Jenkins ( home page )` 
+> **`Jenkins ( home page )`** 
 
 ```
-  **==> Click on New Item from left menu 
-  ==> Enter an item name: CICD-Pipeline 
-  ==> Choose: Pipeline 
-  ==> Click: ok**
+  --> Click on New Item from left menu 
+  --> Enter an item name: CICD-Pipeline 
+  --> Choose: Pipeline 
+  --> Click: ok
 ```
 
 > **`insdie job parameters as below`**
 
 ```
-**-->Click on Pipeline (TAB) on top 
---> Definition (drop down) 
---> Pipeline Script from SCM
---> SCM (drop down): Git
---> Repositories --> Repositories URL --> https://github.com/lerndevops/PetClinic
---> leave the other values Default for this Demo
---> Script Path: cicd.gvy
---> Click on Save 
---> Build Now from left Menu 
+-->  Click on Pipeline (TAB) on top 
+-->  Definition (drop down): Pipeline Script from SCM
+-->  SCM (drop down): Git
+-->  Repositories --> Repositories URL --> https://github.com/lerndevops/PetClinic
+-->  leave the other values Default for this Demo
+-->  Script Path: cicd.gvy
+-->  Click on Save 
+-->  Build Now from left Menu 
 
 ```

@@ -26,7 +26,7 @@ git clone https://github.com/username/projectname.git MyFolder
 git clone https://github.com/username/projectname.git . 
 ```
 
-> **`Note`: When cloning to a specified directory, the directory must be empty or non-existent.
+> **`Note`: When cloning to a specified directory, the directory must be empty or non-existent.**
 
 
 

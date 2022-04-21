@@ -3,7 +3,7 @@
 ## Git Local Operations 
 
 ## Git Remote Operations 
-![Git Clone](https://github.com/lerndevops/labs/blob/master/git/scenarios/demos/git-clone.md)
+1. [Git Clone](https://github.com/lerndevops/labs/blob/master/git/scenarios/demos/git-clone.md)
 
 ## Git Hub Access
 

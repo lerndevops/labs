@@ -1,0 +1,59 @@
+kind: StorageClass  
+apiVersion: storage.k8s.io/v1beta1  
+metadata:  
+ name: fast  
+provisioner: kubernetes.io/gce-pd  
+parameters:  
+ type: pd-ssd
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: mongo-svc
+ labels:
+   name: mongo
+spec:
+ ports:
+  - port: 27017
+    targetPort: 27017
+ clusterIP: None
+ selector:
+   role: mongo
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+   name: mongo
+spec:
+ serviceName: "mongo-svc"
+ replicas: 3
+ selector:
+   matchLabels:
+      role: mongo
+ template:
+   metadata:
+     labels:
+       role: mongo
+   spec:
+     terminationGracePeriodSeconds: 10
+     containers:
+       - name: mongo
+         image: mongo
+         ports:
+           - containerPort: 27017
+         volumeMounts:
+          - name: mongo-storage
+            mountPath: /data/db
+ volumeClaimTemplates:
+  - metadata:
+     name: mongo-storage
+     annotations:
+       volume.beta.kubernetes.io/storage-class: "fast"
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 5Gi

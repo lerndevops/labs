@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-provisioner
+  labels:
+    app: nfs-provisioner
+  # replace with namespace where provisioner is deployed
+  namespace: default
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-provisioner
+  template:
+    metadata:
+      labels:
+        app: nfs-provisioner
+    spec:
+      serviceAccountName: nfs-provisioner
+      containers:
+        - name: nfs-provisioner
+          image: k8s.gcr.io/sig-storage/nfs-subdir-external-provisioner:v4.0.2
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          env:
+            - name: PROVISIONER_NAME
+              value: nfs.io/dynamic
+            - name: NFS_SERVER
+              value: <PLACE-YOUR-NFS-SERVER-IP-HERE>
+            - name: NFS_PATH
+              value: /mnt/appdata # NFS exported Path
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: <PLACE-YOUR-NFS-SERVER-IP-HERE>
+            path: /mnt/appdata

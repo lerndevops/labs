@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unapp
+  labels:
+    app: myapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: cont1
+        image: lerndevops/samples:kubeserve-v1
+        ports:
+        - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: unapp
+  namespace: default
+spec: 
+  type: NodePort
+  selector:
+    app: myapp
+  ports: 
+    - port: 80
+      targetPort: 80
+      nodePort: 30002

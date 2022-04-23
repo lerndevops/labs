@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs
+spec:
+  storageClassName: "pd.csi.storage.gke.io"
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi

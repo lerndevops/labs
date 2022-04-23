@@ -1,0 +1,60 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: myapp-disk
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+  zone: us-central1-a
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: myapp
+spec:
+  selector:
+    matchLabels:
+      app: mywebapp
+  serviceName: frontend
+  replicas: 6
+  template:
+    metadata:
+      labels:
+        app: mywebapp
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: web
+          image: httpd
+          ports:
+           - containerPort: 80
+             name: http
+          volumeMounts:
+           - name: www
+             mountPath: /var/www/html
+  volumeClaimTemplates:
+    - metadata:
+       name: www
+       annotations:
+           volume.beta.kubernetes.io/storage-class: myapp-disk
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+   app: mywebapp
+spec:
+  ports:
+   - port: 80
+     name: web
+  clusterIP: None
+  selector:
+    app: mywebapp

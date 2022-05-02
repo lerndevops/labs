@@ -6,7 +6,7 @@ sudo bash /tmp/installJenkins.sh
 ```
 # Install Maven Using Script
 ``` 
-sudo https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installMaven.sh -P /tmp
+sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installMaven.sh -P /tmp
 sudo chmod 755 /tmp/installMaven.sh
 sudo bash /tmp/installJenkins.sh
 ```

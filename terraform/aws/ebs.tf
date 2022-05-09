@@ -10,7 +10,7 @@ resource "aws_instance" "test" {
 }
 
 resource "aws_s3_bucket" "mys3bucket" {
-   bucket = "testing-s3-with-terraform-nareshwar"
+   bucket = "testing-s3-with-terraform-naresh"
    force_destroy = true
    acl = "private"
    versioning {

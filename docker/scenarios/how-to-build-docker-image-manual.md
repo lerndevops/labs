@@ -1,11 +1,11 @@
 ## Build Docker Image Manual Process
 
 ## Example 1
-1. **choose a base image(any image from docker hub) -- docker pull tomcat:latest** 
-2. **run it as cotnainer    -- docker run -d tomcat:latest**
-3. **get the container id   -- docker ps**
-4. **login to container     -- docker exec -it contid /bin/bash**
-5. **make changes inside the container**
+1. **choose a base image(any image from docker hub) -- `docker pull tomcat:latest`** 
+2. **run it as cotnainer    -- `docker run -d tomcat:latest`**
+3. **get the container id   -- `docker ps`**
+4. **login to container     -- `docker exec -it contid /bin/bash`**
+5. **`make changes inside the container`**
 
 ```
   # Inside Container - make any changes inside the container
@@ -18,7 +18,7 @@
   
   come out of container safely ( exit )
 ```
-6. **commit the container changes -- docker commit -m "any msg" contid newimagename:tag**
+6. **commit container changes -- `docker commit -m "any msg" contid newimagename:tag`**
 
 ```
 while commiting the changes made to a container below are mandatory
@@ -30,10 +30,10 @@ newimage-name -- anyname for your new image ( ex: mynginx )
 
 ## Example 2 
 
-1. **docker pull ubuntu:18.04**
-2. **docker run -itd ubuntu:18.04**
-3. **docker ps**
-4. **docker exec -it contid /bin/bash**
+1. **`docker pull ubuntu:18.04`**
+2. **`docker run -itd ubuntu:18.04`**
+3. **`docker ps`**
+4. **`docker exec -it contid /bin/bash`**
 
 ```
 ## inside contianer changes >
@@ -47,7 +47,7 @@ vi /var/www/html/index.html ( edit & save file )
 
 exit - come out of container
 ```
-4. **docker commit -m "install nginx" -c 'CMD /usr/sbin/nginx -g "daemon off;"' -c 'EXPOSE 80' contid new-image-name:tag**
+4. **`docker commit -m "install nginx" -c 'CMD /usr/sbin/nginx -g "daemon off;"' -c 'EXPOSE 80' contid new-image-name:tag`**
 
 ```
 while commiting the changes made to a container below are mandatory

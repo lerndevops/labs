@@ -24,10 +24,14 @@ install_ubuntu() {
    sudo apt-get install -y docker-ce docker-ce-cli containerd.io --allow-downgrades
 
    if [ $? -eq 0 ];then
-      echo "docker-ce is successfully installed"
-      sudo apt-mark hold docker-ce
-      sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/kubernetes/0-install/daemon.json -P /etc/docker
-      sudo service docker restart ; clear
+       if [ -f /etc/docker/daemon.json ];then
+         echo "cgroup config is already configured skipping.."
+       else 
+          echo "docker-ce is successfully installed"
+          yum install -y wget
+          sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/kubernetes/0-install/daemon.json -P /etc/docker
+          sudo service docker restart ; clear
+       fi
    else
       echo "issue with docker-ce installation - process abort"
       exit 1
@@ -68,10 +72,14 @@ install_centos() {
     sudo systemctl enable docker.service
     
     if [ $? -eq 0 ];then
-       echo "docker-ce is successfully installed"
-       yum install -y wget
-       sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/kubernetes/0-install/daemon.json -P /etc/docker
-       sudo service docker restart ; clear
+       if [ -f /etc/docker/daemon.json ];then
+          echo "cgroup config is already configured skipping.."
+       else 
+          echo "docker-ce is successfully installed"
+          yum install -y wget
+          sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/kubernetes/0-install/daemon.json -P /etc/docker
+          sudo service docker restart ; clear
+       fi
     else
        echo "issue with docker-ce installation - process abort"
        exit 1

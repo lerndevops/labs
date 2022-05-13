@@ -23,9 +23,18 @@ install_ubuntu() {
     ## Install Docker latest
     sudo apt-get update ; clear
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-    sudo service docker restart
     ## curl -fsSL https://get.docker.com -o get-docker.sh
     ## sudo sh get-docker.sh
+
+    if [ $? -eq 0 ];then
+      echo "docker-ce is successfully installed"
+      sudo apt-mark hold docker-ce
+      sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/kubernetes/0-install/daemon.json -P /etc/docker
+      sudo service docker restart ; clear
+    else
+      echo "issue with docker-ce installation - process abort"
+      exit 1
+    fi
     exit 0
 }
 
@@ -63,4 +72,3 @@ else
    exit 8
 fi
 exit 0
-

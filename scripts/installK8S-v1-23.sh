@@ -39,11 +39,11 @@ install_ubuntu() {
    echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
    sudo apt-get update ; clear
-   sudo apt-get install -y kubelet=1.23.5-00 kubeadm=1.23.5-00 kubectl=1.23.5-00 --allow-downgrades --allow-change-held-packages
+   sudo apt-get install -y kubelet=1.23.6-00 kubeadm=1.23.6-00 kubectl=1.23.6-00 --allow-downgrades --allow-change-held-packages
 
    if [ $? -eq 0 ];then
       echo "kubelet, kubeadm & kubectl are successfully installed"
-      sudo apt-mark hold kubelet=1.23.5-00 kubeadm=1.23.5-00 kubectl=1.23.5-00 docker-ce docker-ce-cli
+      sudo apt-mark hold kubelet=1.23.6-00 kubeadm=1.23.6-00 kubectl=1.23.6-00 docker-ce docker-ce-cli
    else
       echo "issue in installing kubelet, kubeadm & kubectl - process abort"
       exit 2
@@ -94,7 +94,7 @@ EOF
     # Set SELinux in permissive mode (effectively disabling it)
     sudo setenforce 0
     sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
-    sudo yum install -y kubelet=1.23.5-00 kubeadm=1.23.5-00 kubectl=1.23.5-00 --disableexcludes=kubernetes
+    sudo yum install -y kubelet=1.23.6-00 kubeadm=1.23.6-00 kubectl=1.23.6-00 --disableexcludes=kubernetes
     sudo systemctl enable --now kubelet
 }
 ################ MAIN ###################

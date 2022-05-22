@@ -4,7 +4,7 @@ install_ubuntu() {
    which docker 
    if [ $? -eq 0 ];then
       #### Remove any pre installed docker packages  
-      sudo service docker stop
+      sudo systemctl stop docker.service
       sudo apt-mark unhold docker-ce
       sudo apt-get remove -y docker docker-ce docker-ce-cli docker.io containerd runc kubeadm kubectl kubelet
       cd /var/lib
@@ -21,7 +21,7 @@ install_ubuntu() {
    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
    sudo apt-get update ; clear
-   sudo apt-get install -y docker-ce docker-ce-cli containerd.io --allow-downgrades
+   sudo apt-get install -y docker-ce --allow-downgrades --allow-change-held-packages
 
    if [ $? -eq 0 ];then
        if [ -f /etc/docker/daemon.json ];then
@@ -30,7 +30,7 @@ install_ubuntu() {
           echo "docker-ce is successfully installed"
           yum install -y wget
           sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/kubernetes/0-install/daemon.json -P /etc/docker
-          sudo service docker restart ; clear
+          sudo systemctl restart docker.service ; clear
        fi
    else
       echo "issue with docker-ce installation - process abort"

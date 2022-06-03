@@ -4,4 +4,4 @@
 
 > **This can be convenient for scripting of routine tasks, bulk updates, troubleshooting, and more.**
 
-## [Lab: Work With Jenkins CLI] 
+## [Lab: Work-With-Jenkins-CLI](https://github.com/lerndevops/labs/blob/master/jenkins/jenkins-cli/jenkins-cli.pdf)

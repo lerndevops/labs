@@ -1,11 +1,28 @@
 Jenkins & Jfrog:
 
+PRE-REQ
+
+to setup JFROG Artifactory 
+
+create a vm with 
+  ubuntu 20.04 
+  2cpu 
+  4gbrma 
+  25 hard disk 
+
+once the vm is running / login to the vm 
+
+
 JFROG Setup:
 ------------
 Run the below commands to download the image and run the container:
     
-	docker pull lerndevops/jfrog-artifactory-oss:latest
-	docker run --name artifactory -d -p 8081:8081 lerndevops/jfrog-artifactory-oss:latest
+        wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installDocker.sh -P /tmp
+	sudo bash /tmp/installDocker.sh
+	sudo docker pull lerndevops/jfrog-artifactory-oss:latest
+	sudo docker run --name artifactory -d -p 8081:8081 lerndevops/jfrog-artifactory-oss:latest
+	
+	docker ps  -- to see the artifcatory is running 
 	
 	Access jfrog using http://Locahost:8081/artifactory/webapp/#/home
 
@@ -16,9 +33,6 @@ Run the below commands to download the image and run the container:
 
 	give any keyname, and select the existing local-repo and include it.
 
-	DO NOT USE THESE:
-	  docker pull docker.bintray.io/jfrog/artifactory-oss:latest
-	  docker run --name artifactory -d -p 8081:8081 docker.bintray.io/jfrog/artifactory-oss:latest
 
 Jenkins Setup:
 ---------------

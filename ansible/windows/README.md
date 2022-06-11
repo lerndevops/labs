@@ -3,6 +3,7 @@
 ### Step1: `install python winrm module`
 ```
 sudo apt install python-pip
+sudo apt install python3-pip
 sudo pip install pywinrm 
 ```
 ### Step2: setup inventory

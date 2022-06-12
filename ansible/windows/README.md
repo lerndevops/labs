@@ -5,6 +5,7 @@
 sudo apt install python-pip
 sudo apt install python3-pip
 sudo pip install pywinrm 
+sudo pip install pypsrp
 ```
 ### Step2: setup inventory
 

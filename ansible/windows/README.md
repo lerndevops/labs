@@ -19,8 +19,8 @@ ip2
 [winhosts:vars]
 ansible_user=testuser
 ansible_password="(O5dAh2tdhld3VkC5c2IYE@l6(@U?Wcm"
-ansible_connection=winrm
-ansible_winrm_server_cert_validataion=ignore
+ansible_connection=psrp
+ansible_psrp_cert_validation=ignore
 ```
 
 ## on all targeted windows hosts

@@ -1,6 +1,8 @@
 **/logs
 **/*.retry
 **/*.log
+**/*.docx
+**/*.doc
 ppts/
 class-notes/
 .DS_store

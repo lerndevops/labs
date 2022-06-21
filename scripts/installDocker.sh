@@ -23,9 +23,22 @@ install_ubuntu() {
     ## Install Docker latest
     sudo apt-get update ; clear
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-    sudo service docker restart
     ## curl -fsSL https://get.docker.com -o get-docker.sh
     ## sudo sh get-docker.sh
+
+    if [ $? -eq 0 ];then
+       if [ -f /etc/docker/daemon.json ];then
+         echo "cgroup config is already configured skipping.."
+       else 
+          echo "docker-ce is successfully installed"
+          yum install -y wget
+          sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/kubernetes/0-install/daemon.json -P /etc/docker
+          sudo service docker restart ; clear
+       fi
+    else
+      echo "issue with docker-ce installation - process abort"
+      exit 1
+    fi
     exit 0
 }
 
@@ -44,7 +57,19 @@ install_centos() {
     sudo yum install -y yum-utils   ## device-mapper-persistent-data lvm2
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     sudo yum install docker-ce docker-ce-cli containerd.io
-
+    if [ $? -eq 0 ];then
+       if [ -f /etc/docker/daemon.json ];then
+         echo "cgroup config is already configured skipping.."
+       else 
+          echo "docker-ce is successfully installed"
+          yum install -y wget
+          sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/kubernetes/0-install/daemon.json -P /etc/docker
+          sudo service docker restart ; clear
+       fi
+    else
+      echo "issue with docker-ce installation - process abort"
+      exit 1
+    fi
 }
 ################ MAIN ###################
 
@@ -63,4 +88,3 @@ else
    exit 8
 fi
 exit 0
-

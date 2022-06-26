@@ -10,7 +10,7 @@
 
 	* password based
 	* key based
-
+$$
 
 ## Ansible controller ( is the machine/host/server where we install ansible )
 

@@ -1,0 +1,13 @@
+- name: uninstall java 
+  when: version == 8 
+  yum:
+   name: java-1.8.0-openjdk-devel
+   state: absent
+   autoremove: yes
+
+- name: uninstall java 
+  when: version == 11
+  yum:
+   name: java-11-openjdk
+   state: absent
+   autoremove: yes 

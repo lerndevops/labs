@@ -1,0 +1,8 @@
+---
+# defaults file for jenkins
+
+# What tcp port Jenkins should listen to.
+port: 9080
+
+# What address Jenkins should bind to.
+jenkins_listen_address: "0.0.0.0"

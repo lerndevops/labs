@@ -1,0 +1,35 @@
+- name: install software-properties-common
+  apt:
+   name: software-properties-common
+   state: latest
+
+- name: add repo
+  apt_repository:
+    repo: ppa:git-core/ppa
+    state: present
+
+- name: update cache
+  apt:
+   update_cache: yes
+
+- name: install git 
+  apt: 
+   name: git
+   state: latest
+
+- name: create app dir
+  file: 
+   path: /opt/app
+   state: directory
+
+- name: copy app config 
+  copy:
+   src: "{{ item }}"
+   dest: /opt/app
+  loop:
+   - app.props
+   - db.props
+   - hello.yml 
+
+- name: execute the script 
+  script: myscript.sh

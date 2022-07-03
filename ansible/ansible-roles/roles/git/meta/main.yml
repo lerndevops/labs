@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Naresh
+  namespace: leaddevops
+  role_name: git
+  description: Install and configure git-client on your system.
+  company: none
+  min_ansible_version: "2.10"
+
+  platforms:
+    - name: Debian
+    - name: Amazon
+
+  galaxy_tags:
+    - jenkins
+    - server
+    - system

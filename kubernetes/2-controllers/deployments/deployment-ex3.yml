@@ -4,7 +4,7 @@ metadata:
   name: kubeserve
 spec:
   replicas: 10
-  minReadySeconds: 45 # wait for 10 sec before pod is ready going to next
+  minReadySeconds: 10 # wait for 10 sec before pod is ready going to next
   strategy:
     type: RollingUpdate
     rollingUpdate:

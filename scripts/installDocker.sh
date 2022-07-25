@@ -4,7 +4,7 @@ install_ubuntu() {
     ## Remove any pre installed docker packages:
     which docker
     if [ $? -eq 0 ];then
-       sudo service docker stop 
+       sudo systemctl stop docker 
        sudo apt-get remove -y docker-ce docker-engine docker.io containerd runc
        sudo apt-get purge -y docker-ce docker-ce-cli containerd.io
        sudo apt -y autoremove
@@ -16,15 +16,16 @@ install_ubuntu() {
 
     ## Install using the repository:
     sudo apt-get update
-    sudo apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    sudo apt-get install -y apt-transport-https ca-certificates curl gnupg software-properties-common lsb-release
     ## Add Dockers official GPG key & stable repo
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+    #curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    #sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
     ## Install Docker latest
     sudo apt-get update ; clear
-    sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-    ## curl -fsSL https://get.docker.com -o get-docker.sh
-    ## sudo sh get-docker.sh
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
     if [ $? -eq 0 ];then
        if [ -f /etc/docker/daemon.json ];then
@@ -56,7 +57,7 @@ install_centos() {
 
     sudo yum install -y yum-utils   ## device-mapper-persistent-data lvm2
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    sudo yum install docker-ce docker-ce-cli containerd.io
+    sudo yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin
     if [ $? -eq 0 ];then
        if [ -f /etc/docker/daemon.json ];then
          echo "cgroup config is already configured skipping.."

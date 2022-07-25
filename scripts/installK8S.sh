@@ -60,7 +60,7 @@ sudo systemctl enable --now kubelet
 ################ MAIN ###################
 
 if [ -f /etc/os-release ];then
-   osname=`grep ID /etc/os-release | egrep -v 'VERSION|LIKE|VARIANT' | cut -d'=' -f2 | sed -e 's/"//' -e 's/"//'`
+   osname=`grep ID /etc/os-release | egrep -v 'VERSION|LIKE|VARIANT|PLATFORM' | cut -d'=' -f2 | sed -e 's/"//' -e 's/"//'`
    echo $osname
    if [ $osname == "ubuntu" ];then
        install_ubuntu

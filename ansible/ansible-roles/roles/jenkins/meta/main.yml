@@ -1,0 +1,25 @@
+---
+galaxy_info:
+  author: Naresh
+  namespace: leaddevops
+  role_name: jenkins
+  description: Install and configure jenkins on your system.
+  license: Apache-2.0
+  company: none
+  min_ansible_version: "2.10"
+
+  platforms:
+    - name: Debian
+      versions:
+        - bullseye
+    - name: EL
+      versions:
+        - all
+    - name: Fedora
+      versions:
+        - all
+
+  galaxy_tags:
+    - jenkins
+    - server
+    - system

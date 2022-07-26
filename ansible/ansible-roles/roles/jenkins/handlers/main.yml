@@ -1,0 +1,9 @@
+---
+# handlers file for jenkins
+
+- name: restart jenkins
+  systemd:
+    name: jenkins
+    state: restarted
+  when:
+    - not ansible_check_mode | bool

@@ -1,0 +1,5 @@
+- name: uninstall git
+  yum:
+   name: git
+   state: absent 
+   autoremove: yes

@@ -1,0 +1,59 @@
+---
+# tasks file for jenkins
+
+- name: add yum repository
+  when: ansible_pkg_mgr == "yum" or ansible_pkg_mgr == "dnf"
+  get_url:
+    url: "{{ jenkins_yum_repository_baseurl }}"
+    dest: /etc/yum.repos.d/jenkins.repo
+    validate_certs: no
+
+- name: import rpm key
+  when: ansible_pkg_mgr == "yum" or ansible_pkg_mgr == "dnf"
+  rpm_key:
+    key: "{{ jenkins_rpm_key }}"
+    state: present
+    validate_certs: no
+
+- name: configure apt
+  when: ansible_pkg_mgr == "apt"
+  block:
+    - name: add apt key
+      apt_key:
+        url: "{{ jenkins_apt_key_url }}"
+        state: present
+
+    - name: add apt repository
+      apt_repository:
+        repo: "{{ jenkins_apt_repository_repo }}"
+        state: present
+
+- name: install jenkins
+  package:
+    name: jenkins
+    state: present
+
+- name: configure jenkins port 
+  when: ansible_os_family == "Debian"
+  lineinfile:
+    path: /lib/systemd/system/jenkins.service
+    regexp: '^Environment="JENKINS_PORT=8080"'
+    line: 'Environment="JENKINS_PORT={{ port }}"'
+    backrefs: yes
+    backup: yes
+  notify: restart jenkins
+
+- name: configure jenkins port
+  when: ansible_os_family == "RedHat"
+  lineinfile:
+    path: /usr/lib/systemd/system/jenkins.service
+    regexp: '^Environment="JENKINS_PORT=8080"'
+    line: 'Environment="JENKINS_PORT={{ port }}"'
+    backrefs: yes
+    backup: yes
+  notify: restart jenkins
+
+- name: enable jenkins
+  systemd:
+    name: jenkins
+    enabled: yes

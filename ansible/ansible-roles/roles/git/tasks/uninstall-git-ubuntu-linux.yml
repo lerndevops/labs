@@ -1,0 +1,5 @@
+- name: uninstall git
+  apt:
+   name: git
+   state: absent
+   autoremove: yes 

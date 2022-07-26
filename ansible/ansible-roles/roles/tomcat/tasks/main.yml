@@ -1,14 +1,10 @@
-- name: create a file
+- name: create a file task in main.yml
   file:
    path: /tmp/newtoday.txt
    state: touch
    
 - name: config users
   include_tasks: configure-user.yml
-  when: action == "install"
-
-- name: install java
-  include_tasks: install-java.yml
   when: action == "install"
 
 - name: install tomcat
@@ -18,16 +14,3 @@
 - name: uninstall tomcat
   include_tasks: uninstall-tomcat.yml
   when: action == "uninstall"
-
-- name: understand defaults dir
-  debug:
-     msg: "this variable is from defaults dir: {{ dvar }}"
-
-- name: understand vars dir
-  debug:
-     msg: "this variable is from vars dir {{ abc }}"
-
-- name: understand templates
-  template:
-    src: app.props
-    dest: /app

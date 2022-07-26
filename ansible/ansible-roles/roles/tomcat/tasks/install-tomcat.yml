@@ -1,15 +1,17 @@
 - name: copy Tomcat tar file
-  # get_url: url http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.53/bin/apache-tomcat-8.5.53.tar.gzdest=/opt/apache-tomcat-8.5.53.tar.gz
   copy:
-    src: apache-tomcat-8.5.53.tar.gz
+    src: apache-tomcat-{{ tomcat_version }}.tar.gz
     dest: /tmp
 
 - name: Extract archive
-  shell: /bin/tar xvf /tmp/apache-tomcat-8.5.53.tar.gz -C /opt
+  unarchive:
+    src: /tmp/apache-tomcat-{{ tomcat_version }}.tar.gz
+    dest: /opt
+    remote_src: yes
 
 - name: create Symlink
   file:
-    src: /opt/apache-tomcat-8.5.53
+    src: /opt/apache-tomcat-{{ tomcat_version }}
     path: /opt/tomcat
     owner: tomcat
     group: tomcat
@@ -45,12 +47,26 @@
       ExecStop=/opt/tomcat/bin/shutdown.sh
       [Install]
       WantedBy=multi-user.target
+
 - name: enable & start tomcat service
   systemd:
     name: tomcat
     state: started
     enabled: yes
-- name: setup app directory
+
+- name: create app dir
   file:
-    path: /app
+    path: /opt/app
     state: directory
+
+- name: deploy app
+  copy:
+   src: sampleapp.war
+   dest: /opt/tomcat/webapps/
+
+- name: configure app props 
+  template:
+    src: app.props
+    dest: /opt/app
+  notify:
+    - restart tomcat

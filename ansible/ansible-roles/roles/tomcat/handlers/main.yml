@@ -1,4 +1,4 @@
 - name: restart tomcat
   service: 
-    name: tomcatd 
+    name: tomcat 
     state: restarted

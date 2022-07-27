@@ -1,14 +1,21 @@
-FROM ubuntu
-RUN apt-get -y update 
-RUN apt-get -y install openjdk-8-jdk wget
-RUN mkdir /opt/tomcat
-# COPY tomcat-8.5.37.tar.gz /tmp
-# RUN cd /tmp && tar xvfz tomcat-8.5.37.tar.gz
-# RUN mv /tmp/apache-tomcat-8.5.37/* /opt/tomcat/
-# RUN rm /tmp/tomcat-8.5.37.tar.gz
-ADD tomcat-8.5.37.tar.gz /tmp
-RUN mv /tmp/apache-tomcat-8.5.37/* /opt/tomcat/
-COPY myapp.war /opt/tomcat/webapps
+# wget https://github.com/lerndevops/code/raw/main/jdk-8u331-linux-x64.tar.gz
+# wget https://github.com/lerndevops/code/raw/main/apache-tomcat-9.0.63.tar.gz
+# wget https://github.com/lerndevops/code/raw/main/myapp.war
+
+FROM ubuntu:18.04
+
+#ADD instruction with tar it extracts the tar & copies the extracted content only
+ADD jdk-8u331-linux-x64.tar.gz /tmp
+RUN mv /tmp/jdk1.8.0_331 /opt/java
+ADD apache-tomcat-9.0.63.tar.gz /tmp
+RUN mv /tmp/apache-tomcat-9.0.63 /opt/tomcat
+
+ENV JAVA_HOME /opt/java
+ENV TOMCAT_HOME /opt/tomcat
+ENV JAVA_VERSION 1.8 
+ENV TOMCAT_VERSION 9.0.63 
+
+COPY myapp.war /opt/tomcat/webapps/ 
+
 EXPOSE 8080
-ENTRYPOINT ["/opt/tomcat/bin/catalina.sh", "run"]  ## JSON Format
-# ENTRYPOINT /opt/tomcat/bin/catalina.sh run  ## Shell Format
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]

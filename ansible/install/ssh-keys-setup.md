@@ -1,8 +1,7 @@
-### create a user on all machines ( controller & all targets )
+## create a user on all machines ( controller & all targets )
 
-	cd /tmp ; git clone https://github.com/lerndevops/labs
-	cd /tmp/labs/cloud
-	bash setup-user.sh
+        sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/setupUser.sh -P /tmp
+	sudo bash /tmp/setupUser.sh
 	
 	Note: above script will setup username & password as below 
 	

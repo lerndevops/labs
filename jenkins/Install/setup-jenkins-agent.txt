@@ -1,0 +1,33 @@
+# On Jenkins Agent VM install the following 
+
+## Setup Jenkin Agent Home Directory 
+
+mkdir -p /home/jagenthome
+chmod 777 /home/jagenthome
+
+
+## Install Git
+
+sudo su -
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:git-core/ppa -y
+sudo apt-get update
+sudo apt-get install git -y
+git --version ( if it writes the version then the installation is successful )
+
+### Install JAVA
+
+sudo add-apt-repository ppa:openjdk-r/ppa
+sudo apt-get update
+sudo apt-get install -y openjdk-8-jdk
+
+### Install Maven
+
+cd /tmp ; sudo wget https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
+cd /tmp ; sudo tar -xzf apache-maven-3.8.6-bin.tar.gz -C  /opt/
+mv /opt/apache-maven-3.8.6 /opt/maven
+sudo echo "MAVEN_HOME=\"/opt/maven\"" >> /etc/profile
+sudo echo "PATH=\$MAVEN_HOME/bin:\$PATH" >> /etc/profile
+source /etc/profile
+
+### Download agent.jar given on Jenkins Master Console

@@ -1,66 +1,56 @@
 #!/bin/bash
 
-install_ubuntu() {
+prepare_node() {
 
    #### Install Kubernetes latest components
-   
-   if [ $? -eq 0 ];then
-      echo "kubelet, kubeadm & kubectl are successfully installed"
-      sudo apt-mark hold kubectl
-   else
-      echo "issue in installing kubectl - process abort"
-      exit 2
-   fi
-}
-
-install_centos() {
-
-cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
-enabled=1
-gpgcheck=1
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-exclude=kubelet kubeadm kubectl
-EOF
+    which docker
+    if [ $? -eq 0 ];then
+       echo "docker is already installed no action required.."
+       sudo systemctl restart docker
+    else
+       echo "docker is not installed.. continue to install"
+       wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installDocker.sh -P /tmp
+       bash /tmp/installDocker.sh
+    fi 
+    which kubectl
+    if [ $? -eq 0 ];then
+       echo "kubectl is already installed no action required.."
+    else
+       echo "kubectl is not installed.. continue to install"
+       wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installKubectl.sh -P /tmp
+       bash /tmp/installKubectl.sh
+    fi
+    which kind
+    if [ $? -eq 0 ];then
+       echo "kind is already installed no action required.."
+    else
+       echo "kind is not installed.. continue to install"
+       curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.14.0/kind-linux-amd64
+       chmod +x ./kind
+       sudo mv ./kind /usr/local/bin/kind
+    fi
   
-sudo setenforce 0
-sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
-sudo yum install -y kubectl --disableexcludes=kubernetes
-sudo systemctl enable --now kubelet
-
+}
+create_cluster() {
+    wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/configs/kind-k8s-setup-config.yaml -P /tmp
+    kind create cluster --config /tmp/kind-k8s-setup-config.yaml
+    kubectl get nodes -o wide
 }
 
-install_amzn() {
-
-cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
-[kubernetes]
-name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
-enabled=1
-gpgcheck=1
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-exclude=kubelet kubeadm kubectl
-EOF
-  
-sudo setenforce 0
-sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
-sudo yum install -y kubectl --disableexcludes=kubernetes
-sudo systemctl enable --now kubelet
-
-}
 ################ MAIN ###################
 
 if [ -f /etc/os-release ];then
    osname=`grep ID /etc/os-release | egrep -v 'VERSION|LIKE|VARIANT|PLATFORM' | cut -d'=' -f2 | sed -e 's/"//' -e 's/"//'`
    echo $osname
    if [ $osname == "ubuntu" ];then
-       install_ubuntu
+       prepare_node
+       create_cluster
    elif [ $osname == "amzn" ];then
-       install_amzn
+       prepare_node
+       create_cluster
    elif [ $osname == "centos" ];then
-       install_centos
+       prepare_node
+       create_cluster
   fi
 else
    echo "can not locate /etc/os-release - unable find the osname"

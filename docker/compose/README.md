@@ -3,7 +3,6 @@
 ### Install Using Script 
 ``` 
 sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installDockerCompose.sh -P /tmp
-sudo chmod 755 /tmp/installDockerCompose.sh
 sudo bash /tmp/installDockerCompose.sh
 ```
 ### Manual Installation Steps 

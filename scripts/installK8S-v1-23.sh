@@ -9,7 +9,7 @@ install_ubuntu() {
    sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
    echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
    sudo apt-get update
-   sudo apt-get install -y kubelet=1.23.6-00 kubeadm=1.23.6-00 kubectl=1.23.6-00
+   sudo apt-get install -y kubelet=1.23.10-00 kubeadm=1.23.10-00 kubectl=1.23.10-00
 
    if [ $? -eq 0 ];then
       echo "kubelet, kubeadm & kubectl are successfully installed"
@@ -34,7 +34,7 @@ EOF
   
 sudo setenforce 0
 sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
-sudo yum install -y kubelet-1.23.6-0 kubeadm-1.23.6-0 kubectl-1.23.6-0 --disableexcludes=kubernetes
+sudo yum install -y kubelet-1.23.10-0 kubeadm-1.23.10-0 kubectl-1.23.10-0 --disableexcludes=kubernetes
 sudo systemctl enable --now kubelet
 
 }
@@ -53,7 +53,7 @@ EOF
   
 sudo setenforce 0
 sudo sed -i 's/^SELINUX=enforcing$/SELINUX=permissive/' /etc/selinux/config
-sudo yum install -y kubelet-1.23.6-0 kubeadm-1.23.6-0 kubectl-1.23.6-0 --disableexcludes=kubernetes
+sudo yum install -y kubelet-1.23.10-0 kubeadm-1.23.10-0 kubectl-1.23.10-0 --disableexcludes=kubernetes
 sudo systemctl enable --now kubelet
 
 }

@@ -3,13 +3,13 @@ volumes:
   data-bkp:
 services:
   springbootapp:
-    image: lerndevops/springboot-mongo-app:latest
+    image: lerndevops/samples:springboot-app
     ports:
       - 8080
     depends_on:
       - mongo
   mongo:
-    image: lerndevops/mongo
+    image: lerndevops/samples:mongodb
     ports:  
       - 27017:27017
     volumes:

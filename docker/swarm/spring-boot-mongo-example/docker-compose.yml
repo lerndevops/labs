@@ -4,7 +4,7 @@ volumes:
   data-bkp:
 services:
   springbootapp:
-    image: lerndevops/springboot-mongo-app:latest
+    image: lerndevops/samples:springboot-app
     deploy:
       replicas: 4
       placement:
@@ -21,7 +21,7 @@ services:
     depends_on:
       - mongo
   mongo:
-    image: lerndevops/mongo
+    image: lerndevops/samples:mongodb
     deploy:
       replicas: 1
       placement:

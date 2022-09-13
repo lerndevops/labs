@@ -4,12 +4,7 @@ metadata:
   name: kubeserve
 spec:
   replicas: 10
-  minReadySeconds: 10 # wait for 10 sec before pod is ready going to next
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1  # take down 1 pod at a time
-      maxSurge: 2        # bring one at a time
+  minReadySeconds: 45
   selector:
     matchLabels:
       app: kubeserve

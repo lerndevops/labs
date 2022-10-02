@@ -2,7 +2,7 @@ Install Plugins required for CI Pipeline
 
 	Manage Jenkins --> manage plugins -- Available -- search & install the below
 		Warning NG -- install without restart
-		cobertura -- install without restart
+		JaCoCo plugin -- install without restart
 		Build Pipeline Plugin  -- install without restart
 
 			
@@ -32,8 +32,8 @@ job1-compile	 : compile              : NA
 
 job2-codereview	 : -P metrics pmd:pmd   : **/pmd.xml (record compiler warnings & static analysis results)
                  
-job3-unittest    : test                 : target/surefire-reports/*.xml (Publish Junit test results)
+job3-unittest    : test                 : leave the defaults (Publish Junit test results)
                  
-job4-codecoverage : cobertura:cobertura -Dcobertura.report.format=xml  : target/site/cobertura/coverage.xml ( publish cobertura coverage report )
+job4-codecoverage : test  : target/site/cobertura/coverage.xml ( Record JaCoCo coverage report )
                  
 job5-package     : package              : NA

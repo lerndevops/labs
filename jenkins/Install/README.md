@@ -8,7 +8,7 @@ sudo bash /tmp/installJenkins.sh
 ``` 
 sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installMaven.sh -P /tmp
 sudo chmod 755 /tmp/installMaven.sh
-sudo bash /tmp/installJenkins.sh
+sudo bash /tmp/installMaven.sh
 ```
 
 # Manual Installation Steps 
@@ -38,8 +38,8 @@ sudo apt-get install jenkins
 
 ##### Set JAVA_HOME & MAVEN_HOME as environment variables on Jenkins machine
 ```
-sudo echo "MAVEN_HOME=\"/opt/apache-maven-3.8.5\"" >> /etc/profile
-sudo echo "JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64\"" >> /etc/profile 
+sudo echo "MAVEN_HOME=\"/opt/maven\"" >> /etc/profile
+sudo echo "JAVA_HOME=\"/usr/lib/jvm/java-11-openjdk-amd64\"" >> /etc/profile 
 sudo echo "PATH=\$JAVA_HOME/bin:\$MAVEN_HOME/bin:\$PATH" >> /etc/profile
 source /etc/profile
 ```

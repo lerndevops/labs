@@ -26,7 +26,7 @@ sudo bash /tmp/installK8S-v1-23.sh
 
    ## below installs weave networking driver 
     
-   sudo kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" 
+   sudo kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml
 
    # Validate:  kubectl get nodes
 ```
@@ -96,7 +96,7 @@ kubeadm token create --print-join-command
 
     ## below installs weave networking driver 
     
-       sudo kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')" 
+       sudo kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml
 	
     # Validate: kubectl get nodes
 ```

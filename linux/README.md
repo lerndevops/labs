@@ -20,7 +20,7 @@
 * Shell
 * Kernel
 
-![Architecture](https://github.com/lerndevops/labs/blob/master/static/linux_architecture.jpeg)
+![Architecture](https://github.com/lerndevops/labs/blob/master/static/linux/linux_architecture.jpeg)
  
 > The kernel is the core of an OS which manages the entire system resources The shell acts as an interface between kernel and end user or application.
 

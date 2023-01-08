@@ -11,7 +11,7 @@ install_linux() {
       echo "Installing cri-dockerd..."
       wget https://github.com/Mirantis/cri-dockerd/releases/download/v${VER}/cri-dockerd-${VER}.amd64.tgz -P /tmp
       #wget https://github.com/Mirantis/cri-dockerd/releases/download/${VER}/cri-dockerd-${VER}-linux-${ARCH}.tar.gz -P /tmp
-      tar -xzvf /tmp/cri-dockerd-${VER}.${ARCH}.tgz
+      tar -xzvf /tmp/cri-dockerd-${VER}.${ARCH}.tgz -C /tmp
       #tar -xzvf /tmp/cri-dockerd-${VER}-linux-${ARCH}.tar.gz -C /tmp
       mv /tmp/cri-dockerd/cri-dockerd /usr/bin/
       chmod 755 /usr/bin/cri-dockerd

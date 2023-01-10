@@ -109,6 +109,13 @@ USER="devops"
 GROUP="devops"
 passw="today@1234"
 
+if id -u "$USER" &>/dev/null; then 
+   echo "devops user exists no action required.."
+   exit 0
+else
+  echo "devops user missing, continue to create it.."
+fi
+
 if [ -f /etc/os-release ];then
    osname=`grep ID /etc/os-release | egrep -v 'VERSION|LIKE|VARIANT|PLATFORM' | cut -d'=' -f2 | sed -e 's/"//' -e 's/"//'`
    echo $osname

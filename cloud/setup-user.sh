@@ -89,13 +89,13 @@ update_conf()
    if [ -f $sshdfile ];then
         cp -p $sshdfile /home/backup/sshd_config-$now
         sed -i '/ClientAliveInterval.*0/d' $sshdfile
-        sed -i '/PermitRootLogin.*yes/d' $sshdfile
+        echo "ClientAliveInterval 240" >> $sshdfile
         sed -i '/PasswordAuthentication.*no/d' $sshdfile
         sed -i '/PasswordAuthentication.*yes/d' $sshdfile
-        sed -i '/PermitRootLogin.*prohibit-password/d' $sshdfile
-        echo "PermitRootLogin yes" >> $sshdfile
         echo "PasswordAuthentication yes" >> $sshdfile
-        echo "ClientAliveInterval 240" >> $sshdfile
+        #sed -i '/PermitRootLogin.*yes/d' $sshdfile
+        #sed -i '/PermitRootLogin.*prohibit-password/d' $sshdfile
+        #echo "PermitRootLogin yes" >> $sshdfile
         echo "updated $sshdfile Successfully -- restarting sshd service"
         service sshd restart
    else
@@ -109,8 +109,15 @@ USER="devops"
 GROUP="devops"
 passw="today@1234"
 
+if id -u "$USER" &>/dev/null; then 
+   echo "devops user exists no action required.."
+   exit 0
+else
+  echo "devops user missing, continue to create it.."
+fi
+
 if [ -f /etc/os-release ];then
-   osname=`grep ID /etc/os-release | egrep -v 'VERSION|LIKE|VARIANT' | cut -d'=' -f2 | sed -e 's/"//' -e 's/"//'`
+   osname=`grep ID /etc/os-release | egrep -v 'VERSION|LIKE|VARIANT|PLATFORM' | cut -d'=' -f2 | sed -e 's/"//' -e 's/"//'`
    echo $osname
 else
    echo "can not locate /etc/os-release - unable find the osname"

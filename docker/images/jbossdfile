@@ -1,0 +1,22 @@
+FROM centos:7
+
+RUN yum update -y && yum -y install xmlstarlet saxon augeas bsdtar unzip && yum clean all 
+RUN groupadd -r jboss -g 1000 && useradd -u 1000 -r -g jboss -m -d /opt/jboss -s /sbin/nologin -c "JBoss User" jboss
+RUN chmod 755 /opt/jboss 
+
+RUN yum -y install java-11-openjdk-devel && yum clean all 
+ADD wildfly-24.0.1.Final.tar.gz /opt/jboss 
+RUN mv /opt/jboss/wildfly-24.0.1.Final /opt/jboss/wildfly
+
+ENV JBOSS_HOME /opt/jboss/wildfly
+RUN chown -R jboss:jboss ${JBOSS_HOME}
+RUN chmod -R 755 ${JBOSS_HOME}
+
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
+
+USER jboss
+WORKDIR /opt/jboss
+COPY JavaEEDemo.war /opt/jboss/wildfly/standalone/deployments
+
+EXPOSE 8080 
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0"]

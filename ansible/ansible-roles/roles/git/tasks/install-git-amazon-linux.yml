@@ -1,0 +1,30 @@
+- name: install yum utils
+  yum:
+   name: yum-utils
+   state: latest 
+
+- name: update cache
+  yum:
+   update_cache: yes
+
+- name: install git 
+  yum:
+    name: git
+    state: latest
+
+- name: create app dir
+  file:
+   path: /opt/app
+   state: directory
+
+- name: copy app config
+  copy:
+   src: "{{ item }}"
+   dest: /opt/app
+  loop:
+   - app.props
+   - db.props
+   - hello.yml
+
+- name: execute the script
+  script: myscript.sh

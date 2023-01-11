@@ -1,31 +1,39 @@
-### create a user on all machines ( controller & all targets )
+## create a user on all machines ( controller & all targets )
 
-	useradd naresh -m -d /home/naresh -s /bin/bash
-
-### add user to sudoers for root previliges  on all machines ( all targets )
-
-	echo -e 'naresh  ALL=(ALL)  NOPASSWD:  ALL' > /etc/sudoers.d/naresh
+        sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/setupUser.sh -P /tmp
+	sudo bash /tmp/setupUser.sh
+	
+	Note: above script will setup username & password as below 
+	
+	USERNAME: devops
+	PASSWORD: today@1234
 
 ### genereate ssh keys for above user on contrller machine 
 
 ```
-	1) switch to user ( su - naresh )
-	2) run "ssh-keygen" command as user ( this will genereate ssh keys for the user ) 
-```
-```
-        on ansible controller machine
-		cd /home/naresh/.ssh 
-		cat id_rsa.pub (copy the content)
+1) switch to user ( su - devops )
+2) run "ssh-keygen" command as user ( this will genereate ssh keys for the user ) 
+
+validate:
+     
+  cd /home/devops/.ssh 
+  cat id_rsa.pub 
 ```
 ### copy user ssh keys from ansible contrller to all target hosts
 
 ```
-	1) on all target machines
-		   swith to the user ( su - naresh )
-		   mkdir -p /home/naresh/.ssh
-		   touch /home/naresh/.ssh/authorized_keys
-		   chmod -R 700 /home/naresh/.ssh
-		   vi /home/naresh/.ssh/authorized_keys  (enter the copied contet of id_rsa.pub from controller & save the file)
+On Ansible Contoller:
+	
+  swith to the user OR be as devops user ( su - devops )
+  
+  ssh-copy-id devops@target1ip -- hit enter -- enter the password of target server when it prompted 
+  ssh-copy-id devops@target2ip -- hit enter -- enter the password of target server when it prompted
+  .
+  .
+  .
+  .
+  ssh-copy-id devops@targetnip -- hit enter -- enter the password of target server when it prompted
+
 ```	
 	
 

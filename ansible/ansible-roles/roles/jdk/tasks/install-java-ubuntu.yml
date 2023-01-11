@@ -1,0 +1,13 @@
+- name: add apt repo
+  apt_repository:
+    repo: ppa:openjdk-r/ppa
+    state: present
+
+- name: update cache
+  apt:
+    update_cache: yes 
+
+- name: installing java {{ version }}
+  apt:
+    name: openjdk-{{ version }}-jdk
+    state: present

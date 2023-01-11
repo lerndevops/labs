@@ -1,0 +1,6 @@
+jenkins_yum_repository_baseurl: "https://pkg.jenkins.io/redhat-stable/jenkins.repo"
+
+jenkins_rpm_key: "https://pkg.jenkins.io/redhat-stable/jenkins.io.key"
+
+jenkins_apt_key_url: "https://pkg.jenkins.io/debian-stable/jenkins.io.key"
+jenkins_apt_repository_repo: "deb https://pkg.jenkins.io/debian-stable binary/"

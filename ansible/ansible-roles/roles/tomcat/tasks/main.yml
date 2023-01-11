@@ -1,0 +1,16 @@
+- name: create a file task in main.yml
+  file:
+   path: /tmp/newtoday.txt
+   state: touch
+   
+- name: config users
+  include_tasks: configure-user.yml
+  when: action == "install"
+
+- name: install tomcat
+  include_tasks: install-tomcat.yml
+  when: action == "install"
+
+- name: uninstall tomcat
+  include_tasks: uninstall-tomcat.yml
+  when: action == "uninstall"

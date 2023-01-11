@@ -1,13 +1,14 @@
 #This playbbok will install HTTP server,wget and vim package using loops.
 
 ---
-- hosts: localhost
-  become: true
+- hosts: web
+  become: yes
   tasks:
     - name: Install list of packages
-      yum: name='{{item}}' state=present
-      with_items:
-       - httpd
+      apt: 
+        name: '{{item}}' 
+        state: present
+      loop:
        - wget
        - vim
        - zip

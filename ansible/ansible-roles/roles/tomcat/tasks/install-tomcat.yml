@@ -1,0 +1,72 @@
+- name: copy Tomcat tar file
+  copy:
+    src: apache-tomcat-{{ tomcat_version }}.tar.gz
+    dest: /tmp
+
+- name: Extract archive
+  unarchive:
+    src: /tmp/apache-tomcat-{{ tomcat_version }}.tar.gz
+    dest: /opt
+    remote_src: yes
+
+- name: create Symlink
+  file:
+    src: /opt/apache-tomcat-{{ tomcat_version }}
+    path: /opt/tomcat
+    owner: tomcat
+    group: tomcat
+    state: link
+
+- name: Change ownership of Tomcat installation
+  file:
+    path: /opt/tomcat/
+    owner: tomcat
+    group: tomcat
+    mode: 0755
+    state: directory
+    recurse: yes
+
+- name: create tomcat.service file
+  file:
+    path: /etc/systemd/system/tomcat.service
+    state: touch
+
+- name: create tomcat service
+  blockinfile:
+    path: /etc/systemd/system/tomcat.service
+    block: |
+      [Unit]
+      Description=Tomcat - instance %i
+      After=syslog.target network.target
+      [Service]
+      Type=forking
+      User=tomcat
+      Group=tomcat
+      Environment="CATALINA_HOME=/opt/tomcat/"
+      ExecStart=/opt/tomcat/bin/startup.sh
+      ExecStop=/opt/tomcat/bin/shutdown.sh
+      [Install]
+      WantedBy=multi-user.target
+
+- name: enable & start tomcat service
+  systemd:
+    name: tomcat
+    state: started
+    enabled: yes
+
+- name: create app dir
+  file:
+    path: /opt/app
+    state: directory
+
+- name: deploy app
+  copy:
+   src: sampleapp.war
+   dest: /opt/tomcat/webapps/
+
+- name: configure app props 
+  template:
+    src: app.props
+    dest: /opt/app
+  notify:
+    - restart tomcat

@@ -1,0 +1,7 @@
+- name: uninstall java {{ version }}
+  apt:
+   name: openjdk-{{ version }}-jdk
+   state: absent
+   purge: yes
+   autoremove: yes
+   autoclean: yes

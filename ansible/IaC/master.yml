@@ -1,0 +1,57 @@
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Create EC2 Instances
+      ec2:
+        key_name: naresh
+        instance_type: t2.micro
+        image: ami-05c1fa8df71875112
+        wait: yes
+        group: mysecgroup
+        count: "{{ count }}"
+        vpc_subnet_id: subnet-d2a4869e
+        assign_public_ip: yes
+        region: us-east-2
+      register: out
+    - name: Name ec2 instances
+      ec2_tag:
+         resource: "{{item.id}}"
+         tags:
+           Name: "mu{{item.ami_launch_index}}"
+      loop: "{{out.instances}}"
+    - name: create in memory Inventory
+      add_host:
+        hostname: "{{item.public_ip}}"
+        groupname: myservers
+        ansible_user: ubuntu
+        ansible_ssh_private_key_file: /root/IaC/naresh.pem
+        ansible_python_interpreter: /usr/bin/python3
+      loop: "{{out.instances}}"
+    - name: wait 60 Sec for ssh
+      shell: sleep 60
+    - name: Create file with Public IPs
+      copy:
+        content: "{% for host in groups.myservers %}{{ hostvars[host].inventory_hostname }}\n{% endfor %}"
+        dest: /tmp/uinventory
+      delegate_to: localhost
+
+- name: setup user on newly created instances
+  hosts: myservers
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: install git & python
+      package:
+        name: "{{ item }}"
+        state: present
+      loop: ['git']
+    - name: clone git repo
+      shell: git clone https://github.com/lerndevops/labs.git
+      args:
+        chdir: /tmp
+    - name: create user
+      shell: chmod -R 755 /tmp/labs/* ; /tmp/labs/cloud/setup-user.sh
+    - name: setup hostname
+      shell: echo amaster > /etc/hostname
+    - name: reboot instances
+      reboot:

@@ -1,0 +1,11 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: dynamic-nfs-pvc
+spec:
+  storageClassName: nfs-provisioner
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Mi

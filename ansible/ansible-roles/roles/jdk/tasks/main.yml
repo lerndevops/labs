@@ -1,0 +1,15 @@
+- name: install java {{ version }} on Ubuntu/Debian Linux
+  when: ansible_os_family == "Debian" and user_action == "install"
+  include_tasks: install-java-ubuntu.yml
+
+- name: uninstall java {{ version }} on Ubuntu/Debian Linux
+  when: ansible_os_family == "Debian" and user_action == "uninstall"
+  include_tasks: uninstall-java-ubuntu.yml
+
+- name: install java {{ version }} on Amazon/CentOS Linux
+  when: ansible_os_family == "RedHat" and user_action == "install"
+  include_tasks: install-java-amazon.yml
+
+- name: uninstall java {{ version }} on Amazon/CentOS Linux
+  when: ansible_os_family == "RedHat" and user_action == "uninstall"
+  include_tasks: uninstall-java-amazon.yml

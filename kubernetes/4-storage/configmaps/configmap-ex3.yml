@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: special-config
+data:
+  db: mymongodb
+  app: myapp
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  containers:
+    - name: test-cont
+      image: alpine
+      command: [ "/bin/sh", "-c", "echo $(KEY1) $(KEY2)" ]
+      env:
+        - name: KEY1
+          valueFrom:
+            configMapKeyRef:
+              name: special-config
+              key: db
+        - name: KEY2
+          valueFrom:
+            configMapKeyRef:
+              name: special-config
+              key: app
+  restartPolicy: Never

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: tomcatrc1
+  labels:
+    rc: myapprc
+spec:
+  replicas: 3
+  selector:
+    app: tomcatt
+  template:
+    metadata:
+      name: tomcat
+      labels:
+        app: tomcatt
+    spec:
+      containers:
+      - name: tomcat
+        image: nginx
+        ports:
+        - containerPort: 8080

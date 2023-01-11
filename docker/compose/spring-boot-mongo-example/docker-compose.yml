@@ -1,19 +1,17 @@
-version: '3.1'
+volumes:
+  data:
+  data-bkp:
 services:
   springbootapp:
-    image: lerndevops/springboot-mongo-app:latest
-#    container_name: springboot
+    image: lerndevops/samples:springboot-app
     ports:
       - 8080
     depends_on:
       - mongo
-    restart: on-failure
   mongo:
-    image: lerndevops/mongo
-    container_name: springboot-mongo
-    ports:  # for demo/debug purpose only
+    image: lerndevops/samples:mongodb
+    ports:  
       - 27017:27017
     volumes:
-      - /data:/data/db
-      - /data-bkp:/data/bkp
-    restart: always
+      - data:/data/db
+      - data-bkp:/data/bkp

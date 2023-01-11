@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pvc-pod
+spec:
+  containers:
+   - name: myvolumes-container
+     image: tomcat:8.5
+     volumeMounts:
+      - name: pv
+        mountPath: "/usr/local/tomcat/logs"
+  volumes:
+   - name: pv
+     persistentVolumeClaim:
+       claimName: my-pvc

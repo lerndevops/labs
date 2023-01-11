@@ -1,0 +1,31 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nagios-xi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nagiosxi
+  template:
+    metadata:
+      labels:
+        app: nagiosxi
+    spec:
+      #nodeName: node01
+      containers:
+       - name: app
+         image: lerndevops/nagios:xi5.5.6
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nagiosxi-svc
+spec:
+  type: NodePort
+  selector:
+    app: nagiosxi
+  ports:
+   - port: 80
+     targetPort: 80

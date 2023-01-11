@@ -1,0 +1,20 @@
+- name: task1 in main.yml
+  file: 
+   path: /tmp/today.txt
+   state: touch
+
+- name: import tasks from install-git-ubuntu-linux.yml
+  when: ansible_distribution == "Ubuntu" and user_action == "install"
+  include_tasks: install-git-ubuntu-linux.yml
+
+- name: import tasks from install-git-amazon-linux.yml
+  when: ansible_distribution == "Amazon" and user_action == "install"
+  include_tasks: install-git-amazon-linux.yml
+
+- name: import tasks from uninstall-git-amzon-linux.yml
+  when: ansible_distribution == "Amazon" and user_action == "uninstall"
+  include_tasks: uninstall-git-amazon-linux.yml
+
+- name: import tasks from uninstall-git-ubuntu-linux.yml
+  when: ansible_distribution == "Ubuntu" and user_action == "uninstall"
+  include_tasks: uninstall-git-ubuntu-linux.yml 

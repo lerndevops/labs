@@ -2,16 +2,16 @@ Splunk Enterprise Server installation
 
 Cent OS
 -------
-	cd /tmp ; wget -O splunk-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=splunk&filename=splunk-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm&wget=true'
-
-	rpm -i /tmp/splunk-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm
+	cd /tmp ; wget -O splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz "https://download.splunk.com/products/splunk/releases/9.0.3/linux/splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz"
+	
+	tar -xzf splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz -C /opt
 	/opt/splunk/bin/splunk start --accept-license  ( enter username & password )
 
 Ubuntu
 -------
-	cd /tmp ; wget -O splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=splunk&filename=splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&wget=true'
+	cd /tmp ; wget -O splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz "https://download.splunk.com/products/splunk/releases/9.0.3/linux/splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz"
 	
-	dpkg -i /tmp/splunk-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb
+	tar -xzf splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz -C /opt
 	/opt/splunk/bin/splunk start --accept-license  ( enter username & password )
 
 ============================================================================================================
@@ -19,16 +19,16 @@ Splunk Forwarder Installation
 
 Cent OS
 -------
-	cd /tmp ; wget -O splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=universalforwarder&filename=splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm&wget=true'
+	cd /tmp ; wget -O splunkforwarder-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz "https://download.splunk.com/products/universalforwarder/releases/9.0.3/linux/splunkforwarder-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz"
 
-	rpm -i /tmp/splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-x86_64.rpm
+	tar -xzf splunkforwarder-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz -C /opt
 	/opt/splunkforwarder/bin/splunk start --accept-license ( enter username & password )
 
 Ubuntu
 --------
-	cd /tmp ; wget -O splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb 'https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.2.6&product=universalforwarder&filename=splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb&wget=true'
+	cd /tmp ; wget -O splunkforwarder-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz "https://download.splunk.com/products/universalforwarder/releases/9.0.3/linux/splunkforwarder-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz"
 
-	dpkg -i /tmp/splunkforwarder-7.2.6-c0bf0f679ce9-linux-2.6-amd64.deb
+	tar -xzf splunkforwarder-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz -C /opt
 	/opt/splunkforwarder/bin/splunk start --accept-license ( enter username & password )
 ============================================================================================================ 
 

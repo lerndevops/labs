@@ -61,7 +61,7 @@ install all these from Jenkins UI
 
   Manage Jenkins --> manage plugins -- Available -- search & install the below
   	1) warnings NG
-  	2) cobertura
+  	2) jacoco
   	3) Junit
   	4) Build Pipeline
   	5) Docker Piepeline

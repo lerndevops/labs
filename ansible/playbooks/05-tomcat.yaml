@@ -2,9 +2,9 @@
 - hosts: web
   become: yes
   tasks:
-   - name: Install Java 1.8
-     apt:     ## apt-get install openjdk-8-jdk -y
-      name: openjdk-8-jdk
+   - name: Install Java 1.11
+     apt:     ## apt-get install openjdk-11-jdk -y
+      name: openjdk-11-jdk
       state: present
       update_cache: yes
 
@@ -20,18 +20,18 @@
 
    - name: Download Tomcat
      get_url:  ### wget url -O /tmp/tomca.tgz
-       url: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.40/bin/apache-tomcat-8.5.40.tar.gz
-       dest: /tmp/apache-tomcat-8.5.40.tar.gz
+       url: https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.72/bin/apache-tomcat-9.0.72.tar.gz
+       dest: /tmp/apache-tomcat-9.0.72.tar.gz
 
    - name: Extract archive
      unarchive:  ## tar -xzf tarfile ## by default source is always controller
-        src: /tmp/apache-tomcat-8.5.40.tar.gz
+        src: /tmp/apache-tomcat-9.0.72.tar.gz
         dest: /opt
         remote_src: yes
 
    - name: create symlink
-     file:   ## ln -s /opt/tomcat /opt/apache-tomcat-8.5.40
-       src: /opt/apache-tomcat-8.5.40
+     file:   ## ln -s /opt/tomcat /opt/apache-tomcat-9.0.72
+       src: /opt/apache-tomcat-9.0.72
        path: /opt/tomcat
        state: link
 

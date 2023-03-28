@@ -1,0 +1,17 @@
+- name: install java
+  hosts: all
+  become: yes
+  tasks:
+    - name: run apt-get update
+      apt:
+       update_cache: yes
+    - name: install java
+      apt:
+        name: openjdk-11-jdk
+        state: present
+    - name: capture java version
+      shell: java -version
+      register: jversion
+    - name: print  java version
+      debug:
+        var: jversion

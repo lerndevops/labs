@@ -1,0 +1,24 @@
+- name: install mysql
+  hosts: all
+  become: yes
+  tasks:
+    - name: run apt-get update
+      apt:
+       update_cache: yes
+    - name: install mysql
+      apt:
+        name: mysql-server
+        state: present
+    - name: start service
+      systemd:
+        name: mysql
+        state: restarted
+    #- name: stop service
+    #  systemd:
+    #    name: mysql-server
+    #    state: stopped
+    #- name: remove mysql
+    #  apt:
+    #    name: mysql-server
+    #    state: absent
+    #    purge: yes

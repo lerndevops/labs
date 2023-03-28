@@ -1,25 +1,15 @@
----
-- hosts: all
+- name: install apache
+  hosts: all
   become: yes
   tasks:
-#### conditons
-    - name: install a webserver redhat/centos
-      yum:
-        name: httpd
-        state: latest
-      when: ansible_distribution == 'RedHat'
-    - name: start the service
-      service:
-         name: httpd
-         state: started
-      when: ansible_distribution == 'RedHat'
-    - name: install a webserver on ubuntu
+    - name: run apt-get update
+      apt:
+       update_cache: yes
+    - name: install apache2
       apt:
         name: apache2
-        state: latest
-      when: ansible_distribution == 'Ubuntu'
-    - name: start the service
-      service:
-         name: apache2
-         state: started
-      when: ansible_distribution == 'Ubuntu'
+        state: present
+    - name: start service
+      systemd:
+        name: apache2
+        state: restarted

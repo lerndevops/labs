@@ -1,0 +1,14 @@
+- name: run apt-get update 
+  apt: 
+   update_cache: yes 
+- name: install apache 
+  apt:
+   name: apache2
+   state: present
+- name: restart the apache service 
+  systemd:
+    name: apache2 
+    state: restarted
+- name: print the var from vars folder
+  debug:
+    var: abc 

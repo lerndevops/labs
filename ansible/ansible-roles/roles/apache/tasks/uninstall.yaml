@@ -1,0 +1,9 @@
+- name: stop the apache service
+  systemd:
+    name: apache2
+    state: stopped
+- name: remove / uninstall apache 
+  apt:
+    name: apache2 
+    state: absent 
+    purge: true 

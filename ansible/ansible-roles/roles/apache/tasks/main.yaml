@@ -1,0 +1,16 @@
+- name: task1 - copy a file 
+  copy: 
+   src: ansible.cfg 
+   dest: /tmp
+- name: call the install.yaml
+  when: useraction == "install"  
+  include_tasks: install.yaml
+- name: deploy the code 
+  when: useraction == "install"
+  include_tasks: deploy.yaml 
+- name: call the uninstall
+  when: useraction == "uninstall"
+  include_tasks: uninstall.yaml
+- name: print the var from vars folder 
+  debug: 
+    var: name

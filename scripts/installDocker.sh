@@ -4,7 +4,8 @@ install_ubuntu() {
     ## Remove any pre installed docker packages:
     which docker
     if [ $? -eq 0 ];then
-       sudo systemctl stop docker
+       sudo systemctl stop docker.socket
+       sudo systemctl stop docker.service
        sudo apt-get remove -y docker-ce docker-engine docker.io containerd runc
        sudo apt-get purge -y docker-ce docker-ce-cli containerd.io
        sudo apt -y autoremove

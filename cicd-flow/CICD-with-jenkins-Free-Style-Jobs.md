@@ -9,15 +9,15 @@
 ```
 ### Step2 -- `Install Java - Jenkins - Maven: follow instruction from link below`
 
-   [INSTALL-JAVA-JENKINS-MAVEN](https://github.com/lerndevops/labs/blob/master/jenkins/Install-Java-Jenkins-ubuntu.txt)
+   [INSTALL-JAVA-JENKINS-MAVEN](https://github.com/lerndevops/labs/blob/master/jenkins/Install/README.md)
 
 ### Step3 -- `Install Docker: follow instruction from link below`
     
-   [INSTALL-DOCKER](https://github.com/lerndevops/labs/blob/master/docker/install/Install-Docker-manual.txt)
+   [INSTALL-DOCKER](https://github.com/lerndevops/labs/blob/master/docker/install/README.md)
 
 ### Step4 -- `Install Ansible: follow instruction from link below`
 
-   [INSTALL-ANSIBLE](https://github.com/lerndevops/labs/blob/master/ansible/install/InsallAnsible.txt)
+   [INSTALL-ANSIBLE](https://github.com/lerndevops/labs/blob/master/ansible/install/README.md)
 
 ### Step5 -- `configure Jenkins with Docker` 
 

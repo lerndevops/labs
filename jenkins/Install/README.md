@@ -1,16 +1,3 @@
-# Install Java & Jenkins Using Script
-```
-sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installJenkins.sh -P /tmp
-sudo chmod 755 /tmp/installJenkins.sh
-sudo bash /tmp/installJenkins.sh
-```
-# Install Maven Using Script
-``` 
-sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installMaven.sh -P /tmp
-sudo chmod 755 /tmp/installMaven.sh
-sudo bash /tmp/installMaven.sh
-```
-
 # Manual Installation Steps 
 ### Install JAVA
 ```

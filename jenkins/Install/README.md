@@ -16,7 +16,7 @@ sudo bash /tmp/installMaven.sh
 ```
 sudo add-apt-repository ppa:openjdk-r/ppa
 sudo apt-get update
-sudo apt-get install -y openjdk-11-jdk
+sudo apt-get install -y fontconfig openjdk-11-jre openjdk-11-jdk
 ```
 ### Install Maven  ( on Jenkins machine )
 ```
@@ -29,12 +29,22 @@ source /etc/profile
 ````
 ### Install Jenkins
 ```
-sudo wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
-sudo echo deb https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 sudo apt-get update
 sudo apt-get install jenkins
 ```
+
 ## `Below are Just FYI Only` 
+
+##### how to restart Jenkins 
+```
+sudo systemctl restart jenkins  # to restart 
+sudo systemctl stop jenkins     # to stop 
+sudo systemctl start jenkins    # to start 
+sudo systemctl status jenkins   # to check the status
+```
+
 
 ##### Set JAVA_HOME & MAVEN_HOME as environment variables on Jenkins machine
 ```
@@ -43,10 +53,4 @@ sudo echo "JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64\"" >> /etc/profile
 sudo echo "PATH=\$JAVA_HOME/bin:\$MAVEN_HOME/bin:\$PATH" >> /etc/profile
 source /etc/profile
 ```
-##### how to restart Jenkins 
-```
-sudo systemctl restart jenkins  # to restart 
-sudo systemctl stop jenkins     # to stop 
-sudo systemctl start jenkins    # to start 
-sudo systemctl status jenkins   # to check the status
-```
+

@@ -21,6 +21,8 @@ Install SonarQube ( container or download zip )
 		useradd devops -m -d /home/devops -s /bin/bash -g devops
 		passwd devops ( enter passwd )
 		cd /opt ; chown -R devops:devops sonarqube ; chmod -R 755 sonarqube
+		
+		# start sonar server
 		su - devops
 		cd /opt/sonarqube/bin/linux-x86-64/ ; ./sonar.sh start
 	
@@ -68,9 +70,9 @@ sonar.ProjectName=sampleapp
 sonar.sources=src/main/java/
 sonar.java.binaries=target/classes/
 sonar.language=java
-sonar.java.source=1.8
+sonar.java.source=1.11
 
-
+OR 
 
 mvn sonar:sonar \
   -Dsonar.projectKey=sampleapp \

@@ -4,22 +4,25 @@ Install JAVA
  
 	sudo add-apt-repository ppa:openjdk-r/ppa
 	sudo apt-get update
-	sudo apt-get install -y openjdk-8-jdk
+	sudo apt-get install -y openjdk-17-jdk
 
 Install SonarQube ( container or download zip )
 
 	if .zip download & installation follow below steps:
 	
-		cd /tmp ; wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-6.7.6.zip
+		cd /tmp ; wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.9.0.65466.zip
 		apt-get install unzip 
-		cd /tmp ; unzip sonarqube-6.7.6.zip
-		cd /tmp ; mv sonarqube-6.7.6 /opt
+		cd /tmp ; unzip sonarqube-9.9.0.65466.zip
+		cd /tmp ; mv sonarqube-9.9.0.65466 /opt
+		mv /opt/sonarqube-9.9.0.65466 /opt/sonarqube
+		
+		# create user only if it is not present 
 		groupadd devops
 		useradd devops -m -d /home/devops -s /bin/bash -g devops
 		passwd devops ( enter passwd )
-		cd /opt ; chown -R devops:devops sonarqube-6.7.6 ; chmod -R 755 sonarqube-6.7.6
+		cd /opt ; chown -R devops:devops sonarqube ; chmod -R 755 sonarqube
 		su - devops
-		cd /opt/sonarqube-6.7.6/bin/linux-x86-64/ ; ./sonar.sh start
+		cd /opt/sonarqube/bin/linux-x86-64/ ; ./sonar.sh start
 	
 		after starting successfully goto browser & hit below
 			http://<IP addr>:9000
@@ -37,11 +40,11 @@ Jenkins Configuration
 
 Install SonarQube-runner ( on Jenkins machine )
 
-	cd /tmp ; wget https://repo1.maven.org/maven2/org/codehaus/sonar/runner/sonar-runner-dist/2.4/sonar-runner-dist-2.4.zip
-	cd /tmp ; unzip sonar-runner-dist-2.4.zip
-	cd /tmp ; mv sonar-runner-dist-2.4 /opt
-	
- 
+	cd /tmp ; wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
+	sudo apt-get install unzip 
+	cd /tmp ; unzip sonar-scanner-cli-4.8.0.2856-linux.zip
+	cd /tmp ; mv sonar-scanner-cli-4.8.0.2856-linux /opt/sonar-scanner
+	 
 	Step1: Installing sonarqube plugin in Jenkins
 			Manage Jenkins --> manager plugins --> install plugin ( SonarQube Scanner for Jenkins )
 			
@@ -54,7 +57,7 @@ Install SonarQube-runner ( on Jenkins machine )
 	Step3: SonarQube Runner Configuration in Jenkins
 			Manage Jenkins --> Global Tool Configuration --> SonarQube Scanner --> configure below
 				Name: sonar-runner ( can be any string )
-				SONAR_RUNNER_HOME: path of sonar-runner installation on Jenkins Server ( /opt/sonar-runner-dist-2.4 )
+				SONAR_RUNNER_HOME: path of sonar-runner installation on Jenkins Server ( /opt/sonar-scanner )
 
 ======================================================================================================
 

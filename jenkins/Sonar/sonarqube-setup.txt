@@ -45,7 +45,8 @@ Install SonarQube-runner ( on Jenkins machine )
 	cd /tmp ; wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
 	sudo apt-get install unzip 
 	cd /tmp ; unzip sonar-scanner-cli-4.8.0.2856-linux.zip
-	cd /tmp ; mv sonar-scanner-cli-4.8.0.2856-linux /opt/sonar-scanner
+	cd /tmp ; mv sonar-scanner-4.8.0.2856-linux /opt
+	cd /opt ; mv sonar-scanner-4.8.0.2856-linux sonar-scanner
 	 
 	Step1: Installing sonarqube plugin in Jenkins
 			Manage Jenkins --> manager plugins --> install plugin ( SonarQube Scanner for Jenkins )

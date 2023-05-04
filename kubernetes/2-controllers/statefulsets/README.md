@@ -1,4 +1,4 @@
-# what is statefull application ?
+# what is statefull service / application ?
 
 1. A stateful application is a program that saves client data from the activities of one session for use in the next session. The data that is saved is called the application's state. OR
 

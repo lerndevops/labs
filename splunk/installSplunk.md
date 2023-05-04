@@ -5,12 +5,13 @@
 cd /tmp ; wget -O splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz "https://download.splunk.com/products/splunk/releases/9.0.3/linux/splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz"
 ```
 ```
-	tar -xzf splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz -C /opt
-	/opt/splunk/bin/splunk start --accept-license  ( enter username & password )
+tar -xzf splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz -C /opt
+/opt/splunk/bin/splunk start --accept-license  ( enter username & password )
 ```
 #### Ubuntu
 ```
 cd /tmp ; wget -O splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz "https://download.splunk.com/products/splunk/releases/9.0.3/linux/splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz"
+```
 ```
 tar -xzf splunk-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz -C /opt
 /opt/splunk/bin/splunk start --accept-license  ( enter username & password )
@@ -26,6 +27,7 @@ cd /tmp ; wget -O splunkforwarder-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz "https://d
 tar -xzf splunkforwarder-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz -C /opt
 /opt/splunkforwarder/bin/splunk start --accept-license ( enter username & password )
 ```
+
 #### Ubuntu
 ````
 cd /tmp ; wget -O splunkforwarder-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz "https://download.splunk.com/products/universalforwarder/releases/9.0.3/linux/splunkforwarder-9.0.3-dd0128b1f8cd-Linux-x86_64.tgz"

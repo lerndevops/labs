@@ -60,6 +60,7 @@ create_cluster() {
 ################ MAIN ###################
 
 if [ -f /etc/os-release ];then
+   #osname=`hostnamectl | grep "Operating System" | cut -d' ' -f3`
    osname=`grep ID /etc/os-release | egrep -v 'VERSION|LIKE|VARIANT|PLATFORM' | cut -d'=' -f2 | sed -e 's/"//' -e 's/"//'`
    echo $osname
    if [ $osname == "ubuntu" ];then

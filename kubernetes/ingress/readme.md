@@ -7,7 +7,7 @@
 
 ## Deploy three different Apps on k8s cluster
 
-`https://raw.githubusercontent.com/lerndevops/educka/master/6-networking/ingress/deploy-app.yml`
+`kubectl apply -f https://raw.githubusercontent.com/lerndevops/kubernetes/master/6-networking/ingress/apps.yaml`
 
 
 ## Deploy Ingress Controller 
@@ -18,7 +18,7 @@
 
 ## Deploy Ingress Resource(rules)
 
-`kubectl apply -f https://raw.githubusercontent.com/lerndevops/educka/master/6-networking/ingress/ingress-rule1.yml`
+`kubectl apply -f https://raw.githubusercontent.com/lerndevops/kubernetes/master/6-networking/ingress/app-ingress-rules.yaml`
 
 
 ## Get Ingress Controller Service NodePort 
@@ -35,10 +35,10 @@ get Ingress Controller Pod NodeIP & Ingress Controller Service NodePort
 ``` 
    From the above details noted in your browser hit as below
    
-   masterNodeIp:NodePort/app1
-   worker1NodeIp:NodePort/app2
-   worker2NodeIp:NodePort/app3
+   masterNodeIp:NodePort/unapp
+   worker1NodeIp:NodePort/petclinic
+   worker2NodeIp:NodePort/pyapp
    
-   Example: 192.168.198.129:30528/app1, 192.168.198.129:30528/app2, 192.168.198.129:30528/app3
+   Example: 192.168.198.129:30528/pyapp, 192.168.198.129:30528/petclinic, 192.168.198.129:30528/unapp
    
 ```

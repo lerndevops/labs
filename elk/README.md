@@ -15,7 +15,7 @@
 
 ## Deploy Elatic Search, Kibana & Filebeat on kubernetes Cluster 
 
->> **Note: the stack requries minimum of 2cpu/4gb ram in each worker node where they will run"
+>> **Note: the stack requries minimum of 2cpu/4gb ram in each worker node where they will run**
 
 ```sh
 kubectl apply -f https://github.com/lerndevops/labs/raw/master/elk/elastic-search.yaml

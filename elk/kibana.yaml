@@ -1,0 +1,389 @@
+---
+# Source: kibana/templates/configmap-helm-scripts.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kibana-helm-scripts
+  labels:
+    app: kibana
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade,post-delete
+    "helm.sh/hook-delete-policy": hook-succeeded
+data:
+  manage-es-token.js: |
+    const https = require('https');
+    const fs = require('fs');
+
+    // Read environment variables
+    function getEnvVar(name) {
+      if (!process.env[name]) {
+        throw new Error(name + ' environment variable is missing')
+      }
+      return process.env[name]
+    }
+
+    // Elasticsearch API
+    const esPath = '_security/service/elastic/kibana/credential/token/kibana';
+    const esUrl = 'https://elasticsearch-master:9200' + '/' + esPath
+    const esUsername = getEnvVar('ELASTICSEARCH_USERNAME');
+    const esPassword = getEnvVar('ELASTICSEARCH_PASSWORD');
+    const esAuth = esUsername + ':' + esPassword;
+    const esCaFile = getEnvVar('ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES');
+    const esCa = fs.readFileSync(esCaFile);
+
+    // Kubernetes API
+    const k8sHostname = getEnvVar('KUBERNETES_SERVICE_HOST');
+    const k8sPort = getEnvVar('KUBERNETES_SERVICE_PORT_HTTPS');
+    const k8sPostSecretPath = 'api/v1/namespaces/default/secrets';
+    const k8sDeleteSecretPath = 'api/v1/namespaces/default/secrets/kibana-es-token';
+    const k8sPostSecretUrl = `https://${k8sHostname}:${k8sPort}/${k8sPostSecretPath}`;
+    const k8sDeleteSecretUrl = `https://${k8sHostname}:${k8sPort}/${k8sDeleteSecretPath}`;
+    const k8sBearer = fs.readFileSync('/run/secrets/kubernetes.io/serviceaccount/token');
+    const k8sCa = fs.readFileSync('/run/secrets/kubernetes.io/serviceaccount/ca.crt');
+
+    // Post Data
+    const esTokenDeleteOptions = {
+      method: 'DELETE',
+      auth: esAuth,
+      ca: esCa,
+    };
+    const esTokenCreateOptions = {
+      method: 'POST',
+      auth: esAuth,
+      ca: esCa,
+    };
+    const secretCreateOptions = {
+      method: 'POST',
+      ca: k8sCa,
+      headers: {
+        'Authorization': 'Bearer ' + k8sBearer,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    };
+    const secretDeleteOptions = {
+      method: 'DELETE',
+      ca: k8sCa,
+      headers: {
+        'Authorization': 'Bearer ' + k8sBearer,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    };
+
+    // With thanks to https://stackoverflow.com/questions/57332374/how-to-chain-http-request
+    function requestPromise(url, httpsOptions, extraOptions = {}) {
+      return new Promise((resolve, reject) => {
+        const request = https.request(url, httpsOptions, response => {
+
+          console.log('statusCode:', response.statusCode);
+
+          let isSuccess = undefined;
+
+          if (typeof(extraOptions.extraStatusCode) != "undefined" && extraOptions.extraStatusCode != null) {
+            isSuccess = response.statusCode >= 200 && response.statusCode < 300 || response.statusCode == extraOptions.extraStatusCode;
+          } else {
+            isSuccess = response.statusCode >= 200 && response.statusCode < 300;
+          }
+
+          let data = '';
+          response.on('data', chunk => data += chunk); // accumulate data
+          response.once('end', () => isSuccess ? resolve(data) : reject(data));  // resolve promise here
+        });
+
+        request.once('error', err => {
+          // This won't log anything for e.g. an HTTP 404 or 500 response,
+          // since from HTTP's point-of-view we successfully received a
+          // response.
+          console.log(`${httpsOptions.method} ${httpsOptions.path} failed: `, err.message || err);
+          reject(err);  // if promise is not already resolved, then we can reject it here
+        });
+
+        if (typeof(extraOptions.payload) != "undefined") {
+          request.write(extraOptions.payload);
+        }
+        request.end();
+      });
+    }
+
+    function createEsToken() {
+      // Chaining requests
+      console.log('Cleaning previous token');
+      // 404 status code is accepted if there is no previous token to clean
+      return requestPromise(esUrl, esTokenDeleteOptions, {extraStatusCode: 404}).then(() => {
+        console.log('Creating new token');
+        return requestPromise(esUrl, esTokenCreateOptions).then(response => {
+          const body = JSON.parse(response);
+          const token = body.token.value
+
+          // Encode the token in base64
+          const base64Token = Buffer.from(token, 'utf8').toString('base64');
+
+          // Prepare the k8s secret
+          const secretData = JSON.stringify({
+            "apiVersion": "v1",
+            "kind": "Secret",
+            "metadata": {
+              "namespace": "default",
+              "name": "kibana-es-token",
+            },
+            "type": "Opaque",
+            "data": {
+              "token": base64Token,
+            }
+          })
+
+          // Create the k8s secret
+          console.log('Creating K8S secret');
+          return requestPromise(k8sPostSecretUrl, secretCreateOptions, {payload: secretData})
+        });
+      });
+    }
+
+    function cleanEsToken() {
+      // Chaining requests
+      console.log('Cleaning token');
+      return requestPromise(esUrl, esTokenDeleteOptions).then(() => {
+        // Create the k8s secret
+        console.log('Delete K8S secret');
+        return requestPromise(k8sDeleteSecretUrl, secretDeleteOptions)
+      });
+    }
+
+    const command = process.argv[2];
+    switch (command) {
+      case 'create':
+        console.log('Creating a new Elasticsearch token for Kibana')
+        createEsToken().catch(err => {
+          console.error(err);
+          process.exit(1);
+        });
+        break;
+      case 'clean':
+        console.log('Cleaning the Kibana Elasticsearch token')
+        cleanEsToken().catch(err => {
+          console.error(err);
+          process.exit(1);
+        });
+        break;
+      default:
+        console.log('Unknown command');
+        process.exit(1);
+    }
+---
+# Source: kibana/templates/pre-install-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pre-install-kibana
+  labels:
+    app: kibana
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+---
+# Source: kibana/templates/pre-install-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pre-install-kibana
+  labels:
+    app: kibana
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+      - update
+---
+# Source: kibana/templates/pre-install-rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pre-install-kibana
+  labels:
+    app: kibana
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+subjects:
+  - kind: ServiceAccount
+    name: pre-install-kibana
+    namespace: "default"
+roleRef:
+  kind: Role
+  name: pre-install-kibana
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: kibana/templates/pre-install-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pre-install-kibana
+  labels:
+    app: kibana
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  backoffLimit: 20
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: create-kibana-token
+          image: "docker.elastic.co/kibana/kibana:8.5.1"
+          imagePullPolicy: "IfNotPresent"
+          command: ["/usr/share/kibana/node/bin/node"]
+          args:
+           - /usr/share/kibana/helm-scripts/manage-es-token.js
+           - create
+          env:
+            - name: "ELASTICSEARCH_USERNAME"
+              valueFrom:
+                secretKeyRef:
+                  name: elasticsearch-master-credentials
+                  key: username
+            - name: "ELASTICSEARCH_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: elasticsearch-master-credentials
+                  key: password
+            - name: ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES
+              value: "/usr/share/kibana/config/certs/ca.crt"
+          volumeMounts:
+            - name: elasticsearch-certs
+              mountPath: /usr/share/kibana/config/certs
+              readOnly: true
+            - name: kibana-helm-scripts
+              mountPath: /usr/share/kibana/helm-scripts
+      serviceAccount: pre-install-kibana
+      volumes:
+        - name: elasticsearch-certs
+          secret:
+            secretName: elasticsearch-master-certs
+        - name: kibana-helm-scripts
+          configMap:
+            name: kibana-helm-scripts
+            defaultMode: 0755
+---
+# Source: kibana/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: kibana
+  labels:
+    app: kibana
+spec:
+  type: NodePort
+  ports:
+    - port: 5601
+      protocol: TCP
+      name: http
+      targetPort: 5601
+  selector:
+    app: kibana
+---
+# Source: kibana/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+  labels:
+    app: kibana
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+    spec:
+      automountServiceAccountToken: true
+      securityContext:
+        fsGroup: 1000
+      volumes:
+        - name: kibana-tokens
+          emptyDir: {}
+        - name: elasticsearch-certs
+          secret:
+            secretName: elasticsearch-master-certs
+      initContainers:
+      containers:
+      - name: kibana
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          runAsUser: 1000
+        image: "docker.elastic.co/kibana/kibana:8.5.1"
+        imagePullPolicy: "IfNotPresent"
+        env:
+          - name: ELASTICSEARCH_HOSTS
+            value: "https://elasticsearch-master:9200"
+          - name: ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES
+            value: "/usr/share/kibana/config/certs/ca.crt"
+          - name: SERVER_HOST
+            value: "0.0.0.0"
+          - name: ELASTICSEARCH_SERVICEACCOUNTTOKEN
+            valueFrom:
+              secretKeyRef:
+                name: kibana-es-token
+                key: token
+                optional: false
+          - name: NODE_OPTIONS
+            value: --max-old-space-size=1800
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 3
+          timeoutSeconds: 5
+          exec:
+            command:
+              - bash
+              - -c
+              - |
+                #!/usr/bin/env bash -e
+
+                # Disable nss cache to avoid filling dentry cache when calling curl
+                # This is required with Kibana Docker using nss < 3.52
+                export NSS_SDB_USE_CACHE=no
+
+                http () {
+                    local path="${1}"
+                    set -- -XGET -s --fail -L
+
+                    if [ -n "${ELASTICSEARCH_USERNAME}" ] && [ -n "${ELASTICSEARCH_PASSWORD}" ]; then
+                      set -- "$@" -u "${ELASTICSEARCH_USERNAME}:${ELASTICSEARCH_PASSWORD}"
+                    fi
+
+                    STATUS=$(curl --output /dev/null --write-out "%{http_code}" -k "$@" "http://localhost:5601${path}")
+                    if [[ "${STATUS}" -eq 200 ]]; then
+                      exit 0
+                    fi
+
+                    echo "Error: Got HTTP code ${STATUS} but expected a 200"
+                    exit 1
+                }
+
+                http "/app/kibana"
+        ports:
+        - containerPort: 5601
+        volumeMounts:
+          - name: elasticsearch-certs
+            mountPath: /usr/share/kibana/config/certs
+            readOnly: true
+          - name: kibana-tokens
+            mountPath: /usr/share/kibana/config/tokens
+            readOnly: true

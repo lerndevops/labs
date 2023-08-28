@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VER="0.3.0"
+VER="0.3.4"
 
 install_linux() {
    ARCH=$1

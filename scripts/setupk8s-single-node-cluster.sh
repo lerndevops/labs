@@ -33,7 +33,7 @@ prepare_node() {
 }
 create_cluster() {
 
-    kubeadm init --cri-socket unix:///var/run/cri-dockerd.sock --ignore-preflight-errors=all
+    sudo kubeadm init --cri-socket unix:///var/run/cri-dockerd.sock --ignore-preflight-errors=all
     if [ $? -eq 0 ];then
        echo "kuberenetes master initilized successfully"
 
@@ -43,7 +43,7 @@ create_cluster() {
 
        if [ -f $HOME/.kube/config ];then
 
-            sudo kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml
+            kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml
             mnodename=`kubectl get nodes | grep control-plane | awk '{print $1}'`
             kubectl taint node $mnodename node-role.kubernetes.io/control-plane:NoSchedule-
 

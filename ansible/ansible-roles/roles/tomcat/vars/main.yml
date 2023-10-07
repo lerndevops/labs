@@ -1,6 +1,6 @@
 admin_username: admin
 admin_password: admin
-tomcat_version: 9.0.72
+tomcat_version: '9.0.72'
 user1: tomcat
 user1_pwd: tomcat
 

@@ -1,34 +1,32 @@
-resource "aws_instance" "dev-instances" {
-  count         = 3
-  ami           = "ami-05692172625678b4e"
-  instance_type = "t2.micro"
-  key_name      = "jan18"
-  associate_public_ip_address = true
-  vpc_security_group_ids = ["sg-0b23770aa56a1ea15"]
-
+resource "aws_instance" "dev" {
   tags = {
-    Name = "demoinstnce-${count.index}"
+    Name = "test"
+    env  = "dev"
   }
-
+  ami = "ami-0e83be366243f524a"
+  instance_type = "t2.micro"
+  key_name = "ipat"
+  security_groups = ["ipat", "default"]
+  count = 1
+  user_data = <<-EOF
+                #!/bin/bash
+                cd /tmp ; wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/setupUser.sh
+                sudo bash /tmp/setupUser.sh
+              EOF
   provisioner "local-exec" {
-
-    command = "echo ${self.public_ip} >> /tmp/public_ips.txt"
+      command = "echo ${self.public_ip} > ./myinv"
   }
 }
+resource "null_resource" "dev" {
 
-resource "null_resource" "setup-user" {
-
-  depends_on = [aws_instance.dev-instances]
-
-  provisioner "local-exec" {
-   command = "ansible-playbook -i /tmp/public_ips.txt /root/IaC/setup-user.yml -u ubuntu --private-key /root/IaC/jan18.pem"
-  }
-}
-resource "null_resource" "setup-tomcat" {
-
-  depends_on = [null_resource.setup-user]
+  depends_on = [aws_instance.dev]
 
   provisioner "local-exec" {
-   command = "ansible-playbook -i /tmp/public_ips.txt /root/IaC/tomcat.yml -u ubuntu --private-key /root/IaC/jan18.pem"
-  }
+    working_dir = "/home/ubuntu/tcode"
+    command = <<-EOT
+               sleep 60
+               ansible -i myinv all -m ping -u ubuntu --private-key ipat.pem
+	             ansible-playbook -i myinv apache.yaml --user ubuntu --key-file ipat.pem
+              EOT
+   }
 }

@@ -30,11 +30,16 @@ install_centos() {
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
 enabled=1
 gpgcheck=1
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-exclude=kubelet kubeadm kubectl
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.27/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.26/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.25/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.24/rpm/
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
 EOF
   
 sudo setenforce 0
@@ -49,11 +54,16 @@ install_amzn() {
 cat <<EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
-baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-\$basearch
 enabled=1
 gpgcheck=1
-gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
-exclude=kubelet kubeadm kubectl
+gpgkey=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/repodata/repomd.xml.key
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.29/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.27/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.26/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.25/rpm/
+baseurl=https://pkgs.k8s.io/core:/stable:/v1.24/rpm/
+exclude=kubelet kubeadm kubectl cri-tools kubernetes-cni
 EOF
   
 sudo setenforce 0

@@ -1,0 +1,42 @@
+- name: install the tomcat & java on all remote servers 
+  hosts: app
+  become: yes 
+  become_user: root
+  tasks: 
+    - name: task1 - install java
+      apt:
+        update_cache: true 
+        name: openjdk-17-jdk
+        state: present
+    - name: task2 -- download tomcat bundle
+      get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.84/bin/apache-tomcat-9.0.84.tar.gz
+        dest: /opt 
+    - name: task3 -- extract the zip file
+      unarchive:
+        src: /opt/apache-tomcat-9.0.84.tar.gz  # by default src it looks on the controller machine,where we execute the playbook 
+        remote_src: yes
+        dest: /opt      
+    - name: task4 -- rename the directory 
+      shell: mv /opt/apache-tomcat-9.0.84 /opt/tomcat
+    - name: task5 -- create a linux group 
+      group: 
+        name: tomcat
+    - name: task6 -- create a linux user 
+      user: 
+        name: tomcat
+        group: tomcat
+    - name: task7 - update the permissions 
+      file: 
+        path: /opt/tomcat
+        owner: tomcat
+        group: tomcat
+        mode: 0755
+        state: directory
+        recurse: yes 
+    - name: task8 - deploy war file to tomcat webapps 
+      get_url: 
+        url: https://github.com/lerndevops/code/raw/main/sampleapp.war
+        dest: /opt/tomcat/webapps
+    - name: task9 - start the tomcat process 
+      shell: bash /opt/tomcat/bin/startup.sh

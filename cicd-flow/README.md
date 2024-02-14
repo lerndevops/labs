@@ -36,7 +36,8 @@ sudo chmod 755 /tmp/installAnsible.sh
 sudo bash /tmp/installAnsible.sh
 
 # modify the ansible config file to ensure disable host key checking 
-
+cd /etc/ansible/
+ansible-config init --disabled > ansible.cfg
 vi /etc/ansible/ansible.cfg 
 
 # uncomment this to disable SSH key host checking

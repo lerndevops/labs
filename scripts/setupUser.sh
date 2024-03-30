@@ -70,7 +70,7 @@ update_conf()
 {
    sudofile="/etc/sudoers"
    sshdfile="/etc/ssh/sshd_config"
-   sshdconfd="/etc/ssh/ssh_config.d"
+   sshdconfd="/etc/ssh/sshd_config.d"
    mkdir -p /home/backup
    if [ -f $sudofile ];then
         cp -p $sudofile /home/backup/sudoers-$now

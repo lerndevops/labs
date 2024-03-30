@@ -90,9 +90,12 @@ update_conf()
        if [ -f $sshdconfd/60-cloudimg-settings.conf ];then
             sed -i '/PasswordAuthentication.*no/d' $sshdconfd/60-cloudimg-settings.conf
             sed -i '/PasswordAuthentication.*yes/d' $sshdconfd/60-cloudimg-settings.conf
+            echo "PasswordAuthentication yes" >> $sshdconfd/60-cloudimg-settings.conf
        else
           echo "$sshdconfd/60-cloudimg-settings.conf does not exist"  
        fi
+   else
+      echo "$sshdconfd does not exist... continue with $sshdfile"
    fi          
    if [ -f $sshdfile ];then
         cp -p $sshdfile /home/backup/sshd_config-$now

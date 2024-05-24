@@ -6,10 +6,10 @@ scenario 1: Create Empty Local repository & add some files, modify files then ad
 	vi sample.java (opens the file in editor - enter some text & save it )
 	git status -- to check changes made
 	git add abc.java new.java sample.java ( adds the files to git staging area so that git can track the changes )
-	git commit -m "any message" ( saves the files to git repository permanently  & genereates a commit id )
+	git commit -m "any message" ( saves the files to git repository permanently  & generates a commit id )
 
 ===================================================================================================================	
-scenario 2: in a git local repository add more files, edit some files, remove somefiles & add to staging area then commit the changes for every change accordingly 
+scenario 2: In a git local repository add more files, edit some files, remove some files & add to staging area then commit the changes for every change accordingly 
 
 	cd ProjectA ( switch into the project direcotry in which git init command was ran )
 	touch heloworld.java readme.txt ( creates new empty files )
@@ -20,7 +20,7 @@ scenario 2: in a git local repository add more files, edit some files, remove so
 	git status -- to check changes made
 	git add .
 	git commit -m "modified heloworld.java"
-	rm abc.java ( removes the files from project ProjectA direcotry )
+	rm abc.java ( removes the files from project ProjectA directory )
 	git status -- to check changes made
 	git add .
 	git commit -m "deleted abc.java"
@@ -28,14 +28,14 @@ scenario 2: in a git local repository add more files, edit some files, remove so
 	Note: like above you can add & commit each change you do OR you do all changes in a repository then at the end you can add & commit them all together also, its completely how you want to do it.
 
 ===================================================================================================================
-scenario 3: check all the commits made so far & who commited at what time etc...
+scenario 3: Check all the commits made so far & who commited at what time etc...
 	
 	cd ProjectA
 	git log ( will show all the commits made to project so far )
 	git log --oneline ( will show all the commits in short form )
 
 ===================================================================================================================	
-scenario 4: it a git local repository remove somefiles permanently & remove some files only from git repository ( means the file should exist on machine but git should not track )
+scenario 4: In a git local repository remove some files permanently & remove some files only from git repository ( means the file should exist on machine but git should not track )
 	
 	cd ProjectA
 	git rm readme.txt ( removes file from project & stages the changes to git ( means we do not need to run git add for this change ) )
@@ -49,14 +49,14 @@ scenario 4: it a git local repository remove somefiles permanently & remove some
 	git commit -m "unstaged heloworld.java"
 
 ===================================================================================================================	
-scenario 5: ignoring some files in a git repository permanently ( .gitignore )
+scenario 5: Ignoring some files in a git repository permanently ( .gitignore )
 
 	cd ProjectA
 	touch .gitignore ( creates a .gitignore file ) 
 	vi .gitignore ( opens the file for editing enter below )
-		logs/   ( completely ignore the direcotry & content inside )
-		*.class ( completely ignores files ending with .class in the reposiotry )
-		*.txt   ( comletely ignores files ending with .txt in the reposiotry )
+		logs/   ( completely ignore the directory & content inside )
+		*.class ( completely ignores files ending with .class in the repository )
+		*.txt   ( comletely ignores files ending with .txt in the repository )
 		save & close the file 
 	git add .
 	git commit -m "new .gitignore"
@@ -66,19 +66,20 @@ scenario 5: ignoring some files in a git repository permanently ( .gitignore )
 	mkdir logs/
 	cd logs
 	touch devops.java git.java helo.txt
-    cd ..
-    git status -- should still show you working tree is clean as we added all the above pattern in .gitignore file
+        cd ..
+        git status -- should still show you working tree is clean as we added all the above pattern in .gitignore file
 
 		Note: .gitignore is a hidden file in linux ( means a dot (.) infront of any file name becomes hidden file in linux ) 
 		hidden files can not be listed with normal ls -ltr command -- to see hidden files do "ls -al"
 
 ===================================================================================================================
 
-scenario 6: work with git tags
+scenario 6: Work with git tags
 
 	Tagging is used to capture a point in history that is used for a marked version release (i.e. v1.0.1), in other words git tags are simply aliases for commit ids. tags are always created against specific commit ids
 	
 	git tag -- lists all available tags
+
 	git show v1.2 -- shows which commit id tagged, who commited & what is commited
 	
 	git tag --a v1.2 -m "any message" --- by default git tags the recent commit id / last commit id -- in other terms the HEAD
@@ -87,14 +88,14 @@ scenario 6: work with git tags
 
 ===================================================================================================================
 
-scenario 7: reverting or resetting the changes made in a git reposiotry
+scenario 7: Reverting or resetting the changes made in a git reposiotry
 
 	git reset --hard < commit id >
-		resets to the commit id provided, means all commits after given commit id are completely removed from git repository & also removes any staged changes in the reposiotrory. so it recomended to check the git status before & ensure the working tree is clean. 
+		resets to the commit id provided, means all commits after given commit id are completely removed from git repository & also removes any staged changes in the repository. so it is recomended to check the git status before & ensure the working tree is clean. 
 	git commit -m "Reverting to the state to <commit id>"
+
 	git log -- verify the last commit id is now the commit id provided
-	
-	
+		
 	git revert < commit id >
 		reverts to the commit id changes & provides a new commit id & in git history log we will still have the deleted commit id for reference
 	git log -- verify the last commit id is a new commit id with changes of commit id provided also we can see the commit id reverted from.
@@ -102,7 +103,7 @@ scenario 7: reverting or resetting the changes made in a git reposiotry
 ===================================================================================================================
 Working with git branching
 
-scenario 8: create a new branch, switch to the branch make changes & commit, delete a branch.
+scenario 8: Create a new branch, switch to the branch make changes & commit, delete a branch.
 
 	git branch  
 		shows all the branches available ( * in front of branch name refers the current branch we are working on )
@@ -110,7 +111,8 @@ scenario 8: create a new branch, switch to the branch make changes & commit, del
 		
 	git branch <branch name> 
 		creates a new branch & copies content of current branch from where we are creating it. 
-    git checkout -b BRANCH_NAME
+        
+        git checkout -b BRANCH_NAME
 		creates a new branch, copies content of current branch from where we are creating it & switches to the newly created branch
 		
 	git branch 
@@ -118,15 +120,17 @@ scenario 8: create a new branch, switch to the branch make changes & commit, del
 		
 	git checkout <branch name>
 		to switch to the provided/existing branch
+
 	git branch 
 		check whether the * mark is in front of the branch provided or we switched to. which means our current working branch is now provided branch
 	
 	git branch -d branch_name  -- to delete a branch 
+
 	git branch -D branch_name  -- to delete a branch forcefully
 	
 ===================================================================================================================
 
-scenario 9: create a branch,make changes, merge changes to master branch. 
+scenario 9: Create a branch, make changes, merge changes to master branch. 
 	
 	on current branch check the files ( ls -ltrh )
 	git branch defect ( creates a new branch defect )
@@ -138,20 +142,20 @@ scenario 9: create a branch,make changes, merge changes to master branch.
 	git add .
 	git commit -m "new java files"
 	git checkout master ( switch to master branch )
-	ls -ltrh the content of master branch ( changes made at defect branch will not be available here )
+	ls -ltr the content of master branch ( changes made at defect branch will not be available here )
 	git branch -- ensure/check it switched to master branch
 	git merge defect ( it merges the changes made in defect branch into master branch )
 	git status 
 
 ===================================================================================================================
 
-scenario 10: merge conflict ( occures when same file modified at both branches )
+scenario 10: Merge conflict ( occures when same file modified at both branches )
 
 	git branch defect
 	git checkout defect 
 	git branch -- to see we checked out successfully to defect branch ( ensure * infront of defect )
 	touch china.java  -- creates a empty file
-	vi chian.java ( opens the file for editing, enter some text & save the file )
+	vi china.java ( opens the file for editing, enter some text & save the file )
 	git add .
 	git commit -m "new china.java at defect"
 	
@@ -227,27 +231,27 @@ case 2: merge changes with -- git merge --squash
 
 	git merge --squash feature ( we should be in master branch while running this command ). once we issue this is how the git log history looks like at master 
 
-    master            c1   c2  c3  mc
+        master            c1   c2  c3  mc
 	feature           c1   c2  f1  f2 
 	
 	this case it will combile all the commit ids from feature branch & creates a brand new commit id at master with all changes combined from feature.
 	
 case 3: merge changes using -- git rebase
 
-		master      c1  c2   c3
-		feature 	    c2   f1   f2
+	master      c1   c2   c3
+	feature 	 c2   f1   f2
 		
-		swith to feature branch and do "git rebase master", which would result as below 
+	swith to feature branch and do "git rebase master", which would result as below 
 		
-		master       c1  c2  c3 
-		feature      c1  c2  c3  f1  f2  ( it changes feature branch base to match last commit id of master )
+	master       c1  c2  c3 
+	feature      c1  c2  c3  f1  f2  ( it changes feature branch base to match last commit id of master )
 		
-		switch back to master (git checkout master) & do "git rebase/merge feature" , which would result as below.
+	switch back to master (git checkout master) & do "git rebase/merge feature" , which would result as below.
 		
-		master       c1  c2  c3  f1  f2
-		feature      c1  c2  c3  f1  f2 
+	master       c1  c2  c3  f1  f2
+	feature      c1  c2  c3  f1  f2 
 		
-		making both branches with clean history of commits. 
+	making both branches with clean history of commits. 
 		
-there are pros & cons using reabse -- we need to understand the situation before using & if neccessary use merge or rebase accordingly.
+there are pros & cons using rebase -- we need to understand the situation before using & if neccessary use merge or rebase accordingly.
 ===================================================================================================================		

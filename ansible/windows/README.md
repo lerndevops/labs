@@ -33,6 +33,9 @@ open powershell terminal & check winrm is running using below commands
 
 Test-WSMan
 Get-Service WinRM
+Set-Item -Force WSMan:\localhost\Service\auth\Basic $true
+Set-Item -Force WSMan:\localhost\Service\AllowUnencrypted $true
+New-NetFirewallRule -DisplayName "Allow WinRM Ports" -Direction Inbound -Action Allow -Protocol TCP -LocalPort 5985-5986
 ```
 
 ### Step2: `enable winrm`

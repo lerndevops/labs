@@ -1,5 +1,4 @@
 ---
-# Source: kibana/templates/configmap-helm-scripts.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:

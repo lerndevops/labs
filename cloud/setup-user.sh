@@ -3,7 +3,7 @@
 now=`date +%d%b%Y-%H%M`
 
 exp()
-{
+{       passw="devops"
 	"$1" <(cat <<-EOF
 	spawn passwd $USER
 	expect "Enter new UNIX password:"

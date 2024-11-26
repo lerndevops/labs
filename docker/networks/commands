@@ -1,0 +1,51 @@
+246  docker pull lerndevops/samples:netshoot
+  247  docker image ls
+  248  docker run -d --name cont1 lerndevops/samples:netshoot
+  249  docker run -d --name cont2 lerndevops/samples:netshoot
+  250  docker ps
+  251  docker inspect cont1
+  252  docker inspect cont1 | grep -i ipaddr
+  253  docker inspect cont2 | grep -i ipaddr
+  254  sudo systemctl status docker.service
+  255  docker network ls
+  256  docker network inspect bridge
+  257  docker ps
+  258  docker exec cont1 hostname -i
+  259  docker exec cont2 hostname -i
+  260  docker exec cont2 ping 172.17.0.2
+  261  docker exec cont1 ping 172.17.0.3
+  262  docker network ls
+  263  docker network create mynet --driver bridge --subnet 19.43.0.0/16 --gateway 19.43.0.1
+  264  docker network ls
+  265  docker network inspect mynet
+  266  docker run -d --name cont3 --network mynet lerndevops/samples:netshoot
+  267  docker run -d --name cont4 --network mynet lerndevops/samples:netshoot
+  268  docker network ls
+  269  docker ps
+  270  docker exec cont3 hostname -i
+  271  docker exec cont4 hostname -i
+  272  docker exec cont1 hostname -i
+  273  docker exec cont2 hostname -i
+  274  docker exec cont3 ping 19.43.0.3
+  275  docker exec cont4 ping 19.43.0.2
+  276  docker exec cont4 ping 172.17.0.2
+  277  docker inspect cont1
+  278  docker inspect cont3
+  279  docker exec cont1 ping cont3
+  280  docker exec cont1 ping 19.43.0.2
+  281  docker exec cont1 ifconfig
+  282  docker network connect mynet cont1
+  283  docker exec cont1 ifconfig
+  284  docker exec cont1 ping 19.43.0.2
+  285  docker exec cont1 ping 19.43.0.3
+  286  docker exec cont1 ifconfig
+  287  docker network disconnect mynet cont1
+  288  docker exec cont1 ifconfig
+  289  docker exec cont1 ping 19.43.0.3
+  290  docker network ls
+  291  docker network disconnect bridge  cont1
+  292  docker exec cont1 ifconfig
+  293  docker run -d --name cont5 --network host lerndevops/samples:netshoot
+  294  docker ps
+  295  hostname -i
+  296  docker exec cont5 hostname -i

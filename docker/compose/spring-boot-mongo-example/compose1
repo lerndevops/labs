@@ -1,0 +1,27 @@
+volumes:
+  Mylogs:
+
+services:
+  app:
+    image: "docker.io/vijaykoli/myapp:v3"
+    deploy:
+      replicas: 3
+    volumes:
+      - Mylogs:/opt/tomcat/apache-tomcat-8.5.37
+    ports:
+      - "8080:8080"
+    networks:
+      - default
+
+  mongodb:
+    image: "mongo:latest"
+    deploy:
+      replicas: 2
+    ports:
+      - "27017:27017"
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge

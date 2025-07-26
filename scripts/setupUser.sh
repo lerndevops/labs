@@ -108,7 +108,7 @@ update_conf()
         #sed -i '/PermitRootLogin.*prohibit-password/d' $sshdfile
         #echo "PermitRootLogin yes" >> $sshdfile
         echo "updated $sshdfile Successfully -- restarting sshd service"
-        service sshd restart
+        systemctl restart ssh.service
    else
         echo "could not find $sshdfile"
    fi

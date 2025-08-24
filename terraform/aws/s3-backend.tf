@@ -1,7 +1,12 @@
+provider "aws" {
+    region = "us-east-2"
+    access_key = "swcwe"
+    secret_key = "fwefewf"
+
 terraform {
   backend "s3" {
-    bucket = "testtestte2983479283"
-    key    = "terraform/terraform.tfstate"
+    bucket = "testtestte2983479283"               #bucket already created 
+    key    = "terraform/terraform.tfstate"        #this terraform.tfstate  will create in mentioned buket location 
     region = "us-east-2"
     access_key = "accesskey"
     secret_key = "secretkey"

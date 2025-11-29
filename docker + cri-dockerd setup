@@ -1,0 +1,118 @@
+🔥 2. Install Docker 20.10 (LTS & Supported)
+
+Run this:
+
+sudo apt-get remove -y docker docker-engine docker.io containerd runc
+
+sudo apt-get update
+sudo apt-get install -y \
+    ca-certificates curl gnupg lsb-release
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker.gpg
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+  | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get update
+sudo apt-get install -y docker-ce=5:20.10.24~3-0~ubuntu-$(lsb_release -cs) \
+    docker-ce-cli=5:20.10.24~3-0~ubuntu-$(lsb_release -cs) \
+    containerd.io
+
+
+Verify:
+
+docker --version
+
+
+Should output something like:
+
+Docker version 20.10.24
+
+🎯 3. Install cri-dockerd 0.2.6 (Works Perfectly With Docker 20.10)
+cd /tmp
+wget https://github.com/Mirantis/cri-dockerd/releases/download/v0.2.6/cri-dockerd-0.2.6.amd64.tgz
+tar -xzf cri-dockerd-0.2.6.amd64.tgz
+sudo mv cri-dockerd/cri-dockerd /usr/bin/
+sudo chmod +x /usr/bin/cri-dockerd
+
+
+Verify:
+
+cri-dockerd --version
+
+⚙️ 4. Create systemd service for cri-dockerd
+File 1: /etc/systemd/system/cri-docker.service
+[Unit]
+Description=CRI Interface for Docker Application Container Engine
+Documentation=https://docs.mirantis.com
+After=network-online.target docker.service
+Wants=network-online.target
+Requires=cri-docker.socket
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/cri-dockerd --container-runtime-endpoint unix:///var/run/cri-dockerd.sock
+ExecReload=/bin/kill -s HUP $MAINPID
+TimeoutSec=0
+RestartSec=2
+Restart=always
+
+File 2: /etc/systemd/system/cri-docker.socket
+[Unit]
+Description=CRI Docker Socket for the API
+PartOf=cri-docker.service
+
+[Socket]
+ListenStream=/var/run/cri-dockerd.sock
+SocketMode=0660
+SocketUser=root
+SocketGroup=docker
+
+[Install]
+WantedBy=sockets.target
+
+🔄 5. Enable and Start Services
+sudo systemctl daemon-reload
+sudo systemctl enable cri-docker.service
+sudo systemctl enable cri-docker.socket
+sudo systemctl start cri-docker.socket
+sudo systemctl start cri-docker.service
+
+
+Check:
+
+systemctl status cri-docker.service
+
+
+If everything is correct → Active (running)
+
+🚀 6. Install Kubernetes Components
+sudo apt-get update
+
+sudo apt-get install -y apt-transport-https ca-certificates curl
+
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key \
+  | sudo gpg --dearmor -o /usr/share/keyrings/kubernetes-apt-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-apt-keyring.gpg] \
+  https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" \
+  | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+🟦 7. Initialize Kubernetes (Docker runtime)
+sudo kubeadm init \
+  --cri-socket unix:///var/run/cri-dockerd.sock \
+  --pod-network-cidr=192.168.0.0/16
+
+🌐 8. Configure kubectl
+mkdir -p $HOME/.kube
+sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+🌱 9. Install Calico networking
+kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.24.1/manifests/calico.yaml

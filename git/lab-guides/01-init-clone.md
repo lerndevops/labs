@@ -1,15 +1,21 @@
 # Git Lab 1: git init & git clone
 
 ## 1. git init
-Initializes a new Git repository in your current directory.
+
+Initializes a new Git repository in a new directory.
 
 **Step-by-step:**
-1. Open your terminal and navigate to your project folder.
-2. Run:
-   ```bash
+1. Open your terminal.
+2. Create and navigate to a new project directory:
+   ```sh
+   mkdir my-new-repo
+   cd my-new-repo
+   ```
+3. Initialize the directory as a Git repository:
+   ```sh
    git init
    ```
-3. You will see a `.git` folder created. This means your folder is now tracked by Git.
+4. You will see a `.git` folder created. This means your folder is now tracked by Git.
 
 **Explanation:**
 - `git init` sets up all the necessary files and folders for Git to start tracking changes in your project.

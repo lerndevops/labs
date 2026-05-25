@@ -31,11 +31,9 @@ Build a realistic ELK monitoring stack with:
 ## Install Docker & Docker Compose
 
 ```bash
-sudo apt update
-
-sudo apt install -y docker.io docker-compose
-
-sudo systemctl enable --now docker
+sudo wget https://raw.githubusercontent.com/lerndevops/labs/master/scripts/installDocker.sh -P /tmp
+sudo chmod 755 /tmp/installDocker.sh
+sudo bash /tmp/installDocker.sh
 ```
 
 Verify:

@@ -494,58 +494,6 @@ Create panels using:
 
 ---
 
-# Best Demo Flow
-
-## 1. Show Live Logs
-
-Query:
-
-```text
-*
-```
-
----
-
-## 2. Show Payment Logs
-
-```text
-service:payment
-```
-
----
-
-## 3. Show Failures
-
-```text
-status:FAILED
-```
-
----
-
-## 4. Show Production Errors
-
-```text
-level:ERROR
-```
-
----
-
-## 5. Show Slow APIs
-
-```text
-response_time > 2000
-```
-
----
-
-## 6. Show Security Events
-
-```text
-service:auth AND status:FAILED
-```
-
----
-
 # Tip
 
 Inject a live error:

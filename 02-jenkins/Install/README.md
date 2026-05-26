@@ -2,7 +2,7 @@
 ### Install JAVA (OpenJDK 21)
 ```
 sudo apt update
-sudo apt install -y fontconfig openjdk-21-jre
+sudo apt install -y fontconfig openjdk-21-jdk
 java -version
 ```
 ### Install Maven  ( on Jenkins machine )

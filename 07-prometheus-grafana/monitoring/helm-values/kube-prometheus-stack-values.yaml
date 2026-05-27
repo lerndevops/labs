@@ -1,0 +1,101 @@
+namespaceOverride: monitoring
+
+defaultRules:
+  create: true
+
+grafana:
+  enabled: true
+  adminUser: admin
+  adminPassword: prom-grafana-demo
+  defaultDashboardsTimezone: browser
+  persistence:
+    enabled: true
+    size: 5Gi
+  service:
+    type: NodePort
+    nodePort: 32000
+  grafana.ini:
+    users:
+      viewers_can_edit: true
+    auth.anonymous:
+      enabled: false
+    dashboards:
+      default_home_dashboard_path: /tmp/dashboards/Kubernetes Cluster Overview.json
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: ALL
+      provider:
+        allowUiUpdates: true
+        foldersFromFilesStructure: false
+    datasources:
+      enabled: true
+      defaultDatasourceEnabled: true
+      searchNamespace: ALL
+  serviceMonitor:
+    enabled: true
+
+prometheus:
+  enabled: true
+  service:
+    type: NodePort
+    nodePort: 32090
+  prometheusSpec:
+    retention: 15d
+    retentionSize: 45GB
+    scrapeInterval: 30s
+    evaluationInterval: 30s
+    enableAdminAPI: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
+
+alertmanager:
+  enabled: true
+  alertmanagerSpec:
+    replicas: 1
+
+prometheus-node-exporter:
+  hostRootFsMount:
+    enabled: true
+
+kube-state-metrics:
+  prometheus:
+    monitor:
+      enabled: true
+
+kubelet:
+  enabled: true
+  serviceMonitor:
+    cAdvisor: true
+    probes: true
+    resource: true
+
+coreDns:
+  enabled: true
+
+kubeApiServer:
+  enabled: true
+
+kubeControllerManager:
+  enabled: true
+
+kubeScheduler:
+  enabled: true
+
+kubeProxy:
+  enabled: true
+
+kubeEtcd:
+  enabled: true

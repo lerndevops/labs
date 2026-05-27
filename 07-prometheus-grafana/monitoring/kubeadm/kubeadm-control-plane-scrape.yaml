@@ -1,0 +1,138 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-scheduler-external
+  namespace: kube-system
+  labels:
+    app: kube-scheduler-external
+spec:
+  clusterIP: None
+  ports:
+    - name: https-metrics
+      port: 10259
+      targetPort: 10259
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: kube-scheduler-external
+  namespace: kube-system
+subsets:
+  - addresses:
+      - ip: KUBEADM_CONTROL_PLANE_IP
+    ports:
+      - name: https-metrics
+        port: 10259
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-controller-manager-external
+  namespace: kube-system
+  labels:
+    app: kube-controller-manager-external
+spec:
+  clusterIP: None
+  ports:
+    - name: https-metrics
+      port: 10257
+      targetPort: 10257
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: kube-controller-manager-external
+  namespace: kube-system
+subsets:
+  - addresses:
+      - ip: KUBEADM_CONTROL_PLANE_IP
+    ports:
+      - name: https-metrics
+        port: 10257
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: etcd-external
+  namespace: kube-system
+  labels:
+    app: etcd-external
+spec:
+  clusterIP: None
+  ports:
+    - name: metrics
+      port: 2381
+      targetPort: 2381
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: etcd-external
+  namespace: kube-system
+subsets:
+  - addresses:
+      - ip: KUBEADM_CONTROL_PLANE_IP
+    ports:
+      - name: metrics
+        port: 2381
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kube-scheduler-external
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+      - kube-system
+  selector:
+    matchLabels:
+      app: kube-scheduler-external
+  endpoints:
+    - port: https-metrics
+      interval: 30s
+      scheme: https
+      tlsConfig:
+        insecureSkipVerify: true
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kube-controller-manager-external
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+      - kube-system
+  selector:
+    matchLabels:
+      app: kube-controller-manager-external
+  endpoints:
+    - port: https-metrics
+      interval: 30s
+      scheme: https
+      tlsConfig:
+        insecureSkipVerify: true
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: etcd-external
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  namespaceSelector:
+    matchNames:
+      - kube-system
+  selector:
+    matchLabels:
+      app: etcd-external
+  endpoints:
+    - port: metrics
+      interval: 30s
+      scheme: http

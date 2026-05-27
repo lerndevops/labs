@@ -9,11 +9,7 @@ grafana:
   adminPassword: prom-grafana-demo
   defaultDashboardsTimezone: browser
   persistence:
-    enabled: true
-    size: 5Gi
-    storageClassName: local-monitoring
-  nodeSelector:
-    monitoring-storage: "true"
+    enabled: false
   service:
     type: NodePort
     nodePort: 32000
@@ -55,17 +51,7 @@ prometheus:
     podMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
     ruleSelectorNilUsesHelmValues: false
-    storageSpec:
-      volumeClaimTemplate:
-        spec:
-          storageClassName: local-monitoring
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: 20Gi
-    nodeSelector:
-      monitoring-storage: "true"
+    storageSpec: {}
 
 alertmanager:
   enabled: true

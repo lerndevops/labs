@@ -278,6 +278,8 @@ In Grafana, open:
 - `Kubernetes Namespace Health`
 - `Kubernetes Workload Performance`
 
+These custom dashboards are grouped in the Grafana folder `Demo Dashboards`.
+
 You will also see the upstream dashboards that ship with the chart.
 
 ## 16. Demo Flow for an Audience

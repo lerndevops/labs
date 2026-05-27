@@ -65,6 +65,8 @@ Open `http://WORKER_NODE_EXTERNAL_IP:32000` and sign in with:
 - User: `admin`
 - Password: `prom-grafana-demo`
 
+Your three custom dashboards are grouped under the Grafana folder `Demo Dashboards`.
+
 To remove the full demo setup later:
 
 ```bash

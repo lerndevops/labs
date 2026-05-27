@@ -5,6 +5,8 @@ metadata:
   namespace: monitoring
   labels:
     grafana_dashboard: "1"
+  annotations:
+    k8s-sidecar-target-directory: /tmp/dashboards/Demo Dashboards
 data:
   kubernetes-cluster-overview.json: |
     {

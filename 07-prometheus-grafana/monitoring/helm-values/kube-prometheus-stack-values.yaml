@@ -19,7 +19,7 @@ grafana:
     auth.anonymous:
       enabled: false
     dashboards:
-      default_home_dashboard_path: /tmp/dashboards/kubernetes-cluster-overview.json
+      default_home_dashboard_path: /tmp/dashboards/Demo Dashboards/kubernetes-cluster-overview.json
   sidecar:
     dashboards:
       enabled: true
@@ -28,7 +28,7 @@ grafana:
       searchNamespace: ALL
       provider:
         allowUiUpdates: true
-        foldersFromFilesStructure: false
+        foldersFromFilesStructure: true
     datasources:
       enabled: true
       defaultDatasourceEnabled: true

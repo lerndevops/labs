@@ -21,6 +21,7 @@ sudo apt install pipx
 python3 -m pipx ensurepath
 pipx install --include-deps ansible
 source .bashrc
+ansible --version
 ```
 
 ## Or using pip

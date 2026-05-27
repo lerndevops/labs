@@ -12,13 +12,15 @@ What is included:
 - A pinned `kube-prometheus-stack` values file.
 - Preloaded Grafana dashboards via ConfigMaps.
 - A sample application that exposes Prometheus metrics.
+- A post-install `ServiceMonitor` for the sample application.
 - A `kubeadm` control plane scraping manifest for `etcd`, `kube-scheduler`, and `kube-controller-manager`.
 - A step-by-step guide that the audience can repeat later.
 
 ## Repository Layout
 
 - `monitoring/helm-values/kube-prometheus-stack-values.yaml`
-- `monitoring/manifests/demo-app-and-servicemonitor.yaml`
+- `monitoring/manifests/demo-app.yaml`
+- `monitoring/post-install/demo-app-servicemonitor.yaml`
 - `monitoring/manifests/grafana-dashboard-cluster-overview.yaml`
 - `monitoring/manifests/grafana-dashboard-namespace-health.yaml`
 - `monitoring/manifests/grafana-dashboard-workload-performance.yaml`
@@ -36,9 +38,6 @@ curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 |
 kubectl create namespace monitoring
 kubectl apply -f monitoring/manifests/
 
-CONTROL_PLANE_IP=$(kubectl get node -l node-role.kubernetes.io/control-plane -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
-sed "s/KUBEADM_CONTROL_PLANE_IP/${CONTROL_PLANE_IP}/g" monitoring/kubeadm/kubeadm-control-plane-scrape.yaml | kubectl apply -f -
-
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 
@@ -46,6 +45,11 @@ helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
   --namespace monitoring \
   --version 83.6.0 \
   -f monitoring/helm-values/kube-prometheus-stack-values.yaml
+
+kubectl apply -f monitoring/post-install/
+
+CONTROL_PLANE_IP=$(kubectl get node -l node-role.kubernetes.io/control-plane -o jsonpath='{.items[0].status.addresses[?(@.type=="InternalIP")].address}')
+sed "s/KUBEADM_CONTROL_PLANE_IP/${CONTROL_PLANE_IP}/g" monitoring/kubeadm/kubeadm-control-plane-scrape.yaml | kubectl apply -f -
 ```
 
 Get a worker node external IP and open Grafana through the NodePort:

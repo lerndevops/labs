@@ -20,7 +20,7 @@ You will also apply:
 
 - Three custom Grafana dashboards
 - One sample metrics-producing application
-- One `ServiceMonitor` for custom app scraping
+- One post-install `ServiceMonitor` for custom app scraping
 - One `kubeadm` control plane scrape manifest for `etcd`, `kube-scheduler`, and `kube-controller-manager`
 
 ## 2. Prerequisites
@@ -52,7 +52,8 @@ Main files:
 
 - [README.md](/Users/nareshwar/prom-grafana/README.md)
 - [monitoring/helm-values/kube-prometheus-stack-values.yaml](/Users/nareshwar/prom-grafana/monitoring/helm-values/kube-prometheus-stack-values.yaml)
-- [monitoring/manifests/demo-app-and-servicemonitor.yaml](/Users/nareshwar/prom-grafana/monitoring/manifests/demo-app-and-servicemonitor.yaml)
+- [monitoring/manifests/demo-app.yaml](/Users/nareshwar/prom-grafana/monitoring/manifests/demo-app.yaml)
+- [monitoring/post-install/demo-app-servicemonitor.yaml](/Users/nareshwar/prom-grafana/monitoring/post-install/demo-app-servicemonitor.yaml)
 - [monitoring/manifests/grafana-dashboard-cluster-overview.yaml](/Users/nareshwar/prom-grafana/monitoring/manifests/grafana-dashboard-cluster-overview.yaml)
 - [monitoring/manifests/grafana-dashboard-namespace-health.yaml](/Users/nareshwar/prom-grafana/monitoring/manifests/grafana-dashboard-namespace-health.yaml)
 - [monitoring/manifests/grafana-dashboard-workload-performance.yaml](/Users/nareshwar/prom-grafana/monitoring/manifests/grafana-dashboard-workload-performance.yaml)
@@ -72,7 +73,7 @@ kubectl create namespace monitoring
 
 If it already exists, Kubernetes will report that and continue safely.
 
-## 6. Apply the Dashboard and Demo App Manifests
+## 6. Apply the Pre-Install Manifests
 
 Apply all repository manifests first:
 
@@ -84,16 +85,58 @@ This creates:
 
 - Grafana dashboard ConfigMaps
 - A sample application in the `demo-metrics` namespace
-- A `ServiceMonitor` that Prometheus will discover
+- The sample application Service
+
+This step is safe before Helm install because it does not create any CRD-backed objects.
 
 Verify:
 
 ```bash
 kubectl get ns monitoring demo-metrics
-kubectl -n demo-metrics get deploy,svc,servicemonitor
+kubectl -n demo-metrics get deploy,svc
 ```
 
-## 7. Apply the `kubeadm` Control Plane Scrape Manifest
+## 7. Add the Helm Repository
+
+```bash
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+```
+
+Optional verification:
+
+```bash
+helm search repo prometheus-community/kube-prometheus-stack --versions | head
+```
+
+## 8. Install the Monitoring Stack
+
+Install the pinned chart:
+
+```bash
+helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --version 83.6.0 \
+  -f monitoring/helm-values/kube-prometheus-stack-values.yaml
+```
+
+This guide pins the version deliberately so the audience runs the same chart layout.
+
+## 9. Apply the Post-Install ServiceMonitor
+
+Now that the Prometheus Operator CRDs exist, apply the demo application `ServiceMonitor`:
+
+```bash
+kubectl apply -f monitoring/post-install/
+```
+
+Verify:
+
+```bash
+kubectl -n demo-metrics get servicemonitor
+```
+
+## 10. Apply the `kubeadm` Control Plane Scrape Manifest
 
 Your `kubeadm` control plane usually runs `etcd`, `kube-scheduler`, and `kube-controller-manager` as static pods on the control-plane node. Those metrics are worth scraping explicitly for a demo.
 
@@ -142,33 +185,7 @@ kubectl -n kube-system get svc,endpoints | grep -E 'kube-scheduler-external|kube
 kubectl -n monitoring get servicemonitor
 ```
 
-## 8. Add the Helm Repository
-
-```bash
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-```
-
-Optional verification:
-
-```bash
-helm search repo prometheus-community/kube-prometheus-stack --versions | head
-```
-
-## 9. Install the Monitoring Stack
-
-Install the pinned chart:
-
-```bash
-helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
-  --namespace monitoring \
-  --version 83.6.0 \
-  -f monitoring/helm-values/kube-prometheus-stack-values.yaml
-```
-
-This guide pins the version deliberately so the audience runs the same chart layout.
-
-## 10. Wait for the Pods
+## 11. Wait for the Pods
 
 ```bash
 kubectl -n monitoring get pods -w
@@ -183,7 +200,7 @@ Wait until the main components are `Running`:
 - `monitoring-prometheus-node-exporter-*`
 - `monitoring-kube-prometheus-operator-*`
 
-## 11. Confirm the NodePort Services
+## 12. Confirm the NodePort Services
 
 This repo exposes:
 
@@ -214,7 +231,7 @@ kubectl get nodes -o wide
 
 Use a worker node external IP if available, or another reachable node IP from your network path.
 
-## 12. Verify Prometheus Targets
+## 13. Verify Prometheus Targets
 
 Open Prometheus in your browser:
 
@@ -237,9 +254,9 @@ Expected healthy targets usually include:
 - `kube-controller-manager-external`
 - `etcd-external`
 
-On your `kubeadm` cluster, the three control-plane targets above should appear after the manifest from step 7 is applied.
+On your `kubeadm` cluster, the three control-plane targets above should appear after the manifest from step 10 is applied.
 
-## 13. Open Grafana
+## 14. Open Grafana
 
 Open Grafana in your browser:
 
@@ -252,7 +269,7 @@ Login:
 - Username: `admin`
 - Password: `prom-grafana-demo`
 
-## 14. Verify the Dashboards
+## 15. Verify the Dashboards
 
 In Grafana, open:
 
@@ -262,7 +279,7 @@ In Grafana, open:
 
 You will also see the upstream dashboards that ship with the chart.
 
-## 15. Demo Flow for an Audience
+## 16. Demo Flow for an Audience
 
 Use this order in a live demonstration:
 
@@ -283,7 +300,7 @@ Use this order in a live demonstration:
    - `etcd_mvcc_db_total_size_in_bytes`
    - `http_requests_total{job="prometheus-example-app"}`
 
-## 16. `kubeadm` Notes for 1 Master and 2 Workers
+## 17. `kubeadm` Notes for 1 Master and 2 Workers
 
 This repository already fits your `1` control-plane and `2` worker topology.
 
@@ -298,7 +315,7 @@ If later you move to a highly available `kubeadm` control plane, extend:
 
 Add more control-plane IPs under each `Endpoints` object.
 
-## 17. Storage Tuning
+## 18. Storage Tuning
 
 The values file requests persistent storage for Prometheus and Grafana.
 
@@ -308,7 +325,7 @@ If your cluster has no default storage class, edit:
 
 Set the appropriate `storageClassName` or remove it to inherit your cluster default behavior.
 
-## 18. Troubleshooting
+## 19. Troubleshooting
 
 If Grafana is up but dashboards show no data:
 
@@ -351,7 +368,7 @@ kubectl -n monitoring describe pod prometheus-monitoring-kube-prometheus-prometh
 kubectl get storageclass
 ```
 
-## 19. Cleanup
+## 20. Cleanup
 
 To remove everything from this repository:
 

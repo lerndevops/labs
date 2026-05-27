@@ -6,7 +6,7 @@ metadata:
   labels:
     grafana_dashboard: "1"
 data:
-  Kubernetes Cluster Overview.json: |
+  kubernetes-cluster-overview.json: |
     {
       "annotations": {
         "list": [

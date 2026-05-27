@@ -6,7 +6,7 @@ metadata:
   labels:
     grafana_dashboard: "1"
 data:
-  Kubernetes Namespace Health.json: |
+  kubernetes-namespace-health.json: |
     {
       "annotations": {
         "list": [

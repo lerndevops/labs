@@ -11,6 +11,9 @@ grafana:
   persistence:
     enabled: true
     size: 5Gi
+    storageClassName: local-monitoring
+  nodeSelector:
+    monitoring-storage: "true"
   service:
     type: NodePort
     nodePort: 32000
@@ -55,11 +58,14 @@ prometheus:
     storageSpec:
       volumeClaimTemplate:
         spec:
+          storageClassName: local-monitoring
           accessModes:
             - ReadWriteOnce
           resources:
             requests:
               storage: 20Gi
+    nodeSelector:
+      monitoring-storage: "true"
 
 alertmanager:
   enabled: true

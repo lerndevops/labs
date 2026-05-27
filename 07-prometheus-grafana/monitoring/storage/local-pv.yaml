@@ -1,0 +1,52 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-monitoring
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: monitoring-grafana-local-pv
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-monitoring
+  local:
+    path: /data/monitoring/grafana
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: monitoring-storage
+              operator: In
+              values:
+                - "true"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: monitoring-prometheus-local-pv
+spec:
+  capacity:
+    storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-monitoring
+  local:
+    path: /data/monitoring/prometheus
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: monitoring-storage
+              operator: In
+              values:
+                - "true"

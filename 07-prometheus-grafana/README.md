@@ -14,6 +14,7 @@ What is included:
 - A sample application that exposes Prometheus metrics.
 - A post-install `ServiceMonitor` for the sample application.
 - A `kubeadm` control plane scraping manifest for `etcd`, `kube-scheduler`, and `kube-controller-manager`.
+- A reset/install script for the local-PV workflow.
 - A step-by-step guide that the audience can repeat later.
 
 ## Repository Layout
@@ -21,10 +22,12 @@ What is included:
 - `monitoring/helm-values/kube-prometheus-stack-values.yaml`
 - `monitoring/manifests/demo-app.yaml`
 - `monitoring/post-install/demo-app-servicemonitor.yaml`
+- `monitoring/storage/local-pv.yaml`
 - `monitoring/manifests/grafana-dashboard-cluster-overview.yaml`
 - `monitoring/manifests/grafana-dashboard-namespace-health.yaml`
 - `monitoring/manifests/grafana-dashboard-workload-performance.yaml`
 - `monitoring/kubeadm/kubeadm-control-plane-scrape.yaml`
+- `scripts/reset-and-install-local-pv.sh`
 
 ## Quick Start
 
@@ -37,6 +40,9 @@ curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 |
 
 kubectl create namespace monitoring
 kubectl apply -f monitoring/manifests/
+
+kubectl label node WORKER_NODE_NAME monitoring-storage=true
+kubectl apply -f monitoring/storage/local-pv.yaml
 
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
@@ -62,6 +68,15 @@ Open `http://WORKER_NODE_EXTERNAL_IP:32000` and sign in with:
 
 - User: `admin`
 - Password: `prom-grafana-demo`
+
+To run the full reset-and-install flow in one command:
+
+```bash
+chmod +x scripts/reset-and-install-local-pv.sh
+./scripts/reset-and-install-local-pv.sh \
+  --worker-node WORKER_NODE_NAME \
+  --worker-ssh USER@WORKER_NODE_EXTERNAL_IP
+```
 
 ## What Gets Scraped
 
@@ -93,5 +108,7 @@ For your `kubeadm` cluster, this repo includes a dedicated manifest to scrape th
 - The `kubeadm` control plane manifest assumes a `1 master / 2 worker` topology and a single control-plane node IP.
 - Grafana is exposed on NodePort `32000` and Prometheus on NodePort `32090`.
 - On GCP, allow inbound firewall access to TCP `32000` and `32090` to reach those services from your browser.
+- Persistent storage uses static local PVs through the `local-monitoring` storage class.
+- Label exactly one worker node with `monitoring-storage=true` and create `/data/monitoring/grafana` and `/data/monitoring/prometheus` on that node before install.
 - “All metrics possible” in Kubernetes is not a literal guarantee. Some metrics are unavailable on managed control planes, disabled by security policy, or hidden behind vendor integrations.
 - This repo aims for the broadest practical in-cluster coverage with a clean demo path.

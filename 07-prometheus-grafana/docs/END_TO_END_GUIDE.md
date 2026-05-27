@@ -22,6 +22,7 @@ You will also apply:
 - One sample metrics-producing application
 - One post-install `ServiceMonitor` for custom app scraping
 - One `kubeadm` control plane scrape manifest for `etcd`, `kube-scheduler`, and `kube-controller-manager`
+- One helper script that resets and reinstalls the full local-PV setup
 
 ## 2. Prerequisites
 
@@ -30,7 +31,7 @@ You need the following on your machine:
 - `kubectl`
 - `helm` 3.x
 - Access to a Kubernetes cluster running Kubernetes `1.25+`
-- A default `StorageClass` in the cluster, or a manual storage class update in the values file
+- SSH access to one worker node where local PV directories can be created
 
 Quick Helm install if Helm is not already present:
 
@@ -54,18 +55,41 @@ Main files:
 - [monitoring/helm-values/kube-prometheus-stack-values.yaml](/Users/nareshwar/prom-grafana/monitoring/helm-values/kube-prometheus-stack-values.yaml)
 - [monitoring/manifests/demo-app.yaml](/Users/nareshwar/prom-grafana/monitoring/manifests/demo-app.yaml)
 - [monitoring/post-install/demo-app-servicemonitor.yaml](/Users/nareshwar/prom-grafana/monitoring/post-install/demo-app-servicemonitor.yaml)
+- [monitoring/storage/local-pv.yaml](/Users/nareshwar/prom-grafana/monitoring/storage/local-pv.yaml)
 - [monitoring/manifests/grafana-dashboard-cluster-overview.yaml](/Users/nareshwar/prom-grafana/monitoring/manifests/grafana-dashboard-cluster-overview.yaml)
 - [monitoring/manifests/grafana-dashboard-namespace-health.yaml](/Users/nareshwar/prom-grafana/monitoring/manifests/grafana-dashboard-namespace-health.yaml)
 - [monitoring/manifests/grafana-dashboard-workload-performance.yaml](/Users/nareshwar/prom-grafana/monitoring/manifests/grafana-dashboard-workload-performance.yaml)
 - [monitoring/kubeadm/kubeadm-control-plane-scrape.yaml](/Users/nareshwar/prom-grafana/monitoring/kubeadm/kubeadm-control-plane-scrape.yaml)
+- [scripts/reset-and-install-local-pv.sh](/Users/nareshwar/prom-grafana/scripts/reset-and-install-local-pv.sh)
 
-## 4. Why This Approach
+## 4. Fastest Recovery Path
+
+If you want the repo to handle the reset and reinstall sequence automatically, use:
+
+```bash
+chmod +x scripts/reset-and-install-local-pv.sh
+./scripts/reset-and-install-local-pv.sh \
+  --worker-node WORKER_NODE_NAME \
+  --worker-ssh USER@WORKER_NODE_EXTERNAL_IP
+```
+
+The script:
+
+- labels the chosen worker node
+- creates the local PV directories over SSH
+- applies the local PV objects
+- removes the current Helm release and old PVCs
+- reinstalls the stack in the correct order
+
+If you use the script, you can skip the manual recovery sequence below.
+
+## 5. Why This Approach
 
 This setup uses the Prometheus Community `kube-prometheus-stack` chart because it already packages the standard Kubernetes monitoring stack and Prometheus Operator integration.
 
 As of the latest chart package listing I verified, `kube-prometheus-stack` version `83.6.0` is available as an OCI/package release from the Prometheus Community charts package registry.
 
-## 5. Create the Monitoring Namespace
+## 6. Create the Monitoring Namespace
 
 ```bash
 kubectl create namespace monitoring
@@ -73,7 +97,48 @@ kubectl create namespace monitoring
 
 If it already exists, Kubernetes will report that and continue safely.
 
-## 6. Apply the Pre-Install Manifests
+## 7. Prepare Local Persistent Volumes
+
+Choose one worker node to hold Prometheus and Grafana data:
+
+```bash
+kubectl get nodes -o wide
+```
+
+Label exactly one worker node:
+
+```bash
+kubectl label node WORKER_NODE_NAME monitoring-storage=true
+```
+
+Verify:
+
+```bash
+kubectl get nodes --show-labels | grep monitoring-storage
+```
+
+SSH to that worker node and create the directories used by the local PVs:
+
+```bash
+sudo mkdir -p /data/monitoring/grafana
+sudo mkdir -p /data/monitoring/prometheus
+sudo chmod 777 /data/monitoring/grafana /data/monitoring/prometheus
+```
+
+Apply the storage class and static local PVs:
+
+```bash
+kubectl apply -f monitoring/storage/local-pv.yaml
+```
+
+Verify:
+
+```bash
+kubectl get storageclass local-monitoring
+kubectl get pv
+```
+
+## 8. Apply the Pre-Install Manifests
 
 Apply all repository manifests first:
 
@@ -96,7 +161,7 @@ kubectl get ns monitoring demo-metrics
 kubectl -n demo-metrics get deploy,svc
 ```
 
-## 7. Add the Helm Repository
+## 9. Add the Helm Repository
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -109,7 +174,7 @@ Optional verification:
 helm search repo prometheus-community/kube-prometheus-stack --versions | head
 ```
 
-## 8. Install the Monitoring Stack
+## 10. Install the Monitoring Stack
 
 Install the pinned chart:
 
@@ -122,7 +187,7 @@ helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
 
 This guide pins the version deliberately so the audience runs the same chart layout.
 
-## 9. Apply the Post-Install ServiceMonitor
+## 11. Apply the Post-Install ServiceMonitor
 
 Now that the Prometheus Operator CRDs exist, apply the demo application `ServiceMonitor`:
 
@@ -136,7 +201,7 @@ Verify:
 kubectl -n demo-metrics get servicemonitor
 ```
 
-## 10. Apply the `kubeadm` Control Plane Scrape Manifest
+## 12. Apply the `kubeadm` Control Plane Scrape Manifest
 
 Your `kubeadm` control plane usually runs `etcd`, `kube-scheduler`, and `kube-controller-manager` as static pods on the control-plane node. Those metrics are worth scraping explicitly for a demo.
 
@@ -185,7 +250,7 @@ kubectl -n kube-system get svc,endpoints | grep -E 'kube-scheduler-external|kube
 kubectl -n monitoring get servicemonitor
 ```
 
-## 11. Wait for the Pods
+## 13. Wait for the Pods
 
 ```bash
 kubectl -n monitoring get pods -w
@@ -200,7 +265,16 @@ Wait until the main components are `Running`:
 - `monitoring-prometheus-node-exporter-*`
 - `monitoring-kube-prometheus-operator-*`
 
-## 12. Confirm the NodePort Services
+Check persistent volumes too:
+
+```bash
+kubectl get pvc -n monitoring
+kubectl get pv
+```
+
+The Grafana and Prometheus PVCs should become `Bound`.
+
+## 14. Confirm the NodePort Services
 
 This repo exposes:
 
@@ -231,7 +305,7 @@ kubectl get nodes -o wide
 
 Use a worker node external IP if available, or another reachable node IP from your network path.
 
-## 13. Verify Prometheus Targets
+## 15. Verify Prometheus Targets
 
 Open Prometheus in your browser:
 
@@ -254,9 +328,9 @@ Expected healthy targets usually include:
 - `kube-controller-manager-external`
 - `etcd-external`
 
-On your `kubeadm` cluster, the three control-plane targets above should appear after the manifest from step 10 is applied.
+On your `kubeadm` cluster, the three control-plane targets above should appear after the manifest from step 12 is applied.
 
-## 14. Open Grafana
+## 16. Open Grafana
 
 Open Grafana in your browser:
 
@@ -269,7 +343,7 @@ Login:
 - Username: `admin`
 - Password: `prom-grafana-demo`
 
-## 15. Verify the Dashboards
+## 17. Verify the Dashboards
 
 In Grafana, open:
 
@@ -279,7 +353,7 @@ In Grafana, open:
 
 You will also see the upstream dashboards that ship with the chart.
 
-## 16. Demo Flow for an Audience
+## 18. Demo Flow for an Audience
 
 Use this order in a live demonstration:
 
@@ -300,7 +374,7 @@ Use this order in a live demonstration:
    - `etcd_mvcc_db_total_size_in_bytes`
    - `http_requests_total{job="prometheus-example-app"}`
 
-## 17. `kubeadm` Notes for 1 Master and 2 Workers
+## 19. `kubeadm` Notes for 1 Master and 2 Workers
 
 This repository already fits your `1` control-plane and `2` worker topology.
 
@@ -308,6 +382,7 @@ This repository already fits your `1` control-plane and `2` worker topology.
 - `kube-state-metrics`, Prometheus Operator, Grafana, Prometheus, and Alertmanager run as standard workloads and do not require a dedicated change for two workers.
 - The only cluster-specific input you must provide is the control-plane node IP in the `kubeadm` scrape manifest.
 - Because the cluster is on GCP VMs, this repo exposes Grafana and Prometheus with `NodePort` so they are reachable without SSH tunneling or local port-forwarding.
+- Grafana and Prometheus storage are pinned to the single node labeled `monitoring-storage=true`.
 
 If later you move to a highly available `kubeadm` control plane, extend:
 
@@ -315,17 +390,24 @@ If later you move to a highly available `kubeadm` control plane, extend:
 
 Add more control-plane IPs under each `Endpoints` object.
 
-## 18. Storage Tuning
+## 20. Storage Tuning
 
-The values file requests persistent storage for Prometheus and Grafana.
+The values file uses the `local-monitoring` storage class for persistent storage.
 
 If your cluster has no default storage class, edit:
 
 - [monitoring/helm-values/kube-prometheus-stack-values.yaml](/Users/nareshwar/prom-grafana/monitoring/helm-values/kube-prometheus-stack-values.yaml)
 
-Set the appropriate `storageClassName` or remove it to inherit your cluster default behavior.
+If you want different sizes or paths, edit:
 
-## 19. Troubleshooting
+- [monitoring/storage/local-pv.yaml](/Users/nareshwar/prom-grafana/monitoring/storage/local-pv.yaml)
+
+Default capacities:
+
+- Grafana: `5Gi`
+- Prometheus: `20Gi`
+
+## 21. Troubleshooting
 
 If Grafana is up but dashboards show no data:
 
@@ -343,6 +425,22 @@ kubectl get nodes -o wide
 ```
 
 Then verify the GCP firewall allows inbound TCP `32000` and `32090` to the node you are using.
+
+If PVCs stay pending:
+
+```bash
+kubectl get pvc -n monitoring
+kubectl get pv
+kubectl describe pv monitoring-grafana-local-pv
+kubectl describe pv monitoring-prometheus-local-pv
+kubectl get nodes --show-labels | grep monitoring-storage
+```
+
+Also verify on the labeled worker node:
+
+```bash
+sudo ls -ld /data/monitoring/grafana /data/monitoring/prometheus
+```
 
 If `etcd`, scheduler, or controller-manager targets are missing:
 
@@ -368,13 +466,15 @@ kubectl -n monitoring describe pod prometheus-monitoring-kube-prometheus-prometh
 kubectl get storageclass
 ```
 
-## 20. Cleanup
+## 22. Cleanup
 
 To remove everything from this repository:
 
 ```bash
 helm uninstall monitoring -n monitoring
 kubectl delete -f monitoring/manifests/
+kubectl delete -f monitoring/post-install/
+kubectl delete -f monitoring/storage/local-pv.yaml
 sed "s/KUBEADM_CONTROL_PLANE_IP/${CONTROL_PLANE_IP}/g" monitoring/kubeadm/kubeadm-control-plane-scrape.yaml | kubectl delete -f -
 kubectl delete namespace monitoring demo-metrics
 ```

@@ -11,7 +11,7 @@
 ### genereate ssh keys for above user on contrller machine 
 
 ```
-1) switch to user ( su - devops )
+1) switch to user ( sudo su - devops )
 2) run "ssh-keygen" command as user ( this will genereate ssh keys for the user ) 
 
 validate:
@@ -24,7 +24,7 @@ validate:
 ```
 On Ansible Contoller:
 	
-  swith to the user OR be as devops user ( su - devops )
+  swith to the user OR be as devops user ( sudo su - devops )
   
   ssh-copy-id devops@target1ip -- hit enter -- enter the password of target server when it prompted 
   ssh-copy-id devops@target2ip -- hit enter -- enter the password of target server when it prompted

@@ -2,9 +2,9 @@
 - hosts: web
   become: yes
   tasks:
-   - name: Install Java 1.11
-     apt:     ## apt-get install openjdk-11-jdk -y
-      name: openjdk-11-jdk
+   - name: Install Java 21
+     apt:     ## apt-get install openjdk-21-jdk -y
+      name: openjdk-21-jdk
       state: present
       update_cache: yes
 
@@ -19,19 +19,19 @@
       createhome: no
 
    - name: Download Tomcat
-     get_url:  ### wget url -O /tmp/tomca.tgz
-       url: https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.72/bin/apache-tomcat-9.0.72.tar.gz
-       dest: /tmp/apache-tomcat-9.0.72.tar.gz
+     get_url:  ### wget url -O /tmp/tomcat.tgz
+       url: https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.55/bin/apache-tomcat-10.1.55.tar.gz
+       dest: /tmp/apache-tomcat-10.1.55.tar.gz
 
    - name: Extract archive
      unarchive:  ## tar -xzf tarfile ## by default source is always controller
-        src: /tmp/apache-tomcat-9.0.72.tar.gz
+        src: /tmp/apache-tomcat-10.1.55.tar.gz
         dest: /opt
         remote_src: yes
 
    - name: create symlink
-     file:   ## ln -s /opt/tomcat /opt/apache-tomcat-9.0.72
-       src: /opt/apache-tomcat-9.0.72
+     file:   ## ln -s /opt/tomcat /opt/apache-tomcat-10.1.55
+       src: /opt/apache-tomcat-10.1.55
        path: /opt/tomcat
        state: link
 

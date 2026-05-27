@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: demo-metrics
+  name: sample-metrics
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prometheus-example-app
-  namespace: demo-metrics
+  namespace: sample-metrics
   labels:
     app: prometheus-example-app
 spec:
@@ -38,7 +38,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: prometheus-example-app
-  namespace: demo-metrics
+  namespace: sample-metrics
   labels:
     app: prometheus-example-app
 spec:

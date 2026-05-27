@@ -6,7 +6,7 @@ metadata:
   labels:
     grafana_dashboard: "1"
   annotations:
-    k8s-sidecar-target-directory: /tmp/dashboards/Demo Dashboards
+    k8s-sidecar-target-directory: /tmp/dashboards/Kubernetes Learning
 data:
   kubernetes-workload-performance.json: |
     {
@@ -50,7 +50,7 @@ data:
           "targets": [
             {
               "expr": "sum(rate(http_requests_total{job=\"prometheus-example-app\"}[5m]))",
-              "legendFormat": "demo-app requests/sec",
+              "legendFormat": "sample-app requests/sec",
               "refId": "A"
             }
           ],
@@ -139,7 +139,7 @@ data:
       "tags": [
         "kubernetes",
         "workload",
-        "demo"
+        "learning"
       ],
       "templating": {
         "list": []
@@ -150,7 +150,7 @@ data:
       },
       "timezone": "browser",
       "title": "Kubernetes Workload Performance",
-      "uid": "k8s-workload-performance-demo",
+      "uid": "k8s-workload-performance-guide",
       "version": 1,
       "weekStart": ""
     }

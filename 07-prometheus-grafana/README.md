@@ -1,11 +1,11 @@
-# Kubernetes Monitoring Demo with Prometheus and Grafana
+# Kubernetes Monitoring Guide with Prometheus and Grafana
 
 This repository contains an end-to-end Kubernetes monitoring setup built around the Prometheus Community `kube-prometheus-stack` Helm chart.
 
 It is designed for two goals:
 
 1. Deploy Prometheus and Grafana quickly in a Kubernetes cluster.
-2. Demonstrate cluster, node, pod, workload, and custom application metrics in front of an audience.
+2. Learn cluster, node, pod, workload, and custom application metrics through a reusable Kubernetes monitoring setup.
 
 What is included:
 
@@ -14,8 +14,8 @@ What is included:
 - A sample application that exposes Prometheus metrics.
 - A post-install `ServiceMonitor` for the sample application.
 - A `kubeadm` control plane scraping manifest for `etcd`, `kube-scheduler`, and `kube-controller-manager`.
-- A cleanup script to remove the full demo setup.
-- A step-by-step guide that the audience can repeat later.
+- A cleanup script to remove the full setup.
+- A step-by-step guide that can be repeated later for self-learning.
 
 ## Repository Layout
 
@@ -65,9 +65,13 @@ Open `http://WORKER_NODE_EXTERNAL_IP:32000` and sign in with:
 - User: `admin`
 - Password: `prom-grafana-demo`
 
-Your three custom dashboards are grouped under the Grafana folder `Demo Dashboards`.
+Direct dashboard URLs:
 
-To remove the full demo setup later:
+- `http://WORKER_NODE_EXTERNAL_IP:32000/d/k8s-cluster-overview-guide/kubernetes-cluster-overview`
+- `http://WORKER_NODE_EXTERNAL_IP:32000/d/k8s-namespace-health-guide/kubernetes-namespace-health`
+- `http://WORKER_NODE_EXTERNAL_IP:32000/d/k8s-workload-performance-guide/kubernetes-workload-performance`
+
+To remove the full setup later:
 
 ```bash
 chmod +x scripts/cleanup.sh
@@ -88,7 +92,7 @@ This setup covers the standard metrics that are realistically available from ins
 - Kubelet metrics
 - cAdvisor container metrics
 - `/metrics/probes` kubelet probe metrics
-- Demo application metrics through a `ServiceMonitor`
+- Sample application metrics through a `ServiceMonitor`
 
 Optional support is also included for:
 
@@ -104,7 +108,7 @@ For your `kubeadm` cluster, this repo includes a dedicated manifest to scrape th
 - The `kubeadm` control plane manifest assumes a `1 master / 2 worker` topology and a single control-plane node IP.
 - Grafana is exposed on NodePort `32000` and Prometheus on NodePort `32090`.
 - On GCP, allow inbound firewall access to TCP `32000` and `32090` to reach those services from your browser.
-- Grafana and Prometheus run without persistent volumes in this demo setup.
+- Grafana and Prometheus run without persistent volumes in this guide setup.
 - Any historical metrics and Grafana state are lost if the pods restart or the release is removed.
 - “All metrics possible” in Kubernetes is not a literal guarantee. Some metrics are unavailable on managed control planes, disabled by security policy, or hidden behind vendor integrations.
-- This repo aims for the broadest practical in-cluster coverage with a clean demo path.
+- This repo aims for broad practical in-cluster coverage with a clean self-learning path.

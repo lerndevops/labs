@@ -6,7 +6,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 HELM_RELEASE="${HELM_RELEASE:-monitoring}"
 HELM_NAMESPACE="${HELM_NAMESPACE:-monitoring}"
-DEMO_NAMESPACE="${DEMO_NAMESPACE:-demo-metrics}"
+DEMO_NAMESPACE="${DEMO_NAMESPACE:-sample-metrics}"
 CONTROL_PLANE_LABEL_PRIMARY="node-role.kubernetes.io/control-plane"
 CONTROL_PLANE_LABEL_FALLBACK="node-role.kubernetes.io/master"
 

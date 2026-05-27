@@ -6,7 +6,7 @@ metadata:
   labels:
     grafana_dashboard: "1"
   annotations:
-    k8s-sidecar-target-directory: /tmp/dashboards/Demo Dashboards
+    k8s-sidecar-target-directory: /tmp/dashboards/Kubernetes Learning
 data:
   kubernetes-namespace-health.json: |
     {
@@ -139,7 +139,7 @@ data:
       "tags": [
         "kubernetes",
         "namespace",
-        "demo"
+        "learning"
       ],
       "templating": {
         "list": []
@@ -150,7 +150,7 @@ data:
       },
       "timezone": "browser",
       "title": "Kubernetes Namespace Health",
-      "uid": "k8s-namespace-health-demo",
+      "uid": "k8s-namespace-health-guide",
       "version": 1,
       "weekStart": ""
     }

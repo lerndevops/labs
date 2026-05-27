@@ -1,6 +1,6 @@
 # End-to-End Guide: Prometheus + Grafana on Kubernetes
 
-This guide deploys Prometheus and Grafana into a Kubernetes cluster, configures Prometheus to scrape a broad set of Kubernetes metrics, and provisions Grafana dashboards ready for a live demonstration.
+This guide deploys Prometheus and Grafana into a Kubernetes cluster, configures Prometheus to scrape a broad set of Kubernetes metrics, and provisions Grafana dashboards for hands-on learning and verification.
 
 This version of the guide is tuned for a self-managed `kubeadm` cluster with `1` control-plane node and `2` worker nodes.
 It also assumes the cluster nodes are GCP VMs, so Grafana and Prometheus are exposed using `NodePort` instead of `kubectl port-forward`.
@@ -84,7 +84,7 @@ kubectl apply -f monitoring/manifests/
 This creates:
 
 - Grafana dashboard ConfigMaps
-- A sample application in the `demo-metrics` namespace
+- A sample application in the `sample-metrics` namespace
 - The sample application Service
 
 This step is safe before Helm install because it does not create any CRD-backed objects.
@@ -92,8 +92,8 @@ This step is safe before Helm install because it does not create any CRD-backed 
 Verify:
 
 ```bash
-kubectl get ns monitoring demo-metrics
-kubectl -n demo-metrics get deploy,svc
+kubectl get ns monitoring sample-metrics
+kubectl -n sample-metrics get deploy,svc
 ```
 
 ## 7. Add the Helm Repository
@@ -120,12 +120,12 @@ helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
   -f monitoring/helm-values/kube-prometheus-stack-values.yaml
 ```
 
-This guide pins the version deliberately so the audience runs the same chart layout.
-Grafana and Prometheus persistence are disabled in this demo setup, so no PVs or storage classes are required.
+This guide pins the version deliberately so learners run the same chart layout.
+Grafana and Prometheus persistence are disabled in this guide setup, so no PVs or storage classes are required.
 
 ## 9. Apply the Post-Install ServiceMonitor
 
-Now that the Prometheus Operator CRDs exist, apply the demo application `ServiceMonitor`:
+Now that the Prometheus Operator CRDs exist, apply the sample application `ServiceMonitor`:
 
 ```bash
 kubectl apply -f monitoring/post-install/
@@ -134,12 +134,12 @@ kubectl apply -f monitoring/post-install/
 Verify:
 
 ```bash
-kubectl -n demo-metrics get servicemonitor
+kubectl -n sample-metrics get servicemonitor
 ```
 
 ## 10. Apply the `kubeadm` Control Plane Scrape Manifest
 
-Your `kubeadm` control plane usually runs `etcd`, `kube-scheduler`, and `kube-controller-manager` as static pods on the control-plane node. Those metrics are worth scraping explicitly for a demo.
+Your `kubeadm` control plane usually runs `etcd`, `kube-scheduler`, and `kube-controller-manager` as static pods on the control-plane node. Those metrics are worth scraping explicitly for learning and validation.
 
 Get the single control-plane node internal IP:
 
@@ -272,28 +272,26 @@ Login:
 
 ## 15. Verify the Dashboards
 
-In Grafana, open:
+Open the three custom dashboards directly:
 
-- `Kubernetes Cluster Overview`
-- `Kubernetes Namespace Health`
-- `Kubernetes Workload Performance`
-
-These custom dashboards are grouped in the Grafana folder `Demo Dashboards`.
+- `http://WORKER_NODE_EXTERNAL_IP:32000/d/k8s-cluster-overview-guide/kubernetes-cluster-overview`
+- `http://WORKER_NODE_EXTERNAL_IP:32000/d/k8s-namespace-health-guide/kubernetes-namespace-health`
+- `http://WORKER_NODE_EXTERNAL_IP:32000/d/k8s-workload-performance-guide/kubernetes-workload-performance`
 
 You will also see the upstream dashboards that ship with the chart.
 
-## 16. Demo Flow for an Audience
+## 16. Suggested Learning Flow
 
-Use this order in a live demonstration:
+Use this order when exploring the setup:
 
 1. Show cluster nodes in `kubectl get nodes`.
 2. Show the NodePort services with `kubectl -n monitoring get svc`.
 3. Show Prometheus targets in `http://WORKER_NODE_EXTERNAL_IP:32090/targets`.
 4. Point out the control-plane targets `etcd-external`, `kube-scheduler-external`, and `kube-controller-manager-external`.
-5. Open `Kubernetes Cluster Overview` to explain cluster-wide CPU, memory, and pod counts.
-6. Open `Kubernetes Namespace Health` to compare namespaces.
-7. Open `Kubernetes Workload Performance` to explain pod/container resource usage.
-8. Show the `demo-metrics` namespace and the sample application.
+5. Open `http://WORKER_NODE_EXTERNAL_IP:32000/d/k8s-cluster-overview-guide/kubernetes-cluster-overview` to inspect cluster-wide CPU, memory, and pod counts.
+6. Open `http://WORKER_NODE_EXTERNAL_IP:32000/d/k8s-namespace-health-guide/kubernetes-namespace-health` to compare namespaces.
+7. Open `http://WORKER_NODE_EXTERNAL_IP:32000/d/k8s-workload-performance-guide/kubernetes-workload-performance` to inspect pod and container resource usage.
+8. Inspect the `sample-metrics` namespace and the sample application.
 9. In Prometheus, query:
    - `up`
    - `kube_pod_status_phase`
@@ -351,8 +349,8 @@ On `kubeadm`, verify the control plane pods are present on the control-plane nod
 If the sample application does not appear in Prometheus targets:
 
 ```bash
-kubectl -n demo-metrics get pod,svc,servicemonitor
-kubectl -n demo-metrics describe servicemonitor prometheus-example-app
+kubectl -n sample-metrics get pod,svc,servicemonitor
+kubectl -n sample-metrics describe servicemonitor prometheus-example-app
 ```
 
 If Prometheus pods stay pending:
@@ -376,7 +374,7 @@ The script:
 - removes the control-plane scrape resources
 - uninstalls the Helm release
 - deletes the manifest objects from this repo
-- deletes the `monitoring` and `demo-metrics` namespaces
+- deletes the `monitoring` and `sample-metrics` namespaces
 
 If you also want to remove the Prometheus Operator CRDs:
 

@@ -6,7 +6,7 @@ metadata:
   labels:
     grafana_dashboard: "1"
   annotations:
-    k8s-sidecar-target-directory: /tmp/dashboards/Demo Dashboards
+    k8s-sidecar-target-directory: /tmp/dashboards/Kubernetes Learning
 data:
   kubernetes-cluster-overview.json: |
     {
@@ -349,7 +349,7 @@ data:
       "style": "dark",
       "tags": [
         "kubernetes",
-        "demo",
+        "learning",
         "prometheus"
       ],
       "templating": {
@@ -362,7 +362,7 @@ data:
       "timepicker": {},
       "timezone": "browser",
       "title": "Kubernetes Cluster Overview",
-      "uid": "k8s-cluster-overview-demo",
+      "uid": "k8s-cluster-overview-guide",
       "version": 1,
       "weekStart": ""
     }

@@ -19,7 +19,7 @@ grafana:
     auth.anonymous:
       enabled: false
     dashboards:
-      default_home_dashboard_path: /tmp/dashboards/Demo Dashboards/kubernetes-cluster-overview.json
+      default_home_dashboard_path: /tmp/dashboards/Kubernetes Learning/kubernetes-cluster-overview.json
   sidecar:
     dashboards:
       enabled: true

@@ -1,5 +1,3 @@
-# Docker Images & Image Management Guide
-
 # What are Docker Images?
 
 A Docker image is a package that contains:

@@ -14,32 +14,6 @@ These images are used to create Docker containers.
 
 ---
 
-# Layered File System in Docker
-
-Docker images and containers use a layered file system.
-
-## Image Layers
-- Docker images consist of one or more **read-only layers**
-- Each layer contains only the differences from the previous layer
-
-## Container Layer
-- When a container is created, Docker adds one **writable layer** on top of the image layers
-
----
-
-# Benefits of Layered File System
-
-The layered architecture allows multiple images and containers to share common layers.
-
-## Advantages
-- Smaller storage footprint
-- Faster image transfer
-- Faster image builds
-- Efficient caching
-- Reduced duplication
-
----
-
 # How to Build Docker Images
 
 There are two ways to build Docker images:
@@ -432,6 +406,31 @@ docker image inspect nginx:1.14.0 --format "{{.Architecture}}"
 ```bash
 docker image inspect nginx:1.14.0 --format "{{.Architecture}} {{.Os}}"
 ```
+
+---
+# Layered File System in Docker
+
+Docker images and containers use a layered file system.
+
+## Image Layers
+- Docker images consist of one or more **read-only layers**
+- Each layer contains only the differences from the previous layer
+
+## Container Layer
+- When a container is created, Docker adds one **writable layer** on top of the image layers
+
+---
+
+# Benefits of Layered File System
+
+The layered architecture allows multiple images and containers to share common layers.
+
+## Advantages
+- Smaller storage footprint
+- Faster image transfer
+- Faster image builds
+- Efficient caching
+- Reduced duplication
 
 ---
 

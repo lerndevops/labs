@@ -1,81 +1,330 @@
-there are many docker images available on hub.docker.com, we can just pull them & start running containers
+# Docker Basics & Advanced Commands Guide
 
-	docker search <image name> -- to search the docker images from command line
-	docker pull <image name> -- to pull a docker image from docker hub	
+## Introduction
+There are many Docker images available on Docker Hub that can be pulled and used to create containers.
 
-	docker images -- to display the images on your local machine
-	docker history < image name > -- to know the changes done to the image
-	docker inspect < image name > -- to view the detaied information in JSON output
-	docker rmi <image name> -- to remove a image from local machine
-	docker image prune -- to remove all unused images from local machine
-	
-how to run containers from a docker image 
+Docker Hub: https://hub.docker.com
 
-	two ways we can run the images 
-		interative mode ( -it )
-		detached mode  ( -d )
-	
-	docker run -d nginx ( always creates new container & detaches from the terminal you are working on ( goes in background process )) 
-	docker run -it nginx bash ( always creates new container & gets inside the container )
-	docker ps -- to check all running containers 
-	docker ps -a -- to check all running + exited/stopped containers
-	
-	docker stop <container id> -- to stop a container 
-	docker start <container id> -- to start a stopped container 
-	docker restart <container id> -- to restart a container 
-	docker inspect <container id> -- to view detailed information about the continaer in JSON format
-	docker rm <container id> -- to remove a stopped/exited container
-	docker rm -f <container id> -- to remove a container forcefully though it is in running state 
-	docker container prune -- to remove all stopped/exited containers
-	
-how to get inside a running container
+---
 
-	docker run -d nginx ( creates a new container in detached mode )
-	docker ps  -- displays the running containers, note down the container id
-	docker exec -it <container id> bash 
+# Docker Image Management
 
-how to come out of a container
-	ctrl pq ( it is mandatory to use this command always )
-	
-how to access the applications running inside the container from external world ( browser )
-	
-	services running inside a container can never be accessed direcltry, we always need to publish/expose them on to docker host while we create the containers 
-	
-	we need to publish/expose the services using -P (capital) OR -p (small) with in the docker run command  
-	
-	ex: -P ( capital ) -- docker will publish/expose the port number dynamically on docker host & maps with port running inside the cont
-	
-		docker run -d -P nginx -- which create a new port mapping from docker host to the service inside the container 
-		docker ps -- to check the container port 
-		to access : in the browser http://<docker host IP>:<exposed port>  ex: http://52.14.62.88:32768
-	
-		-p ( small ) -- we need to assign a port on docker host & map to the port inside the container 
-		
-		docker run -d -p 1234:80 nginx ( always port-on-docker-host : process-port-inside-container )
-		docker ps -- to check the container port 
-		to access : in the browser http://<docker host IP>:<exposed port>  ex: http://52.14.62.88:1234
+## Search for Docker Images
+```bash
+docker search <image-name>
+```
 
-===============================================================================================================================
+Search for Docker images from the command line.
 
-Advanced Container commands 
+### Example
+```bash
+docker search nginx
+```
 
-limit container resources
-	docker run -d --restart unless-stopped -p 8080:80 --memory 500M --memory-reservation 256M nginx
-	docker run -d -P --cpus=".5" nginx
+---
 
-Run a docker container, overriding the system default logging driver settings:
-	docker run --log-driver json-file --log-opt max-size=50m nginx
+## Pull a Docker Image
+```bash
+docker pull <image-name>
+```
 
-updating container network 
-	docker network disconnect bridge <contid>
-	docker network connect myb <contid>
+Download a Docker image from Docker Hub.
 
-	docker run -itd --net net1 alpine
-	docker network connect net2 contid
-	( container will be present in both net1 & net2 networks )
+### Example
+```bash
+docker pull nginx
+```
 
---restart flag: specify when the container should be automatically restarted
-	1) no(default): Never restart the container
-	2) on-failure: only if the container fails (exits with non-zero exit code)
-	3) always: Always restart the container whether it succeeds or fails. Also start the container automatically on  daemon startup
-	4) unless-stopped: Always restart the container whether it succeeds or fails, and the daemon startup, unless the container was manually stopeed
+---
+
+## List Docker Images
+```bash
+docker images
+```
+
+Display all Docker images available on the local machine.
+
+---
+
+## View Image History
+```bash
+docker history <image-name>
+```
+
+View the layers and changes made to the Docker image.
+
+### Example
+```bash
+docker history nginx
+```
+
+---
+
+## Inspect Docker Image
+```bash
+docker inspect <image-name>
+```
+
+Display detailed information about the image in JSON format.
+
+### Example
+```bash
+docker inspect nginx
+```
+
+---
+
+## Remove Docker Image
+```bash
+docker rmi <image-name>
+```
+
+Remove a Docker image from the local machine.
+
+### Example
+```bash
+docker rmi nginx
+```
+
+---
+
+## Remove Unused Images
+```bash
+docker image prune
+```
+
+Remove all unused Docker images.
+
+---
+
+# Running Docker Containers
+
+## Container Run Modes
+
+### Interactive Mode (`-it`)
+- Creates a new container
+- Opens an interactive terminal inside the container
+
+### Detached Mode (`-d`)
+- Creates a new container
+- Runs the container in the background
+
+---
+
+## Run Container in Detached Mode
+```bash
+docker run -d nginx
+```
+
+---
+
+## Run Container in Interactive Mode
+```bash
+docker run -it nginx bash
+```
+
+---
+
+## List Running Containers
+```bash
+docker ps
+```
+
+---
+
+## List All Containers
+```bash
+docker ps -a
+```
+
+---
+
+# Container Lifecycle Commands
+
+## Stop a Container
+```bash
+docker stop <container-id>
+```
+
+## Start a Stopped Container
+```bash
+docker start <container-id>
+```
+
+## Restart a Container
+```bash
+docker restart <container-id>
+```
+
+## Inspect a Container
+```bash
+docker inspect <container-id>
+```
+
+## Remove a Stopped Container
+```bash
+docker rm <container-id>
+```
+
+## Force Remove a Running Container
+```bash
+docker rm -f <container-id>
+```
+
+## Remove All Stopped Containers
+```bash
+docker container prune
+```
+
+---
+
+# Accessing a Running Container
+
+## Step 1
+```bash
+docker run -d nginx
+```
+
+## Step 2
+```bash
+docker ps
+```
+
+## Step 3
+```bash
+docker exec -it <container-id> bash
+```
+
+---
+
+# Exit From a Container
+
+```text
+Ctrl + P + Q
+```
+
+This detaches from the container without stopping it.
+
+---
+
+# Port Publishing
+
+## Dynamic Port Mapping (`-P`)
+```bash
+docker run -d -P nginx
+```
+
+Check mapping:
+```bash
+docker ps
+```
+
+Example access:
+```text
+http://52.14.62.88:32768
+```
+
+---
+
+## Manual Port Mapping (`-p`)
+```bash
+docker run -d -p 1234:80 nginx
+```
+
+Format:
+```text
+host-port:container-port
+```
+
+Example access:
+```text
+http://52.14.62.88:1234
+```
+
+---
+
+# Advanced Docker Commands
+
+## Limit Memory Usage
+```bash
+docker run -d \
+  --restart unless-stopped \
+  -p 8080:80 \
+  --memory 500M \
+  --memory-reservation 256M \
+  nginx
+```
+
+---
+
+## Limit CPU Usage
+```bash
+docker run -d -P --cpus="0.5" nginx
+```
+
+---
+
+# Configure Logging
+```bash
+docker run \
+  --log-driver json-file \
+  --log-opt max-size=50m \
+  nginx
+```
+
+---
+
+# Docker Networking
+
+## Disconnect from Network
+```bash
+docker network disconnect bridge <container-id>
+```
+
+## Connect to Network
+```bash
+docker network connect myb <container-id>
+```
+
+## Run in Specific Network
+```bash
+docker run -itd --net net1 alpine
+```
+
+## Connect to Additional Network
+```bash
+docker network connect net2 <container-id>
+```
+
+---
+
+# Restart Policies
+
+## no
+Never restart the container.
+
+## on-failure
+Restart only if the container exits with a non-zero exit code.
+
+## always
+Always restart the container and restart after Docker daemon startup.
+
+## unless-stopped
+Always restart unless manually stopped.
+
+---
+
+# Quick Reference
+
+| Purpose | Command |
+|---|---|
+| Search image | `docker search nginx` |
+| Pull image | `docker pull nginx` |
+| List images | `docker images` |
+| Run container | `docker run -d nginx` |
+| List containers | `docker ps` |
+| Stop container | `docker stop <id>` |
+| Remove container | `docker rm <id>` |
+| Remove image | `docker rmi nginx` |
+| Access shell | `docker exec -it <id> bash` |
+

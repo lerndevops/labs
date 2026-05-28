@@ -1,5 +1,3 @@
-# Docker Persistent Data Guide
-
 # Persistent Data with Containers
 
 Docker containers are designed so that their internal storage can be easily destroyed.

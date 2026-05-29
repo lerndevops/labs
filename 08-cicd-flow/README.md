@@ -45,15 +45,15 @@ sudo bash /tmp/installDocker.sh
 
 ```bash
 
-Follow:
-https://github.com/lerndevops/labs/blob/master/03-ansible/01-labs/00-install.md
-
+sudo apt update
+sudo apt install -y ansible
+sudo su - jenkins 
 cd ~
 ansible-config init --disabled > ansible.cfg
 cd ~ ; vi ansible.cfg
 ```
 
-Uncomment:
+Uncomment & set as below:
 
 ```ini
 host_key_checking = False

@@ -40,7 +40,9 @@ Verify:
 
 ```bash
 docker --version
-docker-compose --version
+docker compose version
+sudo usermod -aG docker devops
+logout & login back
 ```
 
 ---

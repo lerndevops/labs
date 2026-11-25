@@ -11,9 +11,14 @@ cd /tmp
 sudo wget https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.tar.gz
 sudo tar -xzf apache-maven-3.9.16-bin.tar.gz -C /opt/
 sudo mv /opt/apache-maven-3.9.16 /opt/maven
-echo 'export MAVEN_HOME="/opt/maven"' | sudo tee -a /etc/profile
-echo 'export PATH=$MAVEN_HOME/bin:$PATH' | sudo tee -a /etc/profile
-source /etc/profile
+as root user
+    echo 'export MAVEN_HOME="/opt/maven"' | sudo tee -a /etc/profile
+    echo 'export PATH=$MAVEN_HOME/bin:$PATH' | sudo tee -a /etc/profile
+    source /etc/profile
+as labuser
+    echo 'export MAVEN_HOME=/opt/apache-maven-3.9.11' >> ~/.bashrc
+    echo 'export PATH=$MAVEN_HOME/bin:$PATH' >> ~/.bashrc
+    source ~/.bashrc
 ```
 ### Install Jenkins
 ```

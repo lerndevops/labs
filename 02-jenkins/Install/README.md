@@ -21,6 +21,13 @@ EOF
 ```
 source /etc/profile.d/maven.sh
 ```
+```
+## Validate
+echo $MAVEN_HOME
+echo $PATH
+which mvn
+mvn -version
+```
 
 ### Install Jenkins
 ```

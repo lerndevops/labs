@@ -11,15 +11,17 @@ cd /tmp
 sudo wget https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.tar.gz
 sudo tar -xzf apache-maven-3.9.16-bin.tar.gz -C /opt/
 sudo mv /opt/apache-maven-3.9.16 /opt/maven
-as root user
-    echo 'export MAVEN_HOME="/opt/maven"' | sudo tee -a /etc/profile
-    echo 'export PATH=$MAVEN_HOME/bin:$PATH' | sudo tee -a /etc/profile
-    source /etc/profile
-as labuser
-    echo 'export MAVEN_HOME=/opt/maven' >> ~/.bashrc
-    echo 'export PATH=$MAVEN_HOME/bin:$PATH' >> ~/.bashrc
-    source ~/.bashrc
 ```
+```
+sudo tee /etc/profile.d/maven.sh > /dev/null <<EOF
+export MAVEN_HOME=/opt/maven
+export PATH=\$MAVEN_HOME/bin:\$PATH
+EOF
+```
+```
+source /etc/profile.d/maven.sh
+```
+
 ### Install Jenkins
 ```
 sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key

@@ -16,7 +16,7 @@ as root user
     echo 'export PATH=$MAVEN_HOME/bin:$PATH' | sudo tee -a /etc/profile
     source /etc/profile
 as labuser
-    echo 'export MAVEN_HOME=/opt/apache-maven-3.9.11' >> ~/.bashrc
+    echo 'export MAVEN_HOME=/opt/maven' >> ~/.bashrc
     echo 'export PATH=$MAVEN_HOME/bin:$PATH' >> ~/.bashrc
     source ~/.bashrc
 ```
